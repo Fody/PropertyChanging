@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PropertyChanging</name>
+    </assembly>
+    <members>
+        <member name="T:PropertyChanging.AlsoNotifyForAttribute">
+            <summary>
+            Injects this property to be notified when a dependant property is set.
+            </summary>
+        </member>
+        <member name="M:PropertyChanging.AlsoNotifyForAttribute.#ctor(System.String)">
+            <summary>
+             Initializes a new instance of <see cref="T:PropertyChanging.DependsOnAttribute"/>.
+            </summary>
+            <param name="property">A property that will be notified for.</param>
+        </member>
+        <member name="M:PropertyChanging.AlsoNotifyForAttribute.#ctor(System.String,System.String[])">
+            <summary>
+             Initializes a new instance of <see cref="T:PropertyChanging.DependsOnAttribute"/>.
+            </summary>
+            <param name="property">A property that will be notified for.</param>
+            <param name="otherProperties">The properties that will be notified for.</param>
+        </member>
+        <member name="T:PropertyChanging.DependsOnAttribute">
+            <summary>
+            Injects this property to be notified when a dependant property is set.
+            </summary>
+        </member>
+        <member name="M:PropertyChanging.DependsOnAttribute.#ctor(System.String)">
+            <summary>
+             Initializes a new instance of <see cref="T:PropertyChanging.DependsOnAttribute"/>.
+            </summary>
+            <param name="dependency">A property that the assigned property depends on.</param>
+        </member>
+        <member name="M:PropertyChanging.DependsOnAttribute.#ctor(System.String,System.String[])">
+            <summary>
+             Initializes a new instance of <see cref="T:PropertyChanging.DependsOnAttribute"/>.
+            </summary>
+            <param name="dependency">A property that the assigned property depends on.</param>
+            <param name="otherDependencies">The properties that the assigned property depends on.</param>
+        </member>
+        <member name="T:PropertyChanging.DoNotNotifyAttribute">
+            <summary>
+            Exclude a <see cref="T:System.Type"/> or property from notification.
+            </summary>
+        </member>
+    </members>
+</doc>
