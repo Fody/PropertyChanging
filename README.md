@@ -80,3 +80,15 @@ Injects [INotifyPropertyChanging](http://msdn.microsoft.com/en-us/library/system
         }
     }
 
+## More Info
+
+* [AccessBeforeValue](https://github.com/SimonCropp/PropertyChanging/wiki/AccessBeforeValue)
+* [Attributes](https://github.com/SimonCropp/PropertyChanging/wiki/Attributes)
+* [EqualityChecking](https://github.com/SimonCropp/PropertyChanging/wiki/EqualityChecking)
+* [EventInvokerSelectionInjection](https://github.com/SimonCropp/PropertyChanging/wiki/EventInvokerSelectionInjection)
+* [ExampleUsage](https://github.com/SimonCropp/PropertyChanging/wiki/ExampleUsage)
+* [NotificationInterception](https://github.com/SimonCropp/PropertyChanging/wiki/NotificationInterception)
+* [On_PropertyName_Changing](https://github.com/SimonCropp/PropertyChanging/wiki/On_PropertyName_Changing)
+* [PropertyDependencies](https://github.com/SimonCropp/PropertyChanging/wiki/PropertyDependencies)
+* [WeavingTaskOptions](https://github.com/SimonCropp/PropertyChanging/wiki/WeavingTaskOptions)
+* [WeavingWithoutAddingAReference](https://github.com/SimonCropp/PropertyChanging/wiki/WeavingWithoutAddingAReference)
