@@ -6,13 +6,13 @@ using Mono.Collections.Generic;
 
 public class AttributeCleaner
 {
-    AllTypesFinder allTypesFinder;
+    List<TypeDefinition> allTypes;
     List<string> propertyAttributeNames;
 
-    public AttributeCleaner(AllTypesFinder  allTypesFinder)
+    public AttributeCleaner(List<TypeDefinition> allTypes)
     {
         propertyAttributeNames = new List<string> { "PropertyChanging.DoNotNotifyAttribute", "PropertyChanging.AlsoNotifyForAttribute", "PropertyChanging.DependsOnAttribute" };
-        this.allTypesFinder = allTypesFinder;
+        this.allTypes = allTypes;
     }
 
     void ProcessType(TypeDefinition type)
@@ -41,7 +41,7 @@ public class AttributeCleaner
 
     public void Execute()
     {
-        foreach (var type in allTypesFinder.AllTypes)
+        foreach (var type in allTypes)
         {
             ProcessType(type);
         }

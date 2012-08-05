@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using Mono.Cecil;
 
@@ -31,9 +32,8 @@ public class ModuleWeaver
         var notifyInterfaceFinder = new NotifyInterfaceFinder(typeResolver);
 
 
-        var allTypesFinder = new AllTypesFinder(ModuleDefinition);
-        allTypesFinder.Execute();
-        var typeNodeBuilder = new TypeNodeBuilder(this, notifyInterfaceFinder, typeResolver, allTypesFinder);
+        var typeDefinitions = ModuleDefinition.GetTypes().ToList();
+        var typeNodeBuilder = new TypeNodeBuilder(this, notifyInterfaceFinder, typeResolver, typeDefinitions);
         typeNodeBuilder.Execute();
         new DoNotNotifyTypeCleaner(typeNodeBuilder).Execute();
         new CodeGenTypeCleaner(typeNodeBuilder).Execute();
@@ -53,7 +53,7 @@ public class ModuleWeaver
         new StackOverflowChecker(typeNodeBuilder, typeResolver).Execute();
         var typeEqualityFinder = new TypeEqualityFinder(this, msCoreReferenceFinder, typeResolver);
         new TypeProcessor(typeNodeBuilder, this, msCoreReferenceFinder, typeEqualityFinder).Execute();
-        new AttributeCleaner(allTypesFinder).Execute();
+        new AttributeCleaner(typeDefinitions).Execute();
         new ReferenceCleaner(this).Execute();
     }
 
