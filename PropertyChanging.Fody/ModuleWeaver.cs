@@ -32,7 +32,10 @@ public class ModuleWeaver
         var notifyInterfaceFinder = new NotifyInterfaceFinder(typeResolver);
 
 
-        var typeDefinitions = ModuleDefinition.GetTypes().ToList();
+        var typeDefinitions = ModuleDefinition
+            .GetTypes()
+            .Where(x => x.IsClass && x.BaseType!= null)
+            .ToList();
         var typeNodeBuilder = new TypeNodeBuilder(this, notifyInterfaceFinder, typeResolver, typeDefinitions);
         typeNodeBuilder.Execute();
         new DoNotNotifyTypeCleaner(typeNodeBuilder).Execute();
