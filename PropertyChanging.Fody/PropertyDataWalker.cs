@@ -6,13 +6,11 @@ public class PropertyDataWalker
 {
     TypeNodeBuilder typeNodeBuilder;
     NotifyPropertyDataAttributeReader notifyPropertyDataAttributeReader;
-    ModuleWeaver moduleWeaver;
 
-    public PropertyDataWalker(TypeNodeBuilder typeNodeBuilder, NotifyPropertyDataAttributeReader notifyPropertyDataAttributeReader, ModuleWeaver moduleWeaver)
+    public PropertyDataWalker(TypeNodeBuilder typeNodeBuilder, NotifyPropertyDataAttributeReader notifyPropertyDataAttributeReader)
     {
         this.typeNodeBuilder = typeNodeBuilder;
         this.notifyPropertyDataAttributeReader = notifyPropertyDataAttributeReader;
-        this.moduleWeaver = moduleWeaver;
     }
 
     void Process(List<TypeNode> notifyNodes)
@@ -59,7 +57,8 @@ public class PropertyDataWalker
                                            BackingFieldReference = backingFieldReference,
                                            PropertyDefinition = propertyDefinition,
                                            // Compute full dependencies for the current property
-                                           AlsoNotifyFor = GetFullDependencies(propertyDefinition, dependenciesForProperty, node)
+                                           AlsoNotifyFor = GetFullDependencies(propertyDefinition, dependenciesForProperty, node),
+                                           AlreadyNotifies = propertyDefinition.GetAlreadyNotifies(node.EventInvoker.MethodReference.Name).ToList()
                                        });
             return;
         }
@@ -77,6 +76,7 @@ The most likely cause is that you have implemented a custom event accessor for t
                                        PropertyDefinition = propertyDefinition,
                                        // Compute full dependencies for the current property
                                        AlsoNotifyFor = GetFullDependencies(propertyDefinition, notifyPropertyData.AlsoNotifyFor.Union(dependenciesForProperty), node),
+                                       AlreadyNotifies = propertyDefinition.GetAlreadyNotifies(node.EventInvoker.MethodReference.Name).ToList()
                                    });
     }
 

@@ -15,6 +15,12 @@ public static class CecilExtensions
         return (opCode.Code == Code.Call) || (opCode.Code == Code.Callvirt);
     }
 
+    public static bool IsCallToMethod(this Instruction x, string methodName)
+    {
+        return x.OpCode.IsCall() &&
+               x.Operand is MethodReference &&
+               ((MethodReference)x.Operand).Name == methodName;
+    }
     public static string GetName(this MethodDefinition methodDefinition)
     {
         return string.Format("{0}.{1}", methodDefinition.DeclaringType.FullName, methodDefinition.Name);

@@ -1,8 +1,10 @@
-﻿using NUnit.Framework;
+﻿// ReSharper disable UnusedParameter.Local
 
+using System.Linq;
+using NUnit.Framework;
 
 [TestFixture]
-public class TypeProcessorTest
+public class AlreadyNotifyFinderTest
 {
 
 
@@ -11,30 +13,36 @@ public class TypeProcessorTest
     {
         var propertyDefinition = DefinitionFinder.FindProperty(() => new NonVirtual().WithNotifactionProperty);
 
-        var message = TypeProcessor.AlreadyContainsNotification(propertyDefinition, "OnPropertyChanging");
-        Assert.IsTrue(message);
+        var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging");
+        Assert.AreEqual(1, propertyNames.Count());
+    }
+    [Test]
+    public void MultipleNotifications()
+    {
+        var propertyDefinition = DefinitionFinder.FindProperty(() => new Multiple().Property);
+
+        var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging").ToList();
+        Assert.Contains("Property1", propertyNames);
+        Assert.Contains("Property2", propertyNames);
     }
 
     [Test]
     public void WithoutNotification()
     {
-
-
         var propertyDefinition = DefinitionFinder.FindProperty(() => new NonVirtual().WithoutNotificationProperty);
 
-        var message = TypeProcessor.AlreadyContainsNotification(propertyDefinition, "OnPropertyChanging");
-        Assert.IsFalse(message);
+        var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanged");
+        Assert.IsEmpty(propertyNames);
     }
 
 
     [Test]
     public void AlreadyContainsNotificationVirtual()
     {
-
         var propertyDefinition = DefinitionFinder.FindProperty(() => new Virtual().WithNotifactionProperty);
 
-        var message = TypeProcessor.AlreadyContainsNotification(propertyDefinition, "OnPropertyChanging");
-        Assert.IsTrue(message);
+        var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging");
+        Assert.IsNotEmpty(propertyNames);
     }
 
     [Test]
@@ -42,8 +50,8 @@ public class TypeProcessorTest
     {
         var propertyDefinition = DefinitionFinder.FindProperty(() => new NonVirtual().WithNotifactionProperty);
 
-        var message = TypeProcessor.AlreadyContainsNotification(propertyDefinition, "OnPropertyChanging");
-        Assert.IsTrue(message);
+        var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging");
+        Assert.IsNotEmpty(propertyNames);
     }
 
     public class NonVirtual
@@ -58,15 +66,30 @@ public class TypeProcessorTest
             }
             set
             {
-                OnPropertyChanging();
+                OnPropertyChanging("WithNotifactionProperty");
             }
         }
 
-        void OnPropertyChanging()
+        void OnPropertyChanging(string property) { }
+
+    }
+    public class Multiple
+    {
+
+        public int Property
         {
-
-
+            get
+            {
+                return 0;
+            }
+            set
+            {
+                OnPropertyChanging("Property1");
+                OnPropertyChanging("Property2");
+            }
         }
+
+        void OnPropertyChanging(string property) { }
     }
     public class Virtual
     {
@@ -80,14 +103,15 @@ public class TypeProcessorTest
             }
             set
             {
-                OnPropertyChanging();
+                OnPropertyChanging("WithNotifactionProperty");
             }
         }
 
-        public virtual void OnPropertyChanging()
+        public virtual void OnPropertyChanging(string property)
         {
 
 
         }
     }
 }
+// ReSharper restore UnusedParameter.Local

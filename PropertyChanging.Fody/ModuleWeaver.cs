@@ -50,12 +50,12 @@ public class ModuleWeaver
         new IlGeneratedByDependencyProcessor(typeNodeBuilder).Execute();
         new DependsOnDataAttributeReader(typeNodeBuilder, this).Execute();
         var notifyPropertyDataAttributeReader = new NotifyPropertyDataAttributeReader();
-        new PropertyDataWalker(typeNodeBuilder, notifyPropertyDataAttributeReader, this).Execute();
+        new PropertyDataWalker(typeNodeBuilder, notifyPropertyDataAttributeReader).Execute();
         new WarningChecker(typeNodeBuilder, this).Execute();
         new OnChangingWalker(methodGenerifier, typeNodeBuilder).Execute();
         new StackOverflowChecker(typeNodeBuilder, typeResolver).Execute();
         var typeEqualityFinder = new TypeEqualityFinder(this, msCoreReferenceFinder, typeResolver);
-        new TypeProcessor(typeNodeBuilder, this, msCoreReferenceFinder, typeEqualityFinder).Execute();
+        new TypeProcessor(typeNodeBuilder, this, typeEqualityFinder).Execute();
         new AttributeCleaner(typeDefinitions).Execute();
         new ReferenceCleaner(this).Execute();
     }

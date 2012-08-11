@@ -1,20 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Mono.Cecil;
 using Mono.Cecil.Rocks;
 
 public class TypeProcessor
 {
     TypeNodeBuilder typeNodeBuilder;
     ModuleWeaver moduleWeaver;
-    MsCoreReferenceFinder msCoreReferenceFinder;
     TypeEqualityFinder typeEqualityFinder;
 
-    public TypeProcessor(TypeNodeBuilder typeNodeBuilder, ModuleWeaver moduleWeaver, MsCoreReferenceFinder msCoreReferenceFinder, TypeEqualityFinder typeEqualityFinder)
+    public TypeProcessor(TypeNodeBuilder typeNodeBuilder, ModuleWeaver moduleWeaver, TypeEqualityFinder typeEqualityFinder)
     {
         this.typeNodeBuilder = typeNodeBuilder;
         this.moduleWeaver = moduleWeaver;
-        this.msCoreReferenceFinder = msCoreReferenceFinder;
         this.typeEqualityFinder = typeEqualityFinder;
     }
 
@@ -35,12 +31,6 @@ public class TypeProcessor
 
             foreach (var propertyData in node.PropertyDatas)
             {
-                if (AlreadyContainsNotification(propertyData.PropertyDefinition, node.EventInvoker.MethodReference.Name))
-                {
-                    moduleWeaver.LogInfo(string.Format("\t{0} Already has notification functionality. Property will be ignored.", propertyData.PropertyDefinition.GetName()));
-                    continue;
-                }
-
                 var body = propertyData.PropertyDefinition.SetMethod.Body;
                 var alreadyHasEquality = HasEqualityChecker.AlreadyHasEquality(propertyData.PropertyDefinition, propertyData.BackingFieldReference);
              
@@ -53,7 +43,7 @@ public class TypeProcessor
 
                 if (!alreadyHasEquality)
                 {
-                    var equalityCheckWeaver = new EqualityCheckWeaver(msCoreReferenceFinder, propertyData, typeEqualityFinder);
+                    var equalityCheckWeaver = new EqualityCheckWeaver(propertyData, typeEqualityFinder);
                     equalityCheckWeaver.Execute();
                 }
 
@@ -64,13 +54,6 @@ public class TypeProcessor
         }
     }
 
-    public static bool AlreadyContainsNotification(PropertyDefinition propertyDefinition, string methodName)
-    {
-        var instructions = propertyDefinition.SetMethod.Body.Instructions;
-        return instructions.Any(x =>
-                                x.OpCode.IsCall() &&
-                                x.Operand is MethodReference &&
-                                ((MethodReference) x.Operand).Name == methodName);
-    }
-
+    
 }
+

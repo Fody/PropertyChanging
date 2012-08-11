@@ -397,11 +397,62 @@ public abstract class BaseTaskTests
         EventTester.TestProperty(instance2, false);
     }
 
+
     [Test]
     public virtual void AlreadyHasNotifcation()
     {
         var instance = assembly.GetInstance("ClassAlreadyHasNotifcation");
-        EventTester.TestProperty(instance, false);
+        var property1EventCount = 0;
+        var property2EventCount = 0;
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
+        {
+            if (args.PropertyName == "Property1")
+            {
+                property1EventCount++;
+            }
+            if (args.PropertyName == "Property2")
+            {
+                property2EventCount++;
+            }
+        };
+        instance.Property1 = "a";
+
+        Assert.AreEqual(1, property1EventCount);
+        Assert.AreEqual(1, property2EventCount);
+        property1EventCount = 0;
+        property2EventCount = 0;
+        //Property has not changed on re-set so event not fired
+        instance.Property1 = "a";
+        Assert.AreEqual(0, property1EventCount);
+        Assert.AreEqual(0, property2EventCount);
+    }
+    [Test]
+    public virtual void AlreadyHasSingleNotifcation()
+    {
+        var instance = assembly.GetInstance("ClassAlreadyHasSingleNotifcation");
+        var property1EventCount = 0;
+        var property2EventCount = 0;
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
+        {
+            if (args.PropertyName == "Property1")
+            {
+                property1EventCount++;
+            }
+            if (args.PropertyName == "Property2")
+            {
+                property2EventCount++;
+            }
+        };
+        instance.Property1 = "a";
+
+        Assert.AreEqual(1, property1EventCount);
+        Assert.AreEqual(1, property2EventCount);
+        property1EventCount = 0;
+        property2EventCount = 0;
+        //Property has not changed on re-set so event not fired
+        instance.Property1 = "a";
+        Assert.AreEqual(0, property1EventCount);
+        Assert.AreEqual(0, property2EventCount);
     }
 
     [Test]

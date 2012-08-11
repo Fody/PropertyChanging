@@ -47,6 +47,7 @@
     <Compile Include="AbstractProperty\ClassWithAbstractProperty.cs" />
     <Compile Include="AbstractProperty\ClassWithPropertyImp.cs" />
     <Compile Include="ClassAlreadyHasNotifcation.cs" />
+    <Compile Include="ClassAlreadyHasSingleNotifcation.cs" />
     <Compile Include="ClassAlsoNotifyFor.cs" />
     <Compile Include="ClassCircularProperties.cs" />
     <Compile Include="ClassEqualityWithDouble.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="ClassStaticProperties.cs" />
     <Compile Include="ClassThatIsNotSealed.cs" />
     <Compile Include="ClassThatIsSealed.cs" />
+    <Compile Include="ClassWithAlreadyNotifies.cs" />
     <Compile Include="ClassWithBeforeAndSimpleImplementation.cs" />
     <Compile Include="ClassWithBeforeImplementation.cs" />
     <Compile Include="ClassWithBeforeImplementationMissingSetGet.cs" />
