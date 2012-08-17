@@ -8,8 +8,8 @@ public class TypeEqualityFinder
     MsCoreReferenceFinder msCoreReferenceFinder;
     TypeResolver typeResolver;
     Dictionary<string, MethodReference> methodCache;
-    public MethodReference StringEquals;    
-    public int OrdinalStringComparison
+    public MethodReference StringEquals;
+    public int OrdinalStringComparison;
 
     public TypeEqualityFinder(ModuleWeaver moduleWeaver, MsCoreReferenceFinder msCoreReferenceFinder, TypeResolver typeResolver)
     {
