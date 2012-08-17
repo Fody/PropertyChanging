@@ -55,6 +55,20 @@ public class EqualityCheckWeaver
             instructions.Insert(0, nopInstruction);
         }
 
+
+        if (targetType.Name == "String")
+        {
+            instructions.Prepend(
+                Instruction.Create(OpCodes.Ldarg_0),
+                targetInstruction,
+                Instruction.Create(OpCodes.Ldarg_1),
+                Instruction.Create(OpCodes.Ldc_I4, typeEqualityFinder.OrdinalStringComparison),
+                Instruction.Create(OpCodes.Call, typeEqualityFinder.StringEquals),
+                Instruction.Create(OpCodes.Brfalse_S, nopInstruction),
+                Instruction.Create(OpCodes.Ret));
+            return;
+        }
+
         var typeEqualityMethod = typeEqualityFinder.Find(targetType);
         if (typeEqualityMethod == null)
         {
