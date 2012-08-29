@@ -64,6 +64,25 @@ public abstract class BaseTaskTests
         Assert.IsEmpty(type.GetCustomAttributes(false));
     }
 
+
+    [Test]
+    public void WithTernary()
+    {
+        var instance = assembly.GetInstance("ClassWithTernary");
+
+        var property1EventCalled = false;
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
+        {
+            if (args.PropertyName == "Property1")
+            {
+                property1EventCalled = true;
+            }
+        };
+        instance.Property1 = 1;
+
+        Assert.IsTrue(property1EventCalled);
+    }
+
     [Test]
     public virtual void WithDependencyAfterSet()
     {
