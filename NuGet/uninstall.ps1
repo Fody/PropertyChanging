@@ -1,6 +1,6 @@
 ﻿param($installPath, $toolsPath, $package, $project)
 
-$addinName = "PropertyChanged"
+$addinName = "PropertyChanging"
 
 
 $fodyWeaversPath = [System.IO.Path]::Combine([System.IO.Path]::GetDirectoryName($project.FullName), "FodyWeavers.xml")
