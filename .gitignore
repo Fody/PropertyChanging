@@ -32,6 +32,7 @@
 *.tmp
 *.vspscc
 .builds
+*.DotSettings
 *.dotCover
 
 ##  If you have NuGet Package Restore enabled, uncomment this
