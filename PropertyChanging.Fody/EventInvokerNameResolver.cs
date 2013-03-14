@@ -4,7 +4,7 @@ using System.Linq;
 
 public partial class ModuleWeaver
 {
-    public List<string> EventInvokerNames = new List<string> { "OnPropertyChanging", "NotifyOfPropertyChange", "RaisePropertyChanging", "NotifyPropertyChanging", "NotifyChanging" };
+    public List<string> EventInvokerNames = new List<string> { "OnPropertyChanging"};
 
 
     public void ResolveEventInvokerName()

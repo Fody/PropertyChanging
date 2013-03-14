@@ -6,6 +6,7 @@ using System.Reflection;
 using NUnit.Framework;
 
 [TestFixture]
+[Ignore]
 public class PhoneWeavingTaskTests : BaseTaskTests
 {
 
