@@ -1,25 +1,14 @@
 ﻿using System.Collections.Generic;
 using Mono.Cecil.Rocks;
 
-public class TypeProcessor
+public partial class ModuleWeaver
 {
-    TypeNodeBuilder typeNodeBuilder;
-    ModuleWeaver moduleWeaver;
-    TypeEqualityFinder typeEqualityFinder;
-
-    public TypeProcessor(TypeNodeBuilder typeNodeBuilder, ModuleWeaver moduleWeaver, TypeEqualityFinder typeEqualityFinder)
+    public void ProcessTypes()
     {
-        this.typeNodeBuilder = typeNodeBuilder;
-        this.moduleWeaver = moduleWeaver;
-        this.typeEqualityFinder = typeEqualityFinder;
+        ProcessTypes(NotifyNodes);
     }
 
-    public void Execute()
-    {
-        Process(typeNodeBuilder.NotifyNodes);
-    }
-
-    void Process(List<TypeNode> notifyNodes)
+    void ProcessTypes(List<TypeNode> notifyNodes)
     {
         foreach (var node in notifyNodes)
         {
@@ -27,33 +16,36 @@ public class TypeProcessor
             {
                 continue;
             }
-            moduleWeaver.LogInfo("\t" + node.TypeDefinition.FullName);
+            LogInfo("\t" + node.TypeDefinition.FullName);
 
             foreach (var propertyData in node.PropertyDatas)
             {
-                var body = propertyData.PropertyDefinition.SetMethod.Body;
-                var alreadyHasEquality = HasEqualityChecker.AlreadyHasEquality(propertyData.PropertyDefinition, propertyData.BackingFieldReference);
-             
-                body.SimplifyMacros();
+              
 
+
+                var body = propertyData.PropertyDefinition.SetMethod.Body;
+
+                var alreadyHasEquality = HasEqualityChecker.AlreadyHasEquality(propertyData.PropertyDefinition, propertyData.BackingFieldReference);
+               
+                body.SimplifyMacros();
+             
                 body.MakeLastStatementReturn();
 
-                var propertyWeaver = new PropertyWeaver(moduleWeaver, propertyData, node, moduleWeaver.ModuleDefinition.TypeSystem);
+                var propertyWeaver = new PropertyWeaver(this, propertyData, node,ModuleDefinition.TypeSystem);
                 propertyWeaver.Execute();
 
                 if (!alreadyHasEquality)
                 {
-                    var equalityCheckWeaver = new EqualityCheckWeaver(propertyData, typeEqualityFinder);
+                    var equalityCheckWeaver = new EqualityCheckWeaver(propertyData, this);
                     equalityCheckWeaver.Execute();
                 }
 
                 body.InitLocals = true;
                 body.OptimizeMacros();
             }
-            Process(node.Nodes);
+            ProcessTypes(node.Nodes);
         }
     }
 
-    
-}
 
+}

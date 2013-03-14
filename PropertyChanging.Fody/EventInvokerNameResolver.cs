@@ -2,25 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class EventInvokerNameResolver
+public partial class ModuleWeaver
 {
-    ModuleWeaver moduleWeaver;
-    public List<string> EventInvokerNames { get; set; }
+    public List<string> EventInvokerNames = new List<string> { "OnPropertyChanging", "NotifyOfPropertyChange", "RaisePropertyChanging", "NotifyPropertyChanging", "NotifyChanging" };
 
-    public EventInvokerNameResolver(ModuleWeaver moduleWeaver)
-    {
-        this.moduleWeaver = moduleWeaver;
-        EventInvokerNames = new List<string> { "OnPropertyChanging"};
-    }
 
-    public void Execute()
+    public void ResolveEventInvokerName()
     {
-        if (moduleWeaver.Config != null)
+        if (Config != null)
         {
-            var eventInvokerAttribute = moduleWeaver.Config.Attributes("EventInvokerNames").FirstOrDefault();
+            var eventInvokerAttribute = Config.Attributes("EventInvokerNames").FirstOrDefault();
             if (eventInvokerAttribute != null)
             {
-                EventInvokerNames.InsertRange(0, eventInvokerAttribute.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).Where(x => x.Length > 0).ToList());
+                EventInvokerNames.InsertRange(0,eventInvokerAttribute.Value.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).Where(x=>x.Length > 0).ToList());
             }
         }
     }

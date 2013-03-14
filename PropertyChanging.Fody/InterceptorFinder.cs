@@ -1,19 +1,11 @@
 ﻿using System.Linq;
 using Mono.Cecil;
 
-
-public class InterceptorFinder
+public partial class ModuleWeaver
 {
-    ModuleWeaver moduleWeaver;
-    public bool Found;
+    public bool FoundInterceptor;
     public MethodDefinition InterceptMethod;
-    public bool IsBefore;
-
-    public InterceptorFinder(ModuleWeaver moduleWeaver)
-    {
-        this.moduleWeaver = moduleWeaver;
-    }
-
+    public bool IsInterceptorBefore;
 
     void SearchForMethod(TypeDefinition typeDefinition)
     {
@@ -31,17 +23,17 @@ public class InterceptorFinder
             throw new WeavingException(string.Format("Found Type '{0}.Intercept' but it is not public.", typeDefinition.FullName));
         }
 
-        if (IsSingleStringMethod(methodDefinition))
+        if (IsSingleStringInterceptionMethod(methodDefinition))
         {
-            Found = true;
+            FoundInterceptor = true;
             InterceptMethod = methodDefinition;
             return;
         }
-        if (IsBeforeMethod(methodDefinition))
+        if (IsBeforeInterceptionMethod(methodDefinition))
         {
-            Found = true;
+            FoundInterceptor = true;
             InterceptMethod = methodDefinition;
-            IsBefore = true;
+            IsInterceptorBefore = true;
             return;
         }
         var message = string.Format(
@@ -53,7 +45,7 @@ Intercept(object target, Action firePropertyChanging, string propertyName, objec
     }
 
 
-    public bool IsSingleStringMethod(MethodDefinition method)
+    public bool IsSingleStringInterceptionMethod(MethodDefinition method)
     {
         var parameters = method.Parameters;
         return parameters.Count == 3
@@ -62,7 +54,7 @@ Intercept(object target, Action firePropertyChanging, string propertyName, objec
                && parameters[2].ParameterType.FullName == "System.String";
     }
 
-    public bool IsBeforeMethod(MethodDefinition method)
+    public bool IsBeforeInterceptionMethod(MethodDefinition method)
     {
         var parameters = method.Parameters;
         return parameters.Count == 4
@@ -72,12 +64,12 @@ Intercept(object target, Action firePropertyChanging, string propertyName, objec
                && parameters[3].ParameterType.FullName == "System.Object";
     }
 
-    public void Execute()
+    public void FindInterceptor()
     {
-        var typeDefinition = moduleWeaver.ModuleDefinition.Types.FirstOrDefault(x => x.Name == "PropertyChangingNotificationInterceptor");
+        var typeDefinition = ModuleDefinition.Types.FirstOrDefault(x => x.Name == "PropertyChangingNotificationInterceptor");
         if (typeDefinition == null)
         {
-            Found = false;
+            FoundInterceptor = false;
             return;
         }
         SearchForMethod(typeDefinition);

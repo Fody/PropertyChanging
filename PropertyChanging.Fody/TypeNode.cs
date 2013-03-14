@@ -16,6 +16,7 @@ public class TypeNode
     public List<PropertyDependency> PropertyDependencies;
     public List<MemberMapping> Mappings;
     public EventInvokerMethod EventInvoker;
+    public MethodReference IsChangingInvoker;
     public List<PropertyData> PropertyDatas;
     public List<MethodReference> OnChangingMethods;
     public List<PropertyDefinition> AllProperties;

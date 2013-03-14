@@ -6,10 +6,10 @@ using Mono.Collections.Generic;
 public class EqualityCheckWeaver
 {
     PropertyData propertyData;
-    TypeEqualityFinder typeEqualityFinder;
+    ModuleWeaver typeEqualityFinder;
     Collection<Instruction> instructions;
 
-    public EqualityCheckWeaver(PropertyData propertyData, TypeEqualityFinder typeEqualityFinder)
+    public EqualityCheckWeaver(PropertyData propertyData, ModuleWeaver typeEqualityFinder)
     {
         this.propertyData = propertyData;
         this.typeEqualityFinder = typeEqualityFinder;
@@ -54,8 +54,6 @@ public class EqualityCheckWeaver
             nopInstruction = Instruction.Create(OpCodes.Nop);
             instructions.Insert(0, nopInstruction);
         }
-
-
         if (targetType.Name == "String")
         {
             instructions.Prepend(
@@ -68,13 +66,14 @@ public class EqualityCheckWeaver
                 Instruction.Create(OpCodes.Ret));
             return;
         }
-
-        var typeEqualityMethod = typeEqualityFinder.Find(targetType);
+        var typeEqualityMethod = typeEqualityFinder.FindTypeEquality(targetType);
         if (typeEqualityMethod == null)
         {
             if (targetType.IsGenericParameter)
             {
                 instructions.Prepend(
+                    Instruction.Create(OpCodes.Ldarg_0),
+                    targetInstruction,
                     Instruction.Create(OpCodes.Box, targetType),
                     Instruction.Create(OpCodes.Ldarg_1),
                     Instruction.Create(OpCodes.Box, targetType),
@@ -82,33 +81,27 @@ public class EqualityCheckWeaver
                     Instruction.Create(OpCodes.Brfalse_S, nopInstruction),
                     Instruction.Create(OpCodes.Ret));
             }
-            else
+            else if (targetType.SupportsCeq())
             {
-                if (targetType.SupportsCeq())
-                {
-                    instructions.Prepend(
-                        Instruction.Create(OpCodes.Ldarg_1),
-                        Instruction.Create(OpCodes.Ceq),
-                        Instruction.Create(OpCodes.Brfalse_S, nopInstruction),
-                        Instruction.Create(OpCodes.Ret));
-                }
-                else
-                {
-                    return;
-                }
+                instructions.Prepend(
+                    Instruction.Create(OpCodes.Ldarg_0),
+                    targetInstruction,
+                    Instruction.Create(OpCodes.Ldarg_1),
+                    Instruction.Create(OpCodes.Ceq),
+                    Instruction.Create(OpCodes.Brfalse_S, nopInstruction),
+                    Instruction.Create(OpCodes.Ret));
             }
         }
         else
         {
             instructions.Prepend(
+                Instruction.Create(OpCodes.Ldarg_0),
+                targetInstruction,
                 Instruction.Create(OpCodes.Ldarg_1),
                 Instruction.Create(OpCodes.Call, typeEqualityMethod),
                 Instruction.Create(OpCodes.Brfalse_S, nopInstruction),
                 Instruction.Create(OpCodes.Ret));
         }
-        instructions.Prepend(
-            Instruction.Create(OpCodes.Ldarg_0),
-            targetInstruction);
     }
 
 }

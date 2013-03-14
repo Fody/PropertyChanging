@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-public class ClassWithAlreadyNotifies : INotifyPropertyChanged
+public class ClassWithAlreadyNotifies : INotifyPropertyChanging
 {
     string property1;
     public string Property1
@@ -8,21 +8,21 @@ public class ClassWithAlreadyNotifies : INotifyPropertyChanged
         get { return property1; }
         set
         {
+            OnPropertyChanging("Property1");
+			OnPropertyChanging("Property2");
             property1 = value;
-            OnPropertyChanged("Property1");
-            OnPropertyChanged("Property2");
         }
     }
 
     public string Property2 { get { return Property1; } }
-    public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangingEventHandler PropertyChanging;
 
-    void OnPropertyChanged(string propertyName)
+	void OnPropertyChanging(string propertyName)
     {
-        var handler = PropertyChanged;
+        var handler = PropertyChanging;
         if (handler != null)
         {
-            handler(this, new PropertyChangedEventArgs(propertyName));
+            handler(this, new PropertyChangingEventArgs(propertyName));
         }
     }
 }

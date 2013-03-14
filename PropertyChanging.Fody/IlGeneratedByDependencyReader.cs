@@ -14,7 +14,6 @@ public class IlGeneratedByDependencyReader
         this.node = node;
     }
 
-
     public void Process()
     {
         if (node.TypeDefinition.HasGenericParameters)
@@ -35,6 +34,8 @@ public class IlGeneratedByDependencyReader
             }
         }
     }
+
+
     static bool GenericMethodComparer(MethodReference methodReference, MethodDefinition methodDefinition)
     {
         return methodDefinition == methodReference.Resolve();
@@ -51,7 +52,6 @@ public class IlGeneratedByDependencyReader
     {
         return fieldDefinition == fieldReference;
     }
-
     void ProcessGet(PropertyDefinition property)
     {
         var getMethod = property.GetMethod;
@@ -74,7 +74,8 @@ public class IlGeneratedByDependencyReader
         }
     }
 
-     void ProcessInstructionForGet(PropertyDefinition property, Instruction instruction)
+
+    void ProcessInstructionForGet(PropertyDefinition property, Instruction instruction)
     {
         PropertyDefinition usedProperty;
         if (IsPropertyGetInstruction(instruction, out usedProperty) || IsFieldGetInstruction(instruction, out usedProperty))
@@ -84,14 +85,14 @@ public class IlGeneratedByDependencyReader
                 //skip where self reference
                 return;
             }
-            node.PropertyDependencies.Add(new PropertyDependency
-                                              {
-                                                  ShouldAlsoNotifyFor = property,
-                                                  WhenPropertyIsSet = usedProperty
-                                              });
+            var dependency = new PropertyDependency
+                                 {
+                                     ShouldAlsoNotifyFor = property,
+                                     WhenPropertyIsSet = usedProperty
+                                 };
+            node.PropertyDependencies.Add(dependency);
         }
     }
-
 
 
 

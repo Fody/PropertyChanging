@@ -144,7 +144,7 @@ public abstract class BaseTaskTests
             if (args.PropertyName == "Property2")
             {
                 property2EventCalled = true;
-                Assert.AreEqual("a", instance.Property2);
+                Assert.AreNotEqual("a", instance.Property2);
             }
         };
         instance.Property1 = "a";
@@ -516,57 +516,57 @@ public abstract class BaseTaskTests
     public virtual void AlreadyHasNotifcation()
     {
         var instance = assembly.GetInstance("ClassAlreadyHasNotifcation");
-        var property1EventCount = 0;
-        var property2EventCount = 0;
+        var property1EventCalled = false;
+		var property2EventCalled = false;
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
         {
             if (args.PropertyName == "Property1")
             {
-                property1EventCount++;
+				property1EventCalled= true;
             }
             if (args.PropertyName == "Property2")
-            {
-                property2EventCount++;
+			{
+				property2EventCalled = true;
             }
         };
         instance.Property1 = "a";
 
-        Assert.AreEqual(1, property1EventCount);
-        Assert.AreEqual(1, property2EventCount);
-        property1EventCount = 0;
-        property2EventCount = 0;
+		Assert.IsTrue(property1EventCalled);
+		Assert.IsTrue(property2EventCalled);
+		property1EventCalled = false;
+		property2EventCalled = false;
         //Property has not changed on re-set so event not fired
         instance.Property1 = "a";
-        Assert.AreEqual(0, property1EventCount);
-        Assert.AreEqual(0, property2EventCount);
+		Assert.IsFalse(property1EventCalled);
+		Assert.IsFalse(property2EventCalled);
     }
     [Test]
     public virtual void AlreadyHasSingleNotifcation()
     {
-        var instance = assembly.GetInstance("ClassAlreadyHasSingleNotifcation");
-        var property1EventCount = 0;
-        var property2EventCount = 0;
-        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
-        {
-            if (args.PropertyName == "Property1")
-            {
-                property1EventCount++;
-            }
-            if (args.PropertyName == "Property2")
-            {
-                property2EventCount++;
-            }
-        };
-        instance.Property1 = "a";
+		var instance = assembly.GetInstance("ClassAlreadyHasSingleNotifcation");
+		var property1EventCalled = false;
+		var property2EventCalled = false;
+		((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
+		{
+			if (args.PropertyName == "Property1")
+			{
+				property1EventCalled = true;
+			}
+			if (args.PropertyName == "Property2")
+			{
+				property2EventCalled = true;
+			}
+		};
+		instance.Property1 = "a";
 
-        Assert.AreEqual(1, property1EventCount);
-        Assert.AreEqual(1, property2EventCount);
-        property1EventCount = 0;
-        property2EventCount = 0;
-        //Property has not changed on re-set so event not fired
-        instance.Property1 = "a";
-        Assert.AreEqual(0, property1EventCount);
-        Assert.AreEqual(0, property2EventCount);
+		Assert.IsTrue(property1EventCalled);
+		Assert.IsTrue(property2EventCalled);
+		property1EventCalled = false;
+		property2EventCalled = false;
+		//Property has not changed on re-set so event not fired
+		instance.Property1 = "a";
+		Assert.IsFalse(property1EventCalled);
+		Assert.IsFalse(property2EventCalled);
     }
 
     [Test]

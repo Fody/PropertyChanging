@@ -10,17 +10,17 @@ public static class CecilExtensions
         return string.Format("{0}.{1}", propertyDefinition.DeclaringType.FullName, propertyDefinition.Name);
     }
 
-    public static bool IsCall(this OpCode opCode)
-    {
-        return (opCode.Code == Code.Call) || (opCode.Code == Code.Callvirt);
-    }
-
-    public static bool IsCallToMethod(this Instruction x, string methodName)
+  public   static bool IsCallToMethod(this Instruction x, string methodName)
     {
         return x.OpCode.IsCall() &&
                x.Operand is MethodReference &&
                ((MethodReference)x.Operand).Name == methodName;
     }
+    public static bool IsCall(this OpCode opCode)
+    {
+        return (opCode.Code == Code.Call) || (opCode.Code == Code.Callvirt);
+    }
+
     public static string GetName(this MethodDefinition methodDefinition)
     {
         return string.Format("{0}.{1}", methodDefinition.DeclaringType.FullName, methodDefinition.Name);
@@ -77,7 +77,6 @@ public static class CecilExtensions
     {
         return attributes.Any(attribute => attribute.Constructor.DeclaringType.FullName == attributeName);
     }
-
 
 
 }

@@ -5,16 +5,16 @@ using NUnit.Framework;
 [TestFixture]
 public class WithGenericAutoProperties
 {
-  
+
     [Test]
     public void Run()
     {
         var typeDefinition = DefinitionFinder.FindType<Person<int>>();
         var node = new TypeNode
-                       {
-                           TypeDefinition = typeDefinition,
-                           Mappings = MappingFinder.GetMappings(typeDefinition).ToList()
-                       };
+        {
+            TypeDefinition = typeDefinition,
+            Mappings = ModuleWeaver.GetMappings(typeDefinition).ToList()
+        };
         new IlGeneratedByDependencyReader(node).Process();
         var first = node.PropertyDependencies[0];
         Assert.AreEqual("FullName", first.ShouldAlsoNotifyFor.Name);

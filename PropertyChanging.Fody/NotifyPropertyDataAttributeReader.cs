@@ -2,10 +2,10 @@
 using System.Linq;
 using Mono.Cecil;
 
-public class NotifyPropertyDataAttributeReader
+public partial class ModuleWeaver
 {
 
-    public NotifyPropertyData Read(PropertyDefinition property, List<PropertyDefinition> allProperties)
+    public NotifyPropertyData ReadAlsoNotifyForData(PropertyDefinition property, List<PropertyDefinition> allProperties)
     {
         var notifyAttribute = property.CustomAttributes.GetAttribute("PropertyChanging.AlsoNotifyForAttribute");
         if (notifyAttribute == null)
@@ -27,7 +27,8 @@ public class NotifyPropertyDataAttributeReader
         yield return GetPropertyDefinition(property, allProperties, value);
         if (customAttributeArguments.Count > 1)
         {
-            foreach (string argument in customAttributeArguments.Select(x => x.Value))
+            var paramsArguments = (CustomAttributeArgument[]) customAttributeArguments[1].Value;
+            foreach (string argument in paramsArguments.Select(x=>x.Value))
             {
                 yield return GetPropertyDefinition(property, allProperties, argument);
             }

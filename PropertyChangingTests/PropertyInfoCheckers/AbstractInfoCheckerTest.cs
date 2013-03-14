@@ -8,26 +8,26 @@ public class AbstractInfoCheckerTest
     [Test]
     public void IsAbstract()
     {
-        var checker = new WarningChecker(null, null);
+        var checker = new ModuleWeaver();
         var propertyDefinition = DefinitionFinder.FindType<BaseClass>().Properties.First(x => x.Name == "AbstractProperty");
 
         var message = checker.CheckForWarning(new PropertyData
-                                                              {
-                                                                  PropertyDefinition = propertyDefinition,
-                                                              }, false);
+        {
+            PropertyDefinition = propertyDefinition,
+        }, false);
         Assert.IsNotNull(message);
     }
 
     [Test]
     public void NonAbstract()
     {
-        var checker = new WarningChecker(null, null);
+        var checker = new ModuleWeaver();
         var propertyDefinition = DefinitionFinder.FindType<BaseClass>().Properties.First(x => x.Name == "NonAbstractProperty");
 
         var message = checker.CheckForWarning(new PropertyData
-                                                              {
-                                                                  PropertyDefinition = propertyDefinition,
-                                                              }, false);
+        {
+            PropertyDefinition = propertyDefinition,
+        }, false);
         Assert.IsNull(message);
     }
 

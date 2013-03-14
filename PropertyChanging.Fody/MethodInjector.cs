@@ -2,22 +2,8 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-public class MethodInjector
+public partial class ModuleWeaver
 {
-    InterceptorFinder interceptorFinder;
-    DelegateHolderInjector delegateHolderInjector;
-    MsCoreReferenceFinder msCoreReferenceFinder;
-    EventInvokerNameResolver eventInvokerNameResolver;
-    readonly TypeSystem typeSystem;
-
-    public MethodInjector(InterceptorFinder interceptorFinder, DelegateHolderInjector delegateHolderInjector, MsCoreReferenceFinder msCoreReferenceFinder, EventInvokerNameResolver eventInvokerNameResolver, TypeSystem typeSystem)
-    {
-        this.interceptorFinder = interceptorFinder;
-        this.delegateHolderInjector = delegateHolderInjector;
-        this.msCoreReferenceFinder = msCoreReferenceFinder;
-        this.eventInvokerNameResolver = eventInvokerNameResolver;
-        this.typeSystem = typeSystem;
-    }
 
     public EventInvokerMethod AddOnPropertyChangingMethod(TypeDefinition targetType)
     {
@@ -26,26 +12,26 @@ public class MethodInjector
         {
             return null;
         }
-        if (interceptorFinder.Found)
+        if (FoundInterceptor)
         {
             var methodDefinition = GetMethodDefinition(targetType, propertyChangingField);
 
             return new EventInvokerMethod
                        {
                            MethodReference = InjectInterceptedMethod(targetType, methodDefinition).GetGeneric(),
-                           IsBefore = interceptorFinder.IsBefore,
+                           IsBefore = IsInterceptorBefore,
                        };
         }
         return new EventInvokerMethod
                    {
-                       MethodReference = InjectMethod(targetType, eventInvokerNameResolver.EventInvokerNames.First(), propertyChangingField).GetGeneric(),
+                       MethodReference = InjectMethod(targetType, EventInvokerNames.First(), propertyChangingField).GetGeneric(),
                        IsBefore= false,
                    };
     }
 
     MethodDefinition GetMethodDefinition(TypeDefinition targetType, FieldReference propertyChangingField)
     {
-        var eventInvokerName = "Inner" + eventInvokerNameResolver.EventInvokerNames.First();
+        var eventInvokerName = "Inner" + EventInvokerNames.First();
         var methodDefinition = targetType.Methods.FirstOrDefault(x => x.Name == eventInvokerName);
         if (methodDefinition != null)
         {
@@ -59,12 +45,12 @@ public class MethodInjector
 
     MethodDefinition InjectMethod(TypeDefinition targetType, string eventInvokerName, FieldReference propertyChangingField)
     {
-        var method = new MethodDefinition(eventInvokerName, GetMethodAttributes(targetType), typeSystem.Void);
-        method.Parameters.Add(new ParameterDefinition("propertyName", ParameterAttributes.None, typeSystem.String));
+        var method = new MethodDefinition(eventInvokerName, GetMethodAttributes(targetType), ModuleDefinition.TypeSystem.Void);
+		method.Parameters.Add(new ParameterDefinition("propertyName", ParameterAttributes.None, ModuleDefinition.TypeSystem.String));
 
-        var handlerVariable = new VariableDefinition(msCoreReferenceFinder.PropChangingHandlerReference);
+        var handlerVariable = new VariableDefinition(PropChangingHandlerReference);
         method.Body.Variables.Add(handlerVariable);
-        var boolVariable = new VariableDefinition(typeSystem.Boolean);
+		var boolVariable = new VariableDefinition(ModuleDefinition.TypeSystem.Boolean);
         method.Body.Variables.Add(boolVariable);
 
         var instructions = method.Body.Instructions;
@@ -82,8 +68,8 @@ public class MethodInjector
         instructions.Add(Instruction.Create(OpCodes.Ldloc_0));
         instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
         instructions.Add(Instruction.Create(OpCodes.Ldarg_1));
-        instructions.Add(Instruction.Create(OpCodes.Newobj, msCoreReferenceFinder.ComponentModelPropertyChangingEventConstructorReference));
-        instructions.Add(Instruction.Create(OpCodes.Callvirt, msCoreReferenceFinder.ComponentModelPropertyChangingEventHandlerInvokeReference));
+        instructions.Add(Instruction.Create(OpCodes.Newobj, ComponentModelPropertyChangingEventConstructorReference));
+        instructions.Add(Instruction.Create(OpCodes.Callvirt, ComponentModelPropertyChangingEventHandlerInvokeReference));
 
 
         instructions.Add(last);
@@ -103,7 +89,7 @@ public class MethodInjector
 
     public static FieldReference FindPropertyChangingField(TypeDefinition targetType)
     {
-        var findPropertyChangingField = targetType.Fields.FirstOrDefault(x => NotifyInterfaceFinder.IsPropertyChangingEventHandler(x.FieldType));
+        var findPropertyChangingField = targetType.Fields.FirstOrDefault(x => IsPropertyChangingEventHandler(x.FieldType));
         if (findPropertyChangingField == null)
         {
             return null;
@@ -113,51 +99,51 @@ public class MethodInjector
 
     MethodDefinition InjectInterceptedMethod(TypeDefinition targetType, MethodDefinition innerOnPropertyChanging)
     {
-        delegateHolderInjector.Execute(targetType, innerOnPropertyChanging);
-        var method = new MethodDefinition(eventInvokerNameResolver.EventInvokerNames.First(), GetMethodAttributes(targetType), typeSystem.Void);
+		InjectDelegateHolder(targetType, innerOnPropertyChanging);
+		var method = new MethodDefinition(EventInvokerNames.First(), GetMethodAttributes(targetType), ModuleDefinition.TypeSystem.Void);
 
-        var propertyName = new ParameterDefinition("propertyName", ParameterAttributes.None, typeSystem.String);
+		var propertyName = new ParameterDefinition("propertyName", ParameterAttributes.None, ModuleDefinition.TypeSystem.String);
         method.Parameters.Add(propertyName);
-        if (interceptorFinder.IsBefore)
+        if (IsInterceptorBefore)
         {
-            var before = new ParameterDefinition("before", ParameterAttributes.None, typeSystem.Object);
+			var before = new ParameterDefinition("before", ParameterAttributes.None, ModuleDefinition.TypeSystem.Object);
             method.Parameters.Add(before);
         }
 
-        var action = new VariableDefinition("firePropertyChanging", msCoreReferenceFinder.ActionTypeReference);
+        var action = new VariableDefinition("firePropertyChanging", ActionTypeReference);
         method.Body.Variables.Add(action);
 
-        var variableDefinition = new VariableDefinition("delegateHolder", delegateHolderInjector.TypeDefinition);
+        var variableDefinition = new VariableDefinition("delegateHolder", TypeDefinition);
         method.Body.Variables.Add(variableDefinition);
 
 
         var instructions = method.Body.Instructions;
 
         var last = Instruction.Create(OpCodes.Ret);
-        instructions.Add(Instruction.Create(OpCodes.Newobj, delegateHolderInjector.ConstructorDefinition));
+        instructions.Add(Instruction.Create(OpCodes.Newobj, ConstructorDefinition));
         instructions.Add(Instruction.Create(OpCodes.Stloc_1));
         instructions.Add(Instruction.Create(OpCodes.Ldloc_1));
         instructions.Add(Instruction.Create(OpCodes.Ldarg_1));
-        instructions.Add(Instruction.Create(OpCodes.Stfld, delegateHolderInjector.PropertyName));
+        instructions.Add(Instruction.Create(OpCodes.Stfld, PropertyName));
         instructions.Add(Instruction.Create(OpCodes.Ldloc_1));
         instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
-        instructions.Add(Instruction.Create(OpCodes.Stfld, delegateHolderInjector.Target));
+        instructions.Add(Instruction.Create(OpCodes.Stfld, Target));
         instructions.Add(Instruction.Create(OpCodes.Ldloc_1));
-        instructions.Add(Instruction.Create(OpCodes.Ldftn, delegateHolderInjector.MethodDefinition));
-        instructions.Add(Instruction.Create(OpCodes.Newobj, msCoreReferenceFinder.ActionConstructorReference));
+        instructions.Add(Instruction.Create(OpCodes.Ldftn, MethodDefinition));
+        instructions.Add(Instruction.Create(OpCodes.Newobj, ActionConstructorReference));
         instructions.Add(Instruction.Create(OpCodes.Stloc_0));
         instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
         instructions.Add(Instruction.Create(OpCodes.Ldloc_0));
         instructions.Add(Instruction.Create(OpCodes.Ldloc_1));
-        instructions.Add(Instruction.Create(OpCodes.Ldfld, delegateHolderInjector.PropertyName));
-        if (interceptorFinder.IsBefore)
+        instructions.Add(Instruction.Create(OpCodes.Ldfld, PropertyName));
+        if (IsInterceptorBefore)
         {
             instructions.Add(Instruction.Create(OpCodes.Ldarg_2));
-            instructions.Add(Instruction.Create(OpCodes.Call, interceptorFinder.InterceptMethod));
+            instructions.Add(Instruction.Create(OpCodes.Call, InterceptMethod));
         }
         else
         {
-            instructions.Add(Instruction.Create(OpCodes.Call, interceptorFinder.InterceptMethod));
+            instructions.Add(Instruction.Create(OpCodes.Call, InterceptMethod));
         }
 
         instructions.Add(last);

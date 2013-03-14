@@ -2,16 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
 
-public class NotifyInterfaceFinder
+public partial class ModuleWeaver
 {
-    TypeResolver typeResolver;
-    Dictionary<string, bool> typeReferencesImplementingINotify;
-
-    public NotifyInterfaceFinder(TypeResolver typeResolver)
-    {
-        this.typeResolver = typeResolver;
-        typeReferencesImplementingINotify = new Dictionary<string, bool>();
-    }
+    Dictionary<string, bool> typeReferencesImplementingINotify = new Dictionary<string, bool>();
 
     public bool HierachyImplementsINotify(TypeReference typeReference)
     {
@@ -22,7 +15,6 @@ public class NotifyInterfaceFinder
             return implementsINotify;
         }
 
-        
         TypeDefinition typeDefinition;
         if (typeReference.IsDefinition)
         {
@@ -30,8 +22,9 @@ public class NotifyInterfaceFinder
         }
         else
         {
-            typeDefinition = typeResolver.Resolve(typeReference);
+            typeDefinition = Resolve(typeReference);
         }
+
         if (HasPropertyChangingEvent(typeDefinition))
         {
             typeReferencesImplementingINotify[fullName] = true;
@@ -57,11 +50,15 @@ public class NotifyInterfaceFinder
         return baseTypeImplementsINotify;
     }
 
+
     public static bool HasPropertyChangingEvent(TypeDefinition typeDefinition)
     {
-        return typeDefinition.Events.Any(x =>
-                                         IsNamedPropertyChanging(x) &&
-                                         IsPropertyChangingEventHandler(x.EventType));
+        return typeDefinition.Events.Any(IsPropertyChangingEvent);
+    }
+
+    public static bool IsPropertyChangingEvent(EventDefinition eventDefinition)
+    {
+        return IsNamedPropertyChanging(eventDefinition) && IsPropertyChangingEventHandler(eventDefinition.EventType);
     }
 
     static bool IsNamedPropertyChanging(EventDefinition eventDefinition)
@@ -78,7 +75,7 @@ public class NotifyInterfaceFinder
                typeReference.FullName == "System.Runtime.InteropServices.WindowsRuntime.EventRegistrationTokenTable`1<Windows.UI.Xaml.Data.PropertyChangingEventHandler>";
     }
 
-    bool HasPropertyChangingField(TypeDefinition typeDefinition)
+    static bool HasPropertyChangingField(TypeDefinition typeDefinition)
     {
         foreach (var fieldType in typeDefinition.Fields.Select(x => x.FieldType))
         {

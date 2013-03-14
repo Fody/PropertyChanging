@@ -11,9 +11,10 @@ public class WithUpperCaseUnderScoreFields
         var node = new TypeNode
         {
             TypeDefinition = typeDefinition,
-            Mappings = MappingFinder.GetMappings(typeDefinition).ToList()
+            Mappings = ModuleWeaver.GetMappings(typeDefinition).ToList()
         };
         new IlGeneratedByDependencyReader(node).Process();
+        Assert.AreEqual(2, node.PropertyDependencies.Count);
 
         Assert.AreEqual("FullName", node.PropertyDependencies[0].ShouldAlsoNotifyFor.Name);
         Assert.AreEqual("GivenNames", node.PropertyDependencies[0].WhenPropertyIsSet.Name);

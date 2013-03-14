@@ -2,32 +2,22 @@
 using System.Linq;
 using Mono.Cecil;
 
-public class OnChangingWalker
+public partial class ModuleWeaver
 {
-    MethodGenerifier methodGenerifier;
-    TypeNodeBuilder typeNodeBuilder;
-
-    public OnChangingWalker(MethodGenerifier methodGenerifier, TypeNodeBuilder typeNodeBuilder)
+    public void ProcessOnChangingMethods()
     {
-        this.methodGenerifier = methodGenerifier;
-        this.typeNodeBuilder = typeNodeBuilder;
+        ProcessOnChangingMethods(NotifyNodes);
     }
 
-    public void Execute()
-    {
-        Process(typeNodeBuilder.NotifyNodes);
-    }
-
-    void Process(List<TypeNode> notifyNodes)
+    void ProcessOnChangingMethods(List<TypeNode> notifyNodes)
     {
         foreach (var notifyNode in notifyNodes)
         {
             notifyNode.OnChangingMethods = GetOnChangingMethods(notifyNode).ToList();
-            Process(notifyNode.Nodes);
+            ProcessOnChangingMethods(notifyNode.Nodes);
         }
     }
 
-  
     IEnumerable<MethodReference> GetOnChangingMethods(TypeNode notifyNode)
     {
         var methods = notifyNode.TypeDefinition.Methods;
@@ -42,7 +32,7 @@ public class OnChangingWalker
                 var typeDefinitions = new Stack<TypeDefinition>();
                 typeDefinitions.Push(notifyNode.TypeDefinition);
 
-                return methodGenerifier.GetMethodReference(typeDefinitions, methodDefinition);
+                return GetMethodReference(typeDefinitions, methodDefinition);
             });
     }
 }

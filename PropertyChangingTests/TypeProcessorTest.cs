@@ -31,7 +31,7 @@ public class AlreadyNotifyFinderTest
     {
         var propertyDefinition = DefinitionFinder.FindProperty(() => new NonVirtual().WithoutNotificationProperty);
 
-        var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanged");
+        var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging");
         Assert.IsEmpty(propertyNames);
     }
 

@@ -10,6 +10,3 @@ namespace PropertyChanging
     {
     }
 }
-namespace PropertyChanging
-{
-}

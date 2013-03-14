@@ -4,7 +4,7 @@ using Mono.Cecil.Cil;
 
 public static class AlreadyNotifyFinder
 {
-
+    
     public static IEnumerable<string> GetAlreadyNotifies(this PropertyDefinition propertyDefinition, string methodName)
     {
         if (propertyDefinition.SetMethod.IsAbstract)
@@ -20,7 +20,7 @@ public static class AlreadyNotifyFinder
                 var before = instructions[index - 1];
                 if (before.OpCode == OpCodes.Ldstr)
                 {
-                    yield return (string)before.Operand;
+                    yield return (string) before.Operand;
                 }
             }
         }
