@@ -83,6 +83,9 @@
     <Compile Include="ClassWithIndexer.cs" />
     <Compile Include="ClassWithLogicInSet.cs" />
     <Compile Include="ClassWithNested.cs" />
+    <Compile Include="ClassWithNotifyPropertyChangingAttribute.cs" />
+    <Compile Include="ClassWithNotifyPropertyChangingAttributeChild.cs" />
+    <Compile Include="ClassWithNotifyPropertyChangingAttributeChildParent.cs" />
     <Compile Include="ClassWithOnChanging.cs" />
     <Compile Include="ClassWithOnChangingBerfore.cs" />
     <Compile Include="ClassWithOwnImplementation.cs" />

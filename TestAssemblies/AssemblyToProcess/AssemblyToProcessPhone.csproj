@@ -73,6 +73,9 @@
     <Compile Include="ClassNoBackingWithEqualityField.cs" />
     <Compile Include="ClassStaticProperties.cs" />
     <Compile Include="ClassThatIsNotSealed.cs" />
+    <Compile Include="ClassWithNotifyPropertyChangingAttribute.cs" />
+    <Compile Include="ClassWithNotifyPropertyChangingAttributeChild.cs" />
+    <Compile Include="ClassWithNotifyPropertyChangingAttributeChildParent.cs" />
     <Compile Include="GenericChildWithPropertyOnChanging\ClassWithGenericProperty.cs" />
     <Compile Include="GenericChildWithPropertyOnChanging\ClassWithGenericPropertyChild.cs" />
     <Compile Include="GenericBaseWithPropertyOnChanging\ClassWithGenericProperty.cs" />

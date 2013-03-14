@@ -64,6 +64,57 @@ public abstract class BaseTaskTests
         Assert.IsEmpty(type.GetCustomAttributes(false));
     }
 
+    [Test]
+    public void WithNotifyPropertyChangingAttribute_MustCleanAttribute()
+    {
+        var type = assembly.GetType("ClassWithNotifyPropertyChangingAttribute", true);
+        Assert.IsEmpty(type.GetCustomAttributes(false));
+    }
+
+    [Test]
+    public void WithNotifyPropertyChangingAttribute_MustWeaveNotification()
+    {
+        var instance = assembly.GetInstance("ClassWithNotifyPropertyChangingAttribute");
+
+        var property1EventCalled = false;
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
+        {
+            if (args.PropertyName == "Property1")
+            {
+                property1EventCalled = true;
+            }
+        };
+        instance.Property1 = "a";
+
+        Assert.IsTrue(property1EventCalled);
+    }
+
+    [Test]
+    public void WithNotifyPropertyChangingAttributeOnParentAndChild()
+    {
+        var instance = assembly.GetInstance("ClassWithNotifyPropertyChangingAttributeChild");
+
+        var property1EventCalled = false;
+        var property2EventCalled = false;
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
+        {
+            if (args.PropertyName == "Property1")
+            {
+                property1EventCalled = true;
+            }
+            if (args.PropertyName == "Property2")
+            {
+                property2EventCalled = true;
+                Assert.AreEqual("a", instance.Property2);
+            }
+        };
+        instance.Property1 = "a";
+        instance.Property2 = "a";
+
+        Assert.IsTrue(property1EventCalled);
+        Assert.IsTrue(property2EventCalled);
+    }
+
 
     [Test]
     public void WithTernary()

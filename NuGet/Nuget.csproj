@@ -35,6 +35,7 @@
     <Copy SourceFiles="$(ProjectDir)install.ps1" DestinationFolder="$(SolutionDir)NuGetBuild\Tools" />
     <Copy SourceFiles="$(ProjectDir)uninstall.ps1" DestinationFolder="$(SolutionDir)NuGetBuild\Tools" />
     <Copy SourceFiles="$(SolutionDir)PropertyChanging.Fody\bin\$(ConfigurationName)\PropertyChanging.Fody.dll" DestinationFolder="$(SolutionDir)NuGetBuild" />
+    <Copy SourceFiles="$(SolutionDir)PropertyChanging.Fody\bin\$(ConfigurationName)\PropertyChanging.Fody.pdb" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <PepitaPackage.WeavingTask NuGetBuildDirectory="$(SolutionDir)NuGetBuild" MetadataAssembly="$(SolutionDir)PropertyChanging.Fody\bin\$(ConfigurationName)\PropertyChanging.Fody.dll" />
   </Target>
   <ItemGroup>

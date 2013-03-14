@@ -71,6 +71,9 @@
     <Compile Include="ClassWithExceptionInProperty.cs" />
     <Compile Include="ClassWithFieldGetButNoFieldSet.cs" />
     <Compile Include="ClassWithGenericAndLambda.cs" />
+    <Compile Include="ClassWithNotifyPropertyChangingAttribute.cs" />
+    <Compile Include="ClassWithNotifyPropertyChangingAttributeChild.cs" />
+    <Compile Include="ClassWithNotifyPropertyChangingAttributeChildParent.cs" />
     <Compile Include="ClassWithOnChanging.cs" />
     <Compile Include="ClassWithOnChangingBerfore.cs" />
     <Compile Include="ClassWithPropertySetInCatch.cs">
