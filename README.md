@@ -4,8 +4,14 @@ Injects [INotifyPropertyChanging](http://msdn.microsoft.com/en-us/library/system
 
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
-## Nuget package http://nuget.org/packages/PropertyChanging.Fody 
+## Nuget
 
+Nuget package http://nuget.org/packages/PropertyChanging.Fody 
+
+To Install from the Nuget Package Manager Console 
+    
+    PM> Install-Package PropertyChanging.Fody
+    
 ### Your Code
 
     public class Person : INotifyPropertyChanging
