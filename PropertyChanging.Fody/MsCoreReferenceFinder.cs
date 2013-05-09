@@ -47,19 +47,34 @@ public partial class ModuleWeaver
         var systemCoreDefinition = GetSystemCoreDefinition();
         if (actionDefinition == null)
         {
-            actionDefinition = systemCoreDefinition.MainModule.Types.FirstOrDefault(x => x.Name == "Action");
+            actionDefinition = systemCoreDefinition.MainModule.Types.First(x => x.Name == "Action");
         }
         ActionTypeReference = ModuleDefinition.Import(actionDefinition);
 
         var actionConstructor = actionDefinition.Methods.First(x => x.IsConstructor);
         ActionConstructorReference = ModuleDefinition.Import(actionConstructor);
 
-        var propChangingInterfaceDefinition = systemTypes.First(x => x.Name == "INotifyPropertyChanging");
-        PropChangingInterfaceReference = ModuleDefinition.Import(propChangingInterfaceDefinition);
-        var propChangingHandlerDefinition = systemTypes.First(x => x.Name == "PropertyChangingEventHandler");
+		TypeDefinition propChangingHandlerDefinition;
+		TypeDefinition propChangingArgsDefinition;
+	    var propChangingInterfaceDefinition = systemTypes.FirstOrDefault(x => x.Name == "INotifyPropertyChanging");
+	    if (propChangingInterfaceDefinition == null)
+	    {
+		    var mscorlibExtensionsDefinition = assemblyResolver.Resolve("mscorlib.Extensions");
+			var mscorlibExtensionsTypes = mscorlibExtensionsDefinition.MainModule.Types;
+			propChangingInterfaceDefinition = mscorlibExtensionsTypes.First(x => x.Name == "INotifyPropertyChanging");
+		    propChangingHandlerDefinition = mscorlibExtensionsTypes.First(x => x.Name == "PropertyChangingEventHandler");
+		    propChangingArgsDefinition = mscorlibExtensionsTypes.First(x => x.Name == "PropertyChangingEventArgs");
+	    }
+	    else
+	    {
+		    propChangingHandlerDefinition = systemTypes.First(x => x.Name == "PropertyChangingEventHandler");
+		    propChangingArgsDefinition = systemTypes.First(x => x.Name == "PropertyChangingEventArgs");
+	    }
+
+
+	    PropChangingInterfaceReference = ModuleDefinition.Import(propChangingInterfaceDefinition);
         PropChangingHandlerReference = ModuleDefinition.Import(propChangingHandlerDefinition);
         ComponentModelPropertyChangingEventHandlerInvokeReference = ModuleDefinition.Import(propChangingHandlerDefinition.Methods.First(x => x.Name == "Invoke"));
-        var propChangingArgsDefinition = systemTypes.First(x => x.Name == "PropertyChangingEventArgs");
         ComponentModelPropertyChangingEventConstructorReference = ModuleDefinition.Import(propChangingArgsDefinition.Methods.First(x => x.IsConstructor));
 
         var delegateDefinition = msCoreTypes.First(x => x.Name == "Delegate");
