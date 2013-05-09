@@ -16,7 +16,9 @@ public class ClassWithBranchingReturnAndBefore : INotifyPropertyChanging
             if (isInSomeMode)
             {
                 Console.WriteLine("code here so 'if' does not get optimized away in release mode");
+// ReSharper disable RedundantJumpStatement
                 return;
+// ReSharper restore RedundantJumpStatement
             }
         }
     }

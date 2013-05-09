@@ -9,9 +9,9 @@ public class ClassAlreadyHasNotifcation : INotifyPropertyChanging
         get { return property1; }
         set
         {
-            property1 = value;
             OnPropertyChanging("Property1");
             OnPropertyChanging("Property2");
+            property1 = value;
         }
     }
 

@@ -3,24 +3,25 @@
 public class ExperimentClass : INotifyPropertyChanging
 {
     string property1;
-    bool hasValue;
 
     public string Property1
     {
         get { return property1; }
         set
         {
-            if (hasValue)
-            {
-                property1 = value;
-            }
-            else
-            {
-                property1 = value;
-            }
+            property1 = value;
+            OnPropertyChanging<string>(ref property1, value, "Property1");
         }
     }
     public event PropertyChangingEventHandler PropertyChanging;
+    protected bool OnPropertyChanging<T>(ref T storage, T value, string propertyName = null)
+    {
+        if (Equals(storage, value)) return false;
+
+        storage = value;
+
+        return true;
+    }
 
 
 
