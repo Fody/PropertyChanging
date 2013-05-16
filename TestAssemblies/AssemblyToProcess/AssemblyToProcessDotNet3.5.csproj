@@ -128,6 +128,8 @@
     <Compile Include="OnceRemovedINotify\INotifyPropertyChangedChild.cs" />
     <Compile Include="InterfaceWithAttributes.cs" />
     <Compile Include="StructWithAttributes.cs" />
+    <Compile Include="SupportedLibraries\BaseClasses.cs" />
+    <Compile Include="SupportedLibraries\ClassReactiveUI.cs" />
     <Compile Include="TransitiveDependencies.cs" />
     <Compile Include="UsingPublicFieldThroughParameter\ClassUsingPublicFieldThroughParameter.cs" />
     <Compile Include="UsingPublicFieldThroughParameter\ClassWithPublicField.cs" />
