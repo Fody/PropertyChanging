@@ -90,6 +90,11 @@ To Install from the Nuget Package Manager Console
 
 Icon courtesy of [The Noun Project](http://thenounproject.com)
 
+## Contributors
+
+ * [Cameron MacFarland](https://github.com/distantcam)
+ * [Simon Cropp](https://github.com/simoncropp)
+
 ## More Info
 
 * [AccessBeforeValue](https://github.com/Fody/PropertyChanging/wiki/AccessBeforeValue)
