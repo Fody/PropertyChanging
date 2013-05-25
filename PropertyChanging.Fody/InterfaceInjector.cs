@@ -18,10 +18,10 @@ public partial class ModuleWeaver
         type.Fields.Add(propertyChangingField);
 
         var eventDefinition = new EventDefinition("PropertyChanging", EventAttributes.None, PropChangingHandlerReference)
-            {
-                AddMethod = CreateEventMethod("add_PropertyChanging", DelegateCombineMethodRef, propertyChangingField),
-                RemoveMethod = CreateEventMethod("remove_PropertyChanging", DelegateRemoveMethodRef, propertyChangingField)
-            };
+                              {
+                                  AddMethod = CreateEventMethod("add_PropertyChanging", DelegateCombineMethodRef, propertyChangingField),
+                                  RemoveMethod = CreateEventMethod("remove_PropertyChanging", DelegateRemoveMethodRef, propertyChangingField)
+                              };
 
         type.Methods.Add(eventDefinition.AddMethod);
         type.Methods.Add(eventDefinition.RemoveMethod);
@@ -31,11 +31,11 @@ public partial class ModuleWeaver
     MethodDefinition CreateEventMethod(string methodName, MethodReference delegateMethodReference, FieldReference propertyChangingField)
     {
         const MethodAttributes Attributes = MethodAttributes.Public |
-                                            MethodAttributes.HideBySig |
-                                            MethodAttributes.Final |
-                                            MethodAttributes.SpecialName |
-                                            MethodAttributes.NewSlot |
-                                            MethodAttributes.Virtual;
+            MethodAttributes.HideBySig |
+            MethodAttributes.Final |
+            MethodAttributes.SpecialName |
+            MethodAttributes.NewSlot |
+            MethodAttributes.Virtual;
 
         var method = new MethodDefinition(methodName, Attributes, ModuleDefinition.TypeSystem.Void);
 
@@ -46,8 +46,6 @@ public partial class ModuleWeaver
         method.Body.Variables.Add(handlerVariable1);
         var handlerVariable2 = new VariableDefinition(PropChangingHandlerReference);
         method.Body.Variables.Add(handlerVariable2);
-        var boolVariable = new VariableDefinition(ModuleDefinition.TypeSystem.Boolean);
-        method.Body.Variables.Add(boolVariable);
 
         var loopBegin = Instruction.Create(OpCodes.Ldloc, handlerVariable0);
         method.Body.Instructions.Append(
@@ -69,12 +67,7 @@ public partial class ModuleWeaver
             Instruction.Create(OpCodes.Stloc, handlerVariable0),
             Instruction.Create(OpCodes.Ldloc, handlerVariable0),
             Instruction.Create(OpCodes.Ldloc, handlerVariable1),
-            Instruction.Create(OpCodes.Ceq),
-            Instruction.Create(OpCodes.Ldc_I4_0),
-            Instruction.Create(OpCodes.Ceq),
-            Instruction.Create(OpCodes.Stloc, boolVariable),
-            Instruction.Create(OpCodes.Ldloc, boolVariable),
-            Instruction.Create(OpCodes.Brtrue_S, loopBegin), // goto begin of loop
+            Instruction.Create(OpCodes.Bne_Un_S, loopBegin), // goto begin of loop
             Instruction.Create(OpCodes.Ret));
         method.Body.InitLocals = true;
 
