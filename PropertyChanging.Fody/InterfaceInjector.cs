@@ -14,9 +14,9 @@ public partial class ModuleWeaver
     // largely copied from http://codingly.com/2008/11/10/introduction-a-monocecil-implementer-inotifypropertychanging/
     void WeaveEvent(TypeDefinition type)
     {
-        var propertyChangingField = new FieldDefinition("PropertyChanging", FieldAttributes.Private, PropChangingHandlerReference);
-        type.Fields.Add(propertyChangingField);
-
+        var propertyChangingFieldDef = new FieldDefinition("PropertyChanging", FieldAttributes.Private, PropChangingHandlerReference);
+        type.Fields.Add(propertyChangingFieldDef);
+        var propertyChangingField = propertyChangingFieldDef.GetGeneric();
         var eventDefinition = new EventDefinition("PropertyChanging", EventAttributes.None, PropChangingHandlerReference)
                               {
                                   AddMethod = CreateEventMethod("add_PropertyChanging", DelegateCombineMethodRef, propertyChangingField),
