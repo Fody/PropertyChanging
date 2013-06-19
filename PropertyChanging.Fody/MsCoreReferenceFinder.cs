@@ -124,6 +124,10 @@ public partial class ModuleWeaver
 
         var systemObjectModel = assemblyResolver.Resolve("System.ObjectModel");
         var systemObjectModelTypes = systemObjectModel.MainModule.Types;
+
+        var propChangingInterfaceDefinition = systemObjectModelTypes.First(x => x.Name == "INotifyPropertyChanging");
+        PropChangingInterfaceReference = ModuleDefinition.Import(propChangingInterfaceDefinition);
+
         var propChangingHandlerDefinition = systemObjectModelTypes.First(x => x.Name == "PropertyChangingEventHandler");
         PropChangingHandlerReference = ModuleDefinition.Import(propChangingHandlerDefinition);
         ComponentModelPropertyChangingEventHandlerInvokeReference = ModuleDefinition.Import(propChangingHandlerDefinition.Methods.First(x => x.Name == "Invoke"));
