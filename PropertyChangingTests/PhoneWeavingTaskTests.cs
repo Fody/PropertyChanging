@@ -30,7 +30,7 @@ public class PhoneWeavingTaskTests : BaseTaskTests
         }
         return null;
     }
-    public override void AlreadyHasNotifcation()
+    public override void AlreadyHasNotification()
     {
     }
     public override void EqualityWithStruct()
@@ -82,7 +82,7 @@ public class PhoneWeavingTaskTests : BaseTaskTests
     public override void GenericChildWithPropertyBefore()
     {
     }
-    public override void HierachyBeforeAndSimple()
+    public override void HierarchyBeforeAndSimple()
     {
     }
     public override void NoBackingEqualityField()
@@ -169,7 +169,7 @@ public class PhoneWeavingTaskTests : BaseTaskTests
     public override void WithOnChanging()
     {
     }
-    public override void WithOnChangingBerfore()
+    public override void WithOnChangingBefore()
     {
     }
     public override void WithOwnImplementation()
@@ -184,6 +184,6 @@ public class PhoneWeavingTaskTests : BaseTaskTests
     public override void WithTryCatchInSet()
     {
     }
-    public override void WithGenericAmdLambda() { }
+    public override void WithGenericAndLambda() { }
 }
 #endif

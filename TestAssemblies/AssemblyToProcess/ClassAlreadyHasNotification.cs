@@ -1,6 +1,6 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-public class ClassAlreadyHasSingleNotifcationDiffParamLocation : INotifyPropertyChanging
+public class ClassAlreadyHasNotification : INotifyPropertyChanging
 {
     string property1;
 
@@ -9,12 +9,13 @@ public class ClassAlreadyHasSingleNotifcationDiffParamLocation : INotifyProperty
         get { return property1; }
         set
         {
-            OnPropertyChanging(9, "Property1");
+            OnPropertyChanging("Property1");
+            OnPropertyChanging("Property2");
             property1 = value;
         }
     }
 
-    public virtual void OnPropertyChanging(int fake, string propertyName)
+    public virtual void OnPropertyChanging(string propertyName)
     {
         var handler = PropertyChanging;
         if (handler != null)

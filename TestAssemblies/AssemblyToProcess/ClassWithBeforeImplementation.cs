@@ -29,7 +29,7 @@ public class ClassWithBeforeImplementation : INotifyPropertyChanging
             var name = value.GetType().Name;
             if (name != "String")
             {
-                throw new Exception(string.Format("Value shoud be string but is '{0}'.", name));
+                throw new Exception(string.Format("Value should be string but is '{0}'.", name));
             }
         }
     }

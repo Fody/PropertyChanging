@@ -6,7 +6,7 @@ public partial class ModuleWeaver
 {
     Dictionary<string, bool> typeReferencesImplementingINotify = new Dictionary<string, bool>();
 
-    public bool HierachyImplementsINotify(TypeReference typeReference)
+    public bool HierarchyImplementsINotify(TypeReference typeReference)
     {
         bool implementsINotify;
         var fullName = typeReference.FullName;
@@ -41,7 +41,7 @@ public partial class ModuleWeaver
             typeReferencesImplementingINotify[fullName] = false;
             return false;
         }
-        var baseTypeImplementsINotify = HierachyImplementsINotify(baseType);
+        var baseTypeImplementsINotify = HierarchyImplementsINotify(baseType);
         typeReferencesImplementingINotify[fullName] = baseTypeImplementsINotify;
         return baseTypeImplementsINotify;
     }
