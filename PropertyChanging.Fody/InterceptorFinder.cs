@@ -5,7 +5,7 @@ public partial class ModuleWeaver
 {
     public bool FoundInterceptor;
     public MethodDefinition InterceptMethod;
-    public bool IsInterceptorBefore;
+    public InvokerTypes InterceptorType;
 
     void SearchForMethod(TypeDefinition typeDefinition)
     {
@@ -27,13 +27,14 @@ public partial class ModuleWeaver
         {
             FoundInterceptor = true;
             InterceptMethod = methodDefinition;
+            InterceptorType = InvokerTypes.String;
             return;
         }
         if (IsBeforeInterceptionMethod(methodDefinition))
         {
             FoundInterceptor = true;
             InterceptMethod = methodDefinition;
-            IsInterceptorBefore = true;
+            InterceptorType = InvokerTypes.Before;
             return;
         }
         var message = string.Format(

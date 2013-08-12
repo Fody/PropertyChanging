@@ -123,9 +123,13 @@ public class PropertyWeaver
             return index;
         }
         moduleWeaver.LogInfo(string.Format("\t\t\t{0}", property.Name));
-        if (typeNode.EventInvoker.IsBefore)
+        if (typeNode.EventInvoker.InvokerType == InvokerTypes.Before)
         {
             return AddBeforeInvokerCall(index, property);
+        }
+        if (typeNode.EventInvoker.InvokerType == InvokerTypes.PropertyChangingArg)
+        {
+            return AddPropertyChangedArgInvokerCall(index, property);
         }
         return AddSimpleInvokerCall(index, property);
     }
@@ -148,6 +152,15 @@ public class PropertyWeaver
         return instructions.Insert(index,
                                    Instruction.Create(OpCodes.Ldarg_0),
                                    Instruction.Create(OpCodes.Ldstr, property.Name),
+                                   CallEventInvoker());
+    }
+
+    int AddPropertyChangedArgInvokerCall(int index, PropertyDefinition property)
+    {
+        return instructions.Insert(index,
+                                   Instruction.Create(OpCodes.Ldarg_0),
+                                   Instruction.Create(OpCodes.Ldstr, property.Name),
+                                   Instruction.Create(OpCodes.Newobj, moduleWeaver.ComponentModelPropertyChangingEventConstructorReference),
                                    CallEventInvoker());
     }
 

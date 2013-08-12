@@ -90,6 +90,7 @@
     <Compile Include="ClassWithOnChanging.cs" />
     <Compile Include="ClassWithOnChangingBefore.cs" />
     <Compile Include="ClassWithOwnImplementation.cs" />
+    <Compile Include="ClassWithPropertyChangingArgImplementation.cs" />
     <Compile Include="ClassWithPropertySetInCatch.cs" />
     <Compile Include="ClassWithTernary.cs" />
     <Compile Include="ClassWithTryCatchInSet.cs" />

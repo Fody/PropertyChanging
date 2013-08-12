@@ -102,6 +102,7 @@
     <Compile Include="ClassWithLogicInSet.cs" />
     <Compile Include="ClassWithNested.cs" />
     <Compile Include="ClassWithOwnImplementation.cs" />
+    <Compile Include="ClassWithPropertyChangingArgImplementation.cs" />
     <Compile Include="ClassWithTernary.cs" />
     <Compile Include="ClassWithTryCatchInSet.cs" />
     <Compile Include="CodeGenAttribute\ClassWithCompilerGeneratedAttribute.cs" />
