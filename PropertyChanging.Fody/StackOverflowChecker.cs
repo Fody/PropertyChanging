@@ -13,7 +13,7 @@ public partial class ModuleWeaver
         {
             foreach (var propertyData in node.PropertyDatas)
             {
-                if (node.EventInvoker.IsBefore)
+                if (node.EventInvoker.InvokerType == InvokerTypes.Before)
                 {
                     if (CheckIfGetterCallsSetter(propertyData.PropertyDefinition))
                     {
