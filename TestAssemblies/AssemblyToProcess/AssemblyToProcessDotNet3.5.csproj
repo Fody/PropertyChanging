@@ -79,10 +79,8 @@
     <Compile Include="ClassWithNotifyPropertyChangingAttributeChildParent.cs" />
     <Compile Include="ClassWithOnChanging.cs" />
     <Compile Include="ClassWithOnChangingBefore.cs" />
-    <Compile Include="ClassWithPropertySetInCatch.cs">
-      <SubType>
-      </SubType>
-    </Compile>
+    <Compile Include="ClassWithPropertyChangingArgImplementation.cs" />
+    <Compile Include="ClassWithPropertySetInCatch.cs" />
     <Compile Include="ClassWithTernary.cs" />
     <Compile Include="ClassWithTryCatchInSet.cs" />
     <Compile Include="CodeGenAttribute\ClassWithGeneratedCodeAttribute.cs" />

@@ -75,6 +75,7 @@
     <Compile Include="MappingFinder\MappingFinderClassWithUnderScoreBackingFields.cs" />
     <Compile Include="MappingFinder\MappingFinderWithAutoProperties.cs" />
     <Compile Include="PropertyInfoCheckers\BeforeWithNoGetInfoCheckerTest.cs" />
+    <Compile Include="PropertyInfoCheckers\Class1.cs" />
     <Compile Include="RecursiveIlFinderTests.cs" />
     <Compile Include="ReferenceFinder.cs" />
     <Compile Include="AssemblyWithBlockingClassTests.cs" />

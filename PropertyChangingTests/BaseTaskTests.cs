@@ -726,6 +726,13 @@ public abstract class BaseTaskTests
     }
 
     [Test]
+    public virtual void WithPropertyChangingArgImplementation()
+    {
+        var instance = assembly.GetInstance("ClassWithPropertyChangingArgImplementation");
+        EventTester.TestProperty(instance, true);
+    }
+
+    [Test]
     public virtual void WithCustomPropertyChanging()
     {
         var instance = assembly.GetInstance("ClassWithCustomPropertyChanging");

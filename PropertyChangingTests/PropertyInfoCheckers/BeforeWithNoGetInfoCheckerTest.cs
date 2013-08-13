@@ -14,7 +14,7 @@ public class BeforeAfterWithNoGetInfoCheckerTest
         var message = checker.CheckForWarning(new PropertyData
         {
             PropertyDefinition = propertyDefinition,
-        }, true);
+        }, InvokerTypes.Before);
         Assert.IsNull(message);
     }
 
@@ -28,7 +28,7 @@ public class BeforeAfterWithNoGetInfoCheckerTest
         var message = checker.CheckForWarning(new PropertyData
         {
             PropertyDefinition = propertyDefinition,
-        }, true);
+        }, InvokerTypes.Before);
         Assert.IsNotNull(message);
     }
 

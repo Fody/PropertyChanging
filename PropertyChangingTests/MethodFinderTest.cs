@@ -48,7 +48,7 @@ public class MethodFinderTest
         var methodReference = methodFinder.RecursiveFindEventInvoker(definitionToProcess);
         Assert.IsNotNull(methodReference);
         Assert.AreEqual("OnPropertyChanging", methodReference.MethodReference.Name);
-        Assert.IsTrue(methodReference.IsBefore);
+        Assert.AreEqual(InvokerTypes.Before, methodReference.InvokerType);
     }
 
     public class WithStringAndBefore

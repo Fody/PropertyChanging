@@ -24,13 +24,13 @@ public partial class ModuleWeaver
             return new EventInvokerMethod
                        {
                            MethodReference = InjectInterceptedMethod(targetType, methodDefinition).GetGeneric(),
-                           IsBefore = IsInterceptorBefore,
+                           InvokerType = InterceptorType,
                        };
         }
         return new EventInvokerMethod
                    {
                        MethodReference = InjectMethod(targetType, EventInvokerNames.First(), propertyChangingField).GetGeneric(),
-                       IsBefore= false,
+                       InvokerType = InterceptorType,
                    };
     }
 
@@ -115,7 +115,7 @@ public partial class ModuleWeaver
 
 		var propertyName = new ParameterDefinition("propertyName", ParameterAttributes.None, ModuleDefinition.TypeSystem.String);
         method.Parameters.Add(propertyName);
-        if (IsInterceptorBefore)
+        if (InterceptorType == InvokerTypes.Before)
         {
 			var before = new ParameterDefinition("before", ParameterAttributes.None, ModuleDefinition.TypeSystem.Object);
             method.Parameters.Add(before);
@@ -147,7 +147,7 @@ public partial class ModuleWeaver
         instructions.Add(Instruction.Create(OpCodes.Ldloc_0));
         instructions.Add(Instruction.Create(OpCodes.Ldloc_1));
         instructions.Add(Instruction.Create(OpCodes.Ldfld, delegateHolderInjector.PropertyName));
-        if (IsInterceptorBefore)
+        if (InterceptorType == InvokerTypes.Before)
         {
             instructions.Add(Instruction.Create(OpCodes.Ldarg_2));
             instructions.Add(Instruction.Create(OpCodes.Call, InterceptMethod));
