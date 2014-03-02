@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
+  <metadata minClientVersion="2.8">
     <id>PropertyChanging.Fody</id>
     <version>$version$</version>
     <title>PropertyChanging.Fody</title>
     <authors>Simon Cropp</authors>
+    <developmentDependency>true</developmentDependency>
     <owners>Simon Cropp</owners>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <projectUrl>http://github.com/Fody/PropertyChanging</projectUrl>
