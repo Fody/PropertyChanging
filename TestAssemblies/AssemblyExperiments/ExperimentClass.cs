@@ -10,7 +10,7 @@ public class ExperimentClass : INotifyPropertyChanging
         set
         {
             property1 = value;
-            OnPropertyChanging<string>(ref property1, value, "Property1");
+            OnPropertyChanging(ref property1, value, "Property1");
         }
     }
     public event PropertyChangingEventHandler PropertyChanging;
