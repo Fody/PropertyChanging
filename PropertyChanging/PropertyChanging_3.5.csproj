@@ -34,6 +34,13 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release_3.5\PropertyChanging.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
@@ -41,7 +48,6 @@
     <Compile Include="AlsoNotifyForAttribute.cs" />
     <Compile Include="DependsOnAttribute.cs" />
     <Compile Include="DoNotNotifyAttribute.cs" />
-    <Compile Include="..\CommonAssemblyInfo.cs" />
     <Compile Include="ImplementPropertyChangingAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
