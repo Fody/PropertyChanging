@@ -147,9 +147,9 @@
     <Compile Include="UsingPublicFieldThroughParameter\ClassWithPublicField.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PropertyChanging\PropertyChanging_PCL.csproj">
+    <ProjectReference Include="..\..\PropertyChanging\PropertyChanging.csproj">
       <Project>{40235741-D750-45B1-8DC5-49576025ABA9}</Project>
-      <Name>PropertyChanging_PCL</Name>
+      <Name>PropertyChanging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

@@ -24,10 +24,8 @@
   <Target Name="ReBuild" DependsOnTargets="NuGetBuild" />
   <Target Name="NuGetBuild" DependsOnTargets="Clean">
     <MakeDir Directories="$(SolutionDir)NuGetBuild" />
-    <Copy SourceFiles="$(SolutionDir)PropertyChanging\bin\$(ConfigurationName)_3.5\PropertyChanging.dll" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\NET35" />
-    <Copy SourceFiles="$(SolutionDir)PropertyChanging\bin\$(ConfigurationName)_3.5\PropertyChanging.xml" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\NET35" />
-    <Copy SourceFiles="$(SolutionDir)PropertyChanging\bin\$(ConfigurationName)_PCL\PropertyChanging.dll" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40" />
-    <Copy SourceFiles="$(SolutionDir)PropertyChanging\bin\$(ConfigurationName)_PCL\PropertyChanging.xml" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40" />
+    <Copy SourceFiles="$(SolutionDir)PropertyChanging\bin\$(ConfigurationName)\PropertyChanging.dll" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40" />
+    <Copy SourceFiles="$(SolutionDir)PropertyChanging\bin\$(ConfigurationName)\PropertyChanging.xml" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40" />
     <Copy SourceFiles="$(SolutionDir)NuGet\PropertyChanging.Fody.nuspec" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(ProjectDir)install.ps1" DestinationFolder="$(SolutionDir)NuGetBuild\Tools" />
     <Copy SourceFiles="$(ProjectDir)uninstall.ps1" DestinationFolder="$(SolutionDir)NuGetBuild\Tools" />
@@ -47,15 +45,10 @@
       <Project>{C3578A7B-09A6-4444-9383-0DEAFA4958BD}</Project>
       <Name>PropertyChanging.Fody</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PropertyChanging\PropertyChanging_3.5.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Project>{9BC15CD4-32A5-4046-ACB5-83EB221047D3}</Project>
-      <Name>PropertyChanging_3.5</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PropertyChanging\PropertyChanging_PCL.csproj">
+    <ProjectReference Include="..\PropertyChanging\PropertyChanging.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{40235741-D750-45B1-8DC5-49576025ABA9}</Project>
-      <Name>PropertyChanging_PCL</Name>
+      <Name>PropertyChanging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\packages\PepitaPackage.1.20.0.0\build\PepitaPackage.targets" Condition="Exists('..\packages\PepitaPackage.1.20.0.0\build\PepitaPackage.targets')" />
