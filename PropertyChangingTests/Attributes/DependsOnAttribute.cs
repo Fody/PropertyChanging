@@ -2,7 +2,7 @@
 
 namespace PropertyChanging
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class DependsOnAttribute : Attribute
     {
 // ReSharper disable UnusedParameter.Local
