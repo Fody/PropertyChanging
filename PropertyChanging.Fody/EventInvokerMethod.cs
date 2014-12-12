@@ -1,15 +1,9 @@
 ﻿using Mono.Cecil;
 
-public enum InvokerTypes
-{
-    String,
-    Before,
-    PropertyChangingArg
-}
-
 public class EventInvokerMethod 
 {
 
+    public bool IsVisibleFromChildren;
     public MethodReference MethodReference;
     public InvokerTypes InvokerType;
 }

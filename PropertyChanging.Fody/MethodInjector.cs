@@ -24,12 +24,14 @@ public partial class ModuleWeaver
             return new EventInvokerMethod
                        {
                            MethodReference = InjectInterceptedMethod(targetType, methodDefinition).GetGeneric(),
+                           IsVisibleFromChildren = true,
                            InvokerType = InterceptorType,
                        };
         }
         return new EventInvokerMethod
                    {
                        MethodReference = InjectMethod(targetType, EventInvokerNames.First(), propertyChangingField).GetGeneric(),
+                       IsVisibleFromChildren = true,
                        InvokerType = InterceptorType,
                    };
     }

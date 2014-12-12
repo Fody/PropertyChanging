@@ -73,6 +73,7 @@
     <Compile Include="IlGeneratedByDependencyProcessor.cs" />
     <Compile Include="InstructionListExtensions.cs" />
     <Compile Include="InterfaceInjector.cs" />
+    <Compile Include="InvokerTypes.cs" />
     <Compile Include="MsCoreReferenceFinder.cs" />
     <Compile Include="MethodGenerifier.cs" />
     <Compile Include="NotifyInterfaceFinder.cs" />
