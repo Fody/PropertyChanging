@@ -77,6 +77,8 @@
     <Compile Include="ClassWithNotifyPropertyChangingAttribute.cs" />
     <Compile Include="ClassWithNotifyPropertyChangingAttributeChild.cs" />
     <Compile Include="ClassWithNotifyPropertyChangingAttributeChildParent.cs" />
+    <Compile Include="ClassWithOnChangedAndNoOnPropertyChanging.cs" />
+    <Compile Include="ClassWithOnChangedAndOnPropertyChanging.cs" />
     <Compile Include="ClassWithOnChangingBefore.cs" />
     <Compile Include="ComplexHierarchy\ClassChild1.cs" />
     <Compile Include="ComplexHierarchy\ClassChild2.cs" />

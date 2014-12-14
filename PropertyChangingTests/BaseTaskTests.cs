@@ -45,6 +45,7 @@ public abstract class BaseTaskTests
         Assert.AreEqual(1, moduleDefinition.AssemblyReferences.Count(x => x.Name == "mscorlib"));
     }
 #endif
+
     [Test]
     public virtual void AlsoNotifyFor()
     {
@@ -125,12 +126,14 @@ public abstract class BaseTaskTests
         Assert.IsFalse(property2EventCalled);
         Assert.IsFalse(property3EventCalled);
     }
+
     [Test]
     public virtual void WithFieldGetButNoFieldSet()
     {
         var instance = assembly.GetInstance("ClassWithFieldGetButNoFieldSet");
         EventTester.TestProperty(instance, false);
     }
+
     [Test]
     public void WithDoNotNotify()
     {
@@ -814,6 +817,24 @@ public abstract class BaseTaskTests
     }
 
 
+    [Test]
+    public virtual void WithOnChangedAndOnPropertyChanging()
+    {
+        var instance = assembly.GetInstance("ClassWithOnChangedAndOnPropertyChanging");
+        Assert.AreEqual(0, instance.OnProperty1ChangingCalled);
+        EventTester.TestProperty(instance, false);
+        Assert.AreEqual(1, instance.OnProperty1ChangingCalled);
+    }
+
+
+    [Test]
+    public virtual void WithOnChangedAndNoOnPropertyChanging()
+    {
+        var instance = assembly.GetInstance("ClassWithOnChangedAndNoOnPropertyChanging");
+        Assert.AreEqual(0, instance.OnProperty1ChangingCalled);
+        EventTester.TestProperty(instance, false);
+        Assert.AreEqual(1, instance.OnProperty1ChangingCalled);
+    }
 
     [Test]
     public void ReactiveUI()

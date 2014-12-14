@@ -136,15 +136,30 @@ public class PropertyWeaver
 
     int AddOnChangingMethodCall(int index, PropertyDefinition property)
     {
-        var onChangingMethod = typeNode.OnChangingMethods.FirstOrDefault(x => x.Name == string.Format("On{0}Changing", property.Name));
-        if (onChangingMethod != null)
+        if (!moduleWeaver.InjectOnPropertyNameChanging)
         {
-            return instructions.Insert(index,
-                                       Instruction.Create(OpCodes.Ldarg_0),
-                                       CreateCall(onChangingMethod)
-                );
+            return index;
         }
-        return index;
+        var onChangingMethodName = string.Format("On{0}Changing", property.Name);
+        if (ContainsCallToMethod(onChangingMethodName))
+        {
+            return index;
+        }
+        var onChangingMethod = typeNode
+            .OnChangingMethods
+            .FirstOrDefault(x => x.Name == onChangingMethodName);
+        if (onChangingMethod == null)
+        {
+            return index;
+        }
+        return instructions.Insert(index,Instruction.Create(OpCodes.Ldarg_0),CreateCall(onChangingMethod));
+    }
+
+    bool ContainsCallToMethod(string onChangingMethodName)
+    {
+        return instructions.Select(x => x.Operand)
+            .OfType<MethodReference>()
+            .Any(x => x.Name == onChangingMethodName);
     }
 
     int AddSimpleInvokerCall(int index, PropertyDefinition property)

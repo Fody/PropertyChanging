@@ -71,6 +71,7 @@
     <Compile Include="EventInvokerNameResolver.cs" />
     <Compile Include="HasEqualityChecker.cs" />
     <Compile Include="IlGeneratedByDependencyProcessor.cs" />
+    <Compile Include="InjectOnPropertyNameChangedConfig.cs" />
     <Compile Include="InstructionListExtensions.cs" />
     <Compile Include="InterfaceInjector.cs" />
     <Compile Include="InvokerTypes.cs" />
