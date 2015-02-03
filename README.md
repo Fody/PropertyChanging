@@ -6,12 +6,10 @@ Injects [INotifyPropertyChanging](http://msdn.microsoft.com/en-us/library/system
 
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
-## Nuget
+## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/PropertyChanging.Fody.svg?style=flat)](https://www.nuget.org/packages/PropertyChanging.Fody/)
 
-Nuget package http://nuget.org/packages/PropertyChanging.Fody 
+https://nuget.org/packages/PropertyChanging.Fody/
 
-To Install from the Nuget Package Manager Console 
-    
     PM> Install-Package PropertyChanging.Fody
     
 ### Your Code
