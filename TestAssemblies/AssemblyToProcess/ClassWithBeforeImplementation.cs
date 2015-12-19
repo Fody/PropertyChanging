@@ -15,11 +15,7 @@ public class ClassWithBeforeImplementation : INotifyPropertyChanging
     {
         ValidateIsString(before);
 
-        var handler = PropertyChanging;
-        if (handler != null)
-        {
-            handler(this, new PropertyChangingEventArgs(propertyName));
-        }
+        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
     }
 
     void ValidateIsString(object value)
@@ -29,7 +25,7 @@ public class ClassWithBeforeImplementation : INotifyPropertyChanging
             var name = value.GetType().Name;
             if (name != "String")
             {
-                throw new Exception(string.Format("Value should be string but is '{0}'.", name));
+                throw new Exception($"Value should be string but is '{name}'.");
             }
         }
     }

@@ -1,5 +1,8 @@
 ﻿using System.Linq;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
+// ReSharper disable ConvertToAutoPropertyWhenPossible
 
 [TestFixture]
 public class WithUpperCaseUnderScoreFields
@@ -24,30 +27,20 @@ public class WithUpperCaseUnderScoreFields
 
     public class Person
     {
-        // ReSharper disable InconsistentNaming
         string _GivenNames;
-        // ReSharper restore InconsistentNaming
         public string GivenNames
         {
             get { return _GivenNames; }
             set { _GivenNames = value; }
         }
 
-        // ReSharper disable InconsistentNaming
         string _FamilyName;
-        // ReSharper restore InconsistentNaming
         public string FamilyName
         {
             get { return _FamilyName; }
             set { _FamilyName = value; }
         }
 
-        public string FullName
-        {
-            get
-            {
-                return string.Format("{0} {1}", _GivenNames, _FamilyName);
-            }
-        }
+        public string FullName => $"{_GivenNames} {_FamilyName}";
     }
 }

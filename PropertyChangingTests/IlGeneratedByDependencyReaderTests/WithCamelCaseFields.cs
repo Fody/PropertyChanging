@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ConvertToAutoPropertyWhenPossible
 
 [TestFixture]
 public class WithCamelCaseFields
@@ -37,12 +39,6 @@ public class WithCamelCaseFields
             set { familyName = value; }
         }
 
-        public string FullName
-        {
-            get
-            {
-                return string.Format("{0} {1}", givenNames, familyName);
-            }
-        }
+        public string FullName => $"{givenNames} {familyName}";
     }
 }

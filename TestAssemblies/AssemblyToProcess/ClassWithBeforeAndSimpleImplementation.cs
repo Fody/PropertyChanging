@@ -16,11 +16,7 @@ public class ClassWithBeforeAndSimpleImplementation : INotifyPropertyChanging
     }
     public void OnPropertyChanging(string propertyName, object before)
     {
-        var handler = PropertyChanging;
-        if (handler != null)
-        {
-            handler(this, new PropertyChangingEventArgs(propertyName));
-        }
+        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
     }
 
 }

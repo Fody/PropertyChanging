@@ -7,11 +7,7 @@ namespace GenericChildWithPropertyBefore
         public event PropertyChangingEventHandler PropertyChanging;
         public void OnPropertyChanging(string propertyName, object before)
         {
-            var propertyChanging = PropertyChanging;
-            if (propertyChanging != null)
-            {
-                propertyChanging(this, new PropertyChangingEventArgs(propertyName));
-            }
+            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }
 
     }

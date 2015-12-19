@@ -35,7 +35,7 @@ public partial class ModuleWeaver
         foreach (var field in fieldsWithSameType)
         {
             //AutoProp
-            if (field.Name == string.Format("<{0}>k__BackingField", propertyName))
+            if (field.Name == $"<{propertyName}>k__BackingField")
             {
                 return field;
             }
@@ -71,11 +71,7 @@ public partial class ModuleWeaver
 
     static FieldDefinition GetSingleField(PropertyDefinition property, Code code, MethodDefinition methodDefinition)
     {
-        if (methodDefinition == null)
-        {
-            return null;
-        }
-        if (methodDefinition.Body == null)
+        if (methodDefinition?.Body == null)
         {
             return null;
         }
@@ -104,11 +100,7 @@ public partial class ModuleWeaver
                 }
             }
         }
-        if (fieldReference != null)
-        {
-            return fieldReference.Resolve();
-        }
-        return null;
+        return fieldReference?.Resolve();
     }
 
     public void FindMappings()

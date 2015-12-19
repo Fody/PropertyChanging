@@ -4,10 +4,7 @@ public class ClassMissingSetGet : INotifyPropertyChanging
 {
     string property;
 
-    public string PropertyNoSet
-    {
-        get { return property; }
-    }
+    public string PropertyNoSet => property;
 
 
     public string PropertyNoGet

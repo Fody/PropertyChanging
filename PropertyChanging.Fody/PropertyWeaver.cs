@@ -93,24 +93,12 @@ public class PropertyWeaver
 
     IEnumerable<Instruction> FindSetFieldInstructions()
     {
-        for (var index = 0; index < instructions.Count; index++)
-        {
-            var instruction = instructions[index];
-            if (instruction.OpCode != OpCodes.Stfld)
-            {
-                continue;
-            }
-            var fieldReference = instruction.Operand as FieldReference;
-            if (fieldReference == null)
-            {
-                continue;
-            }
-
-            if (fieldReference.Name == propertyData.BackingFieldReference.Name)
-            {
-                yield return instruction.Previous.Previous;
-            }
-        }
+        return from instruction in instructions
+               where instruction.OpCode == OpCodes.Stfld
+               let fieldReference = instruction.Operand as FieldReference
+               where fieldReference != null
+               where fieldReference.Name == propertyData.BackingFieldReference.Name
+               select instruction.Previous.Previous;
     }
 
 
@@ -119,10 +107,10 @@ public class PropertyWeaver
         index = AddOnChangingMethodCall(index, property);
         if (propertyData.AlreadyNotifies.Contains(property.Name))
         {
-            moduleWeaver.LogInfo(string.Format("\t\t\t{0} skipped since call already exists", property.Name));
+            moduleWeaver.LogInfo($"\t\t\t{property.Name} skipped since call already exists");
             return index;
         }
-        moduleWeaver.LogInfo(string.Format("\t\t\t{0}", property.Name));
+        moduleWeaver.LogInfo($"\t\t\t{property.Name}");
         if (typeNode.EventInvoker.InvokerType == InvokerTypes.Before)
         {
             return AddBeforeInvokerCall(index, property);
@@ -140,7 +128,7 @@ public class PropertyWeaver
         {
             return index;
         }
-        var onChangingMethodName = string.Format("On{0}Changing", property.Name);
+        var onChangingMethodName = $"On{property.Name}Changing";
         if (ContainsCallToMethod(onChangingMethodName))
         {
             return index;

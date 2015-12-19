@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+// ReSharper disable ConvertToAutoPropertyWhenPossible
 
 [TestFixture]
 public class BeforeAfterWithNoGetInfoCheckerTest

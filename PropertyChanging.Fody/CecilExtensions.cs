@@ -7,7 +7,7 @@ public static class CecilExtensions
 {
     public static string GetName(this PropertyDefinition propertyDefinition)
     {
-        return string.Format("{0}.{1}", propertyDefinition.DeclaringType.FullName, propertyDefinition.Name);
+        return $"{propertyDefinition.DeclaringType.FullName}.{propertyDefinition.Name}";
     }
 
     public static bool IsCallToMethod(this Instruction instruction, string methodName, out int propertyNameIndex)
@@ -42,7 +42,7 @@ public static class CecilExtensions
 
     public static string GetName(this MethodDefinition methodDefinition)
     {
-        return string.Format("{0}.{1}", methodDefinition.DeclaringType.FullName, methodDefinition.Name);
+        return $"{methodDefinition.DeclaringType.FullName}.{methodDefinition.Name}";
     }
 
     public static MethodDefinition Constructor(this TypeDefinition typeDefinition)

@@ -7,11 +7,7 @@ namespace AssemblyWithBase.DirectGeneric
         public event PropertyChangingEventHandler PropertyChanging;
         public virtual void OnPropertyChanging(string propertyName)
         {
-            var handler = PropertyChanging;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangingEventArgs(propertyName));
-            }
+            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }
     }
 }

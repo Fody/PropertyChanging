@@ -7,11 +7,7 @@ namespace AssemblyWithBase.Simple
 		public event PropertyChangingEventHandler PropertyChanging;
 		public virtual void OnPropertyChanging(string text1)
 		{
-			var handler = PropertyChanging;
-			if (handler != null)
-			{
-				handler(this, new PropertyChangingEventArgs(text1));
-			}
+            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(text1));
 		}
 
 	}

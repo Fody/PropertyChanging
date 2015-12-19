@@ -16,11 +16,7 @@ public class ClassAlreadyHasSingleNotificationDiffParamLocation : INotifyPropert
 
     public virtual void OnPropertyChanging(int fake, string propertyName)
     {
-        var handler = PropertyChanging;
-        if (handler != null)
-        {
-            handler(this, new PropertyChangingEventArgs(propertyName));
-        }
+        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
     }
 
     public event PropertyChangingEventHandler PropertyChanging;

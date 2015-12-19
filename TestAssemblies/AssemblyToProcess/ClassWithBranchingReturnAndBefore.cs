@@ -16,19 +16,14 @@ public class ClassWithBranchingReturnAndBefore : INotifyPropertyChanging
             if (isInSomeMode)
             {
                 Console.WriteLine("code here so 'if' does not get optimized away in release mode");
-// ReSharper disable RedundantJumpStatement
+                // ReSharper disable once RedundantJumpStatement
                 return;
-// ReSharper restore RedundantJumpStatement
             }
         }
     }
 
     public void OnPropertyChanging(string propertyName, object before)
     {
-        var handler = PropertyChanging;
-        if (handler != null)
-        {
-            handler(this, new PropertyChangingEventArgs(propertyName));
-        }
+        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
     }
 }

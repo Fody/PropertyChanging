@@ -11,11 +11,7 @@ public class ClassWithPropertyChangingArgImplementation : INotifyPropertyChangin
 
     public virtual void OnPropertyChanging(PropertyChangingEventArgs propertyArg)
     {
-        var handler = PropertyChanging;
-        if (handler != null)
-        {
-            handler(this, propertyArg);
-        }
+        PropertyChanging?.Invoke(this, propertyArg);
     }
 
 }

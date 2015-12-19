@@ -7,13 +7,10 @@ public partial class ModuleWeaver
 
     public void ResolveOnPropertyNameChangingConfig()
     {
-        if (Config != null)
+        var value = Config?.Attributes("InjectOnPropertyNameChanging").FirstOrDefault();
+        if (value != null)
         {
-            var value = Config.Attributes("InjectOnPropertyNameChanging").FirstOrDefault();
-            if (value != null)
-            {
-                InjectOnPropertyNameChanging = bool.Parse((string) value);
-            }
+            InjectOnPropertyNameChanging = bool.Parse((string) value);
         }
     }
 }
