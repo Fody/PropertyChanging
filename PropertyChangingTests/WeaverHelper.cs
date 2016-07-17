@@ -4,16 +4,17 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Mono.Cecil;
+using NUnit.Framework;
 
 public class WeaverHelper
 {
     string projectPath;
     string assemblyPath;
-    public Assembly Assembly { get; set; }
+    public Assembly Assembly;
 
     public WeaverHelper(string projectPath)
     {
-        this.projectPath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\..\..\TestAssemblies", projectPath));
+        this.projectPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\TestAssemblies", projectPath));
 
         GetAssemblyPath();
 

@@ -56,19 +56,23 @@ public partial class ModuleWeaver
             var baseType = Resolve(propertyDefinition.DeclaringType.BaseType);
             var baseProperty = baseType.Properties.FirstOrDefault(x => x.Name == propertyDefinition.Name);
 
-            if (baseProperty != null)
+            if (baseProperty != null && propertyDefinition.GetMethod != null)
             {
-                if (propertyDefinition.GetMethod != null)
+                var instructions = propertyDefinition.GetMethod.Body.Instructions;
+                foreach (var instruction in instructions)
                 {
-                    var instructions = propertyDefinition.GetMethod.Body.Instructions;
-                    foreach (var instruction in instructions)
+                    if (instruction.OpCode != OpCodes.Call)
                     {
-                        if (instruction.OpCode == OpCodes.Call
-                            && instruction.Operand is MethodReference
-                            && ((MethodReference) instruction.Operand).Resolve() == baseProperty.SetMethod)
-                        {
-                            return true;
-                        }
+                        continue;
+                    }
+                    var operand = instruction.Operand as MethodReference;
+                    if (operand == null)
+                    {
+                        continue;
+                    }
+                    if (operand.FullName == baseProperty.SetMethod.FullName)
+                    {
+                        return true;
                     }
                 }
             }

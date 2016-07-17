@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using Mono.Cecil;
 
-
 public class TestAssemblyResolver : IAssemblyResolver
 {
     List<string> gacPaths;
@@ -13,25 +12,13 @@ public class TestAssemblyResolver : IAssemblyResolver
 
     public TestAssemblyResolver(string targetPath, string projectPath)
     {
-        var versionReader = new VersionReader(projectPath);
         directories = new List<string>();
-
-        if (versionReader.IsSilverlight)
+        if (projectPath != null)
         {
+            var versionReader = new VersionReader(projectPath);
             if (string.IsNullOrEmpty(versionReader.TargetFrameworkProfile))
             {
-                directories.Add($@"{GetProgramFilesPath()}\Reference Assemblies\Microsoft\Framework\Silverlight\{versionReader.FrameworkVersionAsString}\");
-            }
-            else
-            {
-                directories.Add($@"{GetProgramFilesPath()}\Reference Assemblies\Microsoft\Framework\Silverlight\{versionReader.FrameworkVersionAsString}\Profile\{versionReader.TargetFrameworkProfile}");
-            }
-        }
-        else
-        {
-            if (string.IsNullOrEmpty(versionReader.TargetFrameworkProfile))
-            {
-                if (versionReader.FrameworkVersionAsNumber == 3.5m)
+                if (versionReader.FrameworkVersionAsNumber == new Version(3, 5))
                 {
                     directories.Add($@"{GetProgramFilesPath()}\Reference Assemblies\Microsoft\Framework\v3.5\");
                     directories.Add($@"{GetProgramFilesPath()}\Reference Assemblies\Microsoft\Framework\v3.0\");
@@ -45,6 +32,12 @@ public class TestAssemblyResolver : IAssemblyResolver
             else
             {
                 directories.Add($@"{GetProgramFilesPath()}\Reference Assemblies\Microsoft\Framework\.NETFramework\{versionReader.FrameworkVersionAsString}\Profile\{versionReader.TargetFrameworkProfile}");
+            }
+            if (versionReader.IsFSharp)
+            {
+                //C:\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.3.0.0\FSharp.Core.dll
+                var path = $@"{GetProgramFilesPath()}\Reference Assemblies\Microsoft\FSharp\.NETFramework\{versionReader.FrameworkVersionAsString}\{versionReader.TargetFSharpCoreVersion}\";
+                directories.Add(path);
             }
         }
         directories.Add(Path.GetDirectoryName(targetPath));
@@ -133,6 +126,7 @@ public class TestAssemblyResolver : IAssemblyResolver
     {
         return AssemblyDefinition.ReadAssembly(Find(fullName));
     }
+
     public string Find(string assemblyName)
     {
         var file = SearchDirectory(assemblyName);
@@ -186,7 +180,5 @@ public class TestAssemblyResolver : IAssemblyResolver
         }
         return Path.Combine(Path.Combine(Path.Combine(gac, reference.Name), builder.ToString()), reference.Name + ".dll");
     }
-
-    
 
 }

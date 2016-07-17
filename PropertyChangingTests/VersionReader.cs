@@ -1,23 +1,22 @@
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
-
 public class VersionReader
 {
-    public decimal FrameworkVersionAsNumber;
+    public Version FrameworkVersionAsNumber;
     public string FrameworkVersionAsString;
     public string TargetFrameworkProfile;
-    public bool IsSilverlight;
+    public string TargetFSharpCoreVersion;
+    public bool IsFSharp;
 
     public VersionReader(string projectPath)
     {
         var xDocument = XDocument.Load(projectPath);
         xDocument.StripNamespace();
-        GetTargetFrameworkIdentifier(xDocument);
         GetFrameworkVersion(xDocument);
         GetTargetFrameworkProfile(xDocument);
+        GetTargetFSharpCoreVersion(xDocument);
     }
 
     void GetFrameworkVersion(XDocument xDocument)
@@ -25,7 +24,7 @@ public class VersionReader
         FrameworkVersionAsString = xDocument.Descendants("TargetFrameworkVersion")
             .Select(c => c.Value)
             .First();
-        FrameworkVersionAsNumber = decimal.Parse(FrameworkVersionAsString.Remove(0, 1), CultureInfo.InvariantCulture);
+        FrameworkVersionAsNumber = Version.Parse(FrameworkVersionAsString.Remove(0, 1));
     }
 
 
@@ -36,14 +35,14 @@ public class VersionReader
             .FirstOrDefault();
     }
 
-    void GetTargetFrameworkIdentifier(XDocument xDocument)
+    void GetTargetFSharpCoreVersion(XDocument xDocument)
     {
-        var targetFrameworkIdentifier = xDocument.Descendants("TargetFrameworkIdentifier")
+        TargetFSharpCoreVersion = xDocument.Descendants("TargetFSharpCoreVersion")
             .Select(c => c.Value)
             .FirstOrDefault();
-        if (string.Equals(targetFrameworkIdentifier, "Silverlight", StringComparison.OrdinalIgnoreCase))
+        if (TargetFSharpCoreVersion != null)
         {
-            IsSilverlight = true;
+            IsFSharp = true;
         }
 
     }

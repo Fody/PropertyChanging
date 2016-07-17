@@ -8,7 +8,7 @@ public static class DefinitionFinder
 {
     public static PropertyDefinition FindProperty<T>(Expression<Func<T>> expression)
     {
-        var memberExpression = ((MemberExpression)expression.Body);
+        var memberExpression = (MemberExpression)expression.Body;
         var declaringType = memberExpression.Member.DeclaringType;
         return FindType(declaringType, memberExpression.Member.Name);
     }
@@ -27,7 +27,7 @@ public static class DefinitionFinder
 
     public static MethodDefinition FindMethod<T>(Expression<Action> expression)
     {
-        var callExpression = ((MethodCallExpression)expression.Body);
+        var callExpression = (MethodCallExpression)expression.Body;
         var declaringType = callExpression.Method.DeclaringType;
 
         var typeDefinition = FindType(declaringType);
@@ -44,10 +44,15 @@ public static class DefinitionFinder
 
     static TypeDefinition FindType(Type typeToFind)
     {
-        var moduleDefinition = ModuleDefinition.ReadModule(typeToFind.Assembly.Location);
+        var targetPath = typeToFind.Assembly.CodeBase.Replace("file:///", "");
+        var assemblyResolver = new TestAssemblyResolver(targetPath, null);
+        var readerParameters = new ReaderParameters
+        {
+            AssemblyResolver = assemblyResolver
+        };
+        var moduleDefinition = ModuleDefinition.ReadModule(targetPath, readerParameters);
         foreach (var type in moduleDefinition.Types)
         {
-
             if (type.Name == typeToFind.Name)
             {
                 return type;
