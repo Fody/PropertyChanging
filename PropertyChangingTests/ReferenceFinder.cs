@@ -116,30 +116,9 @@ public class TestAssemblyResolver : IAssemblyResolver
         return AssemblyDefinition.ReadAssembly(Find(name));
     }
 
-    public AssemblyDefinition Resolve(string fullName)
-    {
-        return AssemblyDefinition.ReadAssembly(Find(fullName));
-    }
-
-
-    public AssemblyDefinition Resolve(string fullName, ReaderParameters parameters)
-    {
-        return AssemblyDefinition.ReadAssembly(Find(fullName));
-    }
-
-    public string Find(string assemblyName)
-    {
-        var file = SearchDirectory(assemblyName);
-        if (file != null)
-        {
-            return file;
-        }
-        throw new FileNotFoundException();
-    }
-
     string GetAssemblyInGac(AssemblyNameReference reference)
     {
-        if ((reference.PublicKeyToken == null) || (reference.PublicKeyToken.Length == 0))
+        if (reference.PublicKeyToken == null || reference.PublicKeyToken.Length == 0)
         {
             return null;
         }
@@ -181,4 +160,7 @@ public class TestAssemblyResolver : IAssemblyResolver
         return Path.Combine(Path.Combine(Path.Combine(gac, reference.Name), builder.ToString()), reference.Name + ".dll");
     }
 
+    public void Dispose()
+    {
+    }
 }

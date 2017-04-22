@@ -34,7 +34,7 @@ public abstract class BaseTaskTests
 
 #if (DEBUG)
     [Test]
-    [Ignore]
+    [Explicit]
     public virtual void EnsureOnly1RefToMscorLib()
     {
         var moduleDefinition = ModuleDefinition.ReadModule(assembly.CodeBase.Remove(0, 8));

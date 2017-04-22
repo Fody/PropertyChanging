@@ -37,17 +37,7 @@ public static class CecilExtensions
 
     public static bool IsCall(this OpCode opCode)
     {
-        return (opCode.Code == Code.Call) || (opCode.Code == Code.Callvirt);
-    }
-
-    public static string GetName(this MethodDefinition methodDefinition)
-    {
-        return $"{methodDefinition.DeclaringType.FullName}.{methodDefinition.Name}";
-    }
-
-    public static MethodDefinition Constructor(this TypeDefinition typeDefinition)
-    {
-        return typeDefinition.Methods.First(x => x.IsConstructor);
+        return opCode.Code == Code.Call || opCode.Code == Code.Callvirt;
     }
 
     public static FieldReference GetGeneric(this FieldDefinition definition)

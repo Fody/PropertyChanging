@@ -5,7 +5,7 @@ public partial class ModuleWeaver
 {
     public void InjectINotifyPropertyChangingInterface(TypeDefinition targetType)
     {
-        targetType.Interfaces.Add(PropChangingInterfaceReference);
+        targetType.Interfaces.Add(new InterfaceImplementation(PropChangingInterfaceReference));
         WeaveEvent(targetType);
     }
 

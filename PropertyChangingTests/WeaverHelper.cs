@@ -24,19 +24,21 @@ public class WeaverHelper
 
 
         var assemblyResolver = new TestAssemblyResolver(assemblyPath, this.projectPath);
-        var moduleDefinition = ModuleDefinition.ReadModule(newAssembly, new ReaderParameters
-                                                                            {
-                                                                                AssemblyResolver = assemblyResolver
-                                                                            });
-        var weavingTask = new ModuleWeaver
-                              {
-                                  ModuleDefinition = moduleDefinition,
-                                  AssemblyResolver = assemblyResolver
-                              };
+        using (var moduleDefinition = ModuleDefinition.ReadModule(assemblyPath, new ReaderParameters
+        {
+            AssemblyResolver = assemblyResolver
+        }))
+        {
+            var weavingTask = new ModuleWeaver
+            {
+                ModuleDefinition = moduleDefinition,
+                AssemblyResolver = assemblyResolver
+            };
 
-        weavingTask.Execute();
+            weavingTask.Execute();
 
-        moduleDefinition.Write(newAssembly);
+            moduleDefinition.Write(newAssembly);
+        }
 
         Assembly = Assembly.LoadFile(newAssembly);
     }
@@ -62,9 +64,9 @@ public class WeaverHelper
         xDocument.StripNamespace();
 
         var outputPathValue = (from propertyGroup in xDocument.Descendants("PropertyGroup")
-                               let condition = ((string)propertyGroup.Attribute("Condition"))
-                               where (condition != null) &&
-                                     (condition.Trim() == "'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'")
+                               let condition = (string)propertyGroup.Attribute("Condition")
+                               where condition != null &&
+                                     condition.Trim() == "'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'"
                                from outputPath in propertyGroup.Descendants("OutputPath")
                                select outputPath.Value).First();
 #if (!DEBUG)

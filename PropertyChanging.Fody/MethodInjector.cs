@@ -22,18 +22,18 @@ public partial class ModuleWeaver
             var methodDefinition = GetMethodDefinition(targetType, propertyChangingField);
 
             return new EventInvokerMethod
-                       {
-                           MethodReference = InjectInterceptedMethod(targetType, methodDefinition).GetGeneric(),
-                           IsVisibleFromChildren = true,
-                           InvokerType = InterceptorType,
-                       };
+            {
+                MethodReference = InjectInterceptedMethod(targetType, methodDefinition).GetGeneric(),
+                IsVisibleFromChildren = true,
+                InvokerType = InterceptorType,
+            };
         }
         return new EventInvokerMethod
-                   {
-                       MethodReference = InjectMethod(targetType, EventInvokerNames.First(), propertyChangingField).GetGeneric(),
-                       IsVisibleFromChildren = true,
-                       InvokerType = InterceptorType,
-                   };
+        {
+            MethodReference = InjectMethod(targetType, EventInvokerNames.First(), propertyChangingField).GetGeneric(),
+            IsVisibleFromChildren = true,
+            InvokerType = InterceptorType,
+        };
     }
 
     MethodDefinition GetMethodDefinition(TypeDefinition targetType, FieldReference propertyChangingField)
@@ -50,18 +50,18 @@ public partial class ModuleWeaver
     MethodDefinition InjectMethod(TypeDefinition targetType, string eventInvokerName, FieldReference propertyChangingField)
     {
         var method = new MethodDefinition(eventInvokerName, GetMethodAttributes(targetType), ModuleDefinition.TypeSystem.Void);
-		method.Parameters.Add(new ParameterDefinition("propertyName", ParameterAttributes.None, ModuleDefinition.TypeSystem.String));
+        method.Parameters.Add(new ParameterDefinition("propertyName", ParameterAttributes.None, ModuleDefinition.TypeSystem.String));
 
         var handlerVariable = new VariableDefinition(PropChangingHandlerReference);
         method.Body.Variables.Add(handlerVariable);
-		var boolVariable = new VariableDefinition(ModuleDefinition.TypeSystem.Boolean);
+        var boolVariable = new VariableDefinition(ModuleDefinition.TypeSystem.Boolean);
         method.Body.Variables.Add(boolVariable);
 
         var instructions = method.Body.Instructions;
 
         var last = Instruction.Create(OpCodes.Ret);
         instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
-        instructions.Add(Instruction.Create(OpCodes.Ldfld, propertyChangingField)); 
+        instructions.Add(Instruction.Create(OpCodes.Ldfld, propertyChangingField));
         instructions.Add(Instruction.Create(OpCodes.Stloc_0));
         instructions.Add(Instruction.Create(OpCodes.Ldloc_0));
         instructions.Add(Instruction.Create(OpCodes.Ldnull));
@@ -100,26 +100,26 @@ public partial class ModuleWeaver
     MethodDefinition InjectInterceptedMethod(TypeDefinition targetType, MethodDefinition innerOnPropertyChanging)
     {
         var delegateHolderInjector = new DelegateHolderInjector
-                                     {
-                                         TargetTypeDefinition=targetType,
-                                         OnPropertyChangingMethodReference = innerOnPropertyChanging,
-                                         ModuleWeaver = this
-                                     };
+        {
+            TargetTypeDefinition = targetType,
+            OnPropertyChangingMethodReference = innerOnPropertyChanging,
+            ModuleWeaver = this
+        };
         delegateHolderInjector.InjectDelegateHolder();
-		var method = new MethodDefinition(EventInvokerNames.First(), GetMethodAttributes(targetType), ModuleDefinition.TypeSystem.Void);
+        var method = new MethodDefinition(EventInvokerNames.First(), GetMethodAttributes(targetType), ModuleDefinition.TypeSystem.Void);
 
-		var propertyName = new ParameterDefinition("propertyName", ParameterAttributes.None, ModuleDefinition.TypeSystem.String);
+        var propertyName = new ParameterDefinition("propertyName", ParameterAttributes.None, ModuleDefinition.TypeSystem.String);
         method.Parameters.Add(propertyName);
         if (InterceptorType == InvokerTypes.Before)
         {
-			var before = new ParameterDefinition("before", ParameterAttributes.None, ModuleDefinition.TypeSystem.Object);
+            var before = new ParameterDefinition("before", ParameterAttributes.None, ModuleDefinition.TypeSystem.Object);
             method.Parameters.Add(before);
         }
 
-        var action = new VariableDefinition("firePropertyChanging", ActionTypeReference);
+        var action = new VariableDefinition(ActionTypeReference);
         method.Body.Variables.Add(action);
 
-        var variableDefinition = new VariableDefinition("delegateHolder", delegateHolderInjector.TypeDefinition);
+        var variableDefinition = new VariableDefinition(delegateHolderInjector.TypeDefinition);
         method.Body.Variables.Add(variableDefinition);
 
 
