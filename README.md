@@ -1,3 +1,7 @@
+[![Chat on Gitter](https://img.shields.io/gitter/room/fody/fody.svg?style=flat)](https://gitter.im/Fody)
+[![NuGet Status](http://img.shields.io/nuget/v/PropertyChanging.Fody.svg?style=flat)](https://www.nuget.org/packages/PropertyChanging.Fody/)
+
+
 ## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
 ![Icon](https://raw.github.com/Fody/PropertyChanging/master/Icons/package_icon.png)
@@ -6,14 +10,14 @@ Injects [INotifyPropertyChanging](http://msdn.microsoft.com/en-us/library/system
 
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
-[![NuGet Status](https://img.shields.io/gitter/room/fody/fody.svg?style=flat)](https://gitter.im/Fody/Fody)
 
-## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/PropertyChanging.Fody.svg?style=flat)](https://www.nuget.org/packages/PropertyChanging.Fody/)
+## The nuget package
 
 https://nuget.org/packages/PropertyChanging.Fody/
 
     PM> Install-Package PropertyChanging.Fody
-    
+
+
 ### Your Code
 
     [ImplementPropertyChanging]
@@ -31,6 +35,7 @@ https://nuget.org/packages/PropertyChanging.Fody/
         }
 
     }
+
 
 ### What gets compiled
 
@@ -85,15 +90,18 @@ https://nuget.org/packages/PropertyChanging.Fody/
             }
         }
     }
-    
+
+
 ## Icon
 
 Icon courtesy of [The Noun Project](http://thenounproject.com)
+
 
 ## Contributors
 
  * [Cameron MacFarland](https://github.com/distantcam)
  * [Simon Cropp](https://github.com/simoncropp)
+
 
 ## More Info
 
