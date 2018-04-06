@@ -2,6 +2,7 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using System.Linq;
+using Fody;
 
 
 public partial class ModuleWeaver

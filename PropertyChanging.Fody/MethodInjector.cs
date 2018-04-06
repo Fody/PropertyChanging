@@ -1,10 +1,10 @@
 ﻿using System.Linq;
+using Fody;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
 public partial class ModuleWeaver
 {
-
     public EventInvokerMethod AddOnPropertyChangingMethod(TypeDefinition targetType)
     {
         var propertyChangingField = FindPropertyChangingField(targetType);

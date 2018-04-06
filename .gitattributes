@@ -3,7 +3,6 @@
 
 # Don't check these into the repo as LF to work around TeamCity bug
 *.xml     -text 
-*.ps1     -text 
 *.targets -text
 
 # Custom for Visual Studio

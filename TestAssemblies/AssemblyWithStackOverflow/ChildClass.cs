@@ -1,4 +1,4 @@
-﻿public class ChildClass : BaseClass
+﻿public class ChildClassWithOverflow : BaseClass
 {
     public override string Property1
     {

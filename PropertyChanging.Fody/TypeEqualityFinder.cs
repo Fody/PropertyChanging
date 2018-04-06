@@ -18,13 +18,13 @@ public partial class ModuleWeaver
             .String
             .Resolve()
             .Methods
-            .First(x => x.IsStatic && 
-                x.Name == "Equals" && 
+            .First(x => x.IsStatic &&
+                x.Name == "Equals" &&
                 x.Parameters.Count == 3 &&
-                x.Parameters[0].ParameterType.Name == "String" && 
-                x.Parameters[1].ParameterType.Name == "String" && 
+                x.Parameters[0].ParameterType.Name == "String" &&
+                x.Parameters[1].ParameterType.Name == "String" &&
                 x.Parameters[2].ParameterType.Name == "StringComparison");
-        StringEquals = ModuleDefinition.Import(stringEquals);
+        StringEquals = ModuleDefinition.ImportReference(stringEquals);
         OrdinalStringComparison = (int) StringEquals
                                             .Parameters[2]
                                             .ParameterType
@@ -34,13 +34,10 @@ public partial class ModuleWeaver
                                             .Constant;
     }
 
-
-
     public MethodReference FindTypeEquality(TypeReference typeDefinition)
     {
-        MethodReference methodReference;
         var fullName = typeDefinition.FullName;
-        if (methodCache.TryGetValue(fullName, out methodReference))
+        if (methodCache.TryGetValue(fullName, out var methodReference))
         {
             return methodReference;
         }
@@ -76,13 +73,13 @@ public partial class ModuleWeaver
                 }
                 var genericInstanceMethod = new GenericInstanceMethod(NullableEqualsMethod);
                 genericInstanceMethod.GenericArguments.Add(typeWrappedByNullable);
-                return ModuleDefinition.Import(genericInstanceMethod);
+                return ModuleDefinition.ImportReference(genericInstanceMethod);
             }
         }
         var equality = GetStaticEquality(typeDefinition);
         if (equality != null)
         {
-            return ModuleDefinition.Import(equality);
+            return ModuleDefinition.ImportReference(equality);
         }
         return null;
     }

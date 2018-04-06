@@ -1,4 +1,4 @@
-﻿    using AssemblyWithBase.Simple;
+﻿using AssemblyWithBase.Simple;
 
 public class ChildWithBaseInDifferentAssembly : BaseClassWithVirtualProperty
 {

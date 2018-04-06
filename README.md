@@ -4,7 +4,7 @@
 
 ## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
-![Icon](https://raw.github.com/Fody/PropertyChanging/master/Icons/package_icon.png)
+![Icon](https://raw.github.com/Fody/PropertyChanging/master/package_icon.png)
 
 Injects [INotifyPropertyChanging](http://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanging.aspx) code into properties at compile time.
 

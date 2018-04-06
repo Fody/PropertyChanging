@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+#pragma warning disable 649
 
 public class ClassWithForwardedEvent : INotifyPropertyChanging
 {
@@ -6,8 +7,7 @@ public class ClassWithForwardedEvent : INotifyPropertyChanging
 
     public event PropertyChangingEventHandler PropertyChanging
     {
-        add { inner.PropertyChanging += value; }
-        remove { inner.PropertyChanging -= value; }
+        add => inner.PropertyChanging += value;
+        remove => inner.PropertyChanging -= value;
     }
-
 }

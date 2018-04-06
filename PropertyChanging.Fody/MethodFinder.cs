@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Fody;
 using Mono.Cecil;
 
 public partial class ModuleWeaver
@@ -40,8 +41,6 @@ public partial class ModuleWeaver
         }
     }
 
-
-
     public EventInvokerMethod RecursiveFindEventInvoker(TypeDefinition typeDefinition)
     {
         var typeDefinitions = new Stack<TypeDefinition>();
@@ -79,10 +78,9 @@ public partial class ModuleWeaver
     }
     EventInvokerMethod FindEventInvokerMethod(TypeDefinition type)
     {
-        MethodDefinition methodDefinition;
-        if (FindEventInvokerMethodDefinition(type, out methodDefinition))
+        if (FindEventInvokerMethodDefinition(type, out var methodDefinition))
         {
-            var methodReference = ModuleDefinition.Import(methodDefinition);
+            var methodReference = ModuleDefinition.ImportReference(methodDefinition);
             return new EventInvokerMethod
                        {
                            MethodReference = methodReference.GetGeneric(),

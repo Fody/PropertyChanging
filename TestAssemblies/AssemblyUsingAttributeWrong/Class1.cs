@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using PropertyChanging;
-
+// ReSharper disable UnusedVariable
 
 public class Class1 : INotifyPropertyChanging
 {

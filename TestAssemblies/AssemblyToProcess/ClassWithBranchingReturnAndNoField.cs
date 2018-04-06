@@ -1,4 +1,5 @@
 using System.ComponentModel;
+// ReSharper disable ValueParameterNotUsed
 
 public class ClassWithBranchingReturnAndNoField : INotifyPropertyChanging
 {
