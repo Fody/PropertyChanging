@@ -13,10 +13,8 @@ public partial class ModuleWeaver
         methodCache = new Dictionary<string, MethodReference>();
 
 
-        var stringEquals = ModuleDefinition
-            .TypeSystem
-            .String
-            .Resolve()
+        var stringEquals = TypeSystem
+            .StringDefinition
             .Methods
             .First(x => x.IsStatic &&
                 x.Name == "Equals" &&

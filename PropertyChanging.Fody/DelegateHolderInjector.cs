@@ -3,12 +3,14 @@ using Mono.Cecil.Cil;
 
 public class DelegateHolderInjector
 {
-    public TypeDefinition TargetTypeDefinition; 
+    public TypeDefinition TargetTypeDefinition;
     public MethodReference OnPropertyChangingMethodReference ;
     public ModuleWeaver ModuleWeaver;
+
     public void InjectDelegateHolder()
     {
-        TypeDefinition = new TypeDefinition(null, "<>PropertyNotificationDelegateHolder", TypeAttributes.AutoClass | TypeAttributes.AnsiClass | TypeAttributes.Sealed | TypeAttributes.NestedPrivate | TypeAttributes.BeforeFieldInit, ModuleWeaver.ModuleDefinition.TypeSystem.Object);
+        var attributes = TypeAttributes.AutoClass | TypeAttributes.AnsiClass | TypeAttributes.Sealed | TypeAttributes.NestedPrivate | TypeAttributes.BeforeFieldInit;
+        TypeDefinition = new TypeDefinition(null, "<>PropertyNotificationDelegateHolder", attributes, ModuleWeaver.TypeSystem.ObjectReference);
         CreateFields(TargetTypeDefinition);
         CreateOnPropChanging(OnPropertyChangingMethodReference);
         CreateConstructor();
@@ -19,13 +21,14 @@ public class DelegateHolderInjector
     {
         Target = new FieldDefinition("target", FieldAttributes.Public, targetTypeDefinition);
         TypeDefinition.Fields.Add(Target);
-        PropertyName = new FieldDefinition("propertyName", FieldAttributes.Public, ModuleWeaver.ModuleDefinition.TypeSystem.String);
+        PropertyName = new FieldDefinition("propertyName", FieldAttributes.Public, ModuleWeaver.TypeSystem.StringReference);
         TypeDefinition.Fields.Add(PropertyName);
     }
 
     void CreateOnPropChanging(MethodReference onPropertyChangingMethodReference)
     {
-        MethodDefinition = new MethodDefinition("OnPropertyChanging", MethodAttributes.Public | MethodAttributes.HideBySig, ModuleWeaver.ModuleDefinition.TypeSystem.Void);
+        var attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
+        MethodDefinition = new MethodDefinition("OnPropertyChanging", attributes, ModuleWeaver.TypeSystem.VoidReference);
         MethodDefinition.Body.Instructions.Append(
             Instruction.Create(OpCodes.Ldarg_0),
             Instruction.Create(OpCodes.Ldfld, Target),
@@ -39,7 +42,8 @@ public class DelegateHolderInjector
 
     void CreateConstructor()
     {
-        ConstructorDefinition = new MethodDefinition(".ctor", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, ModuleWeaver.ModuleDefinition.TypeSystem.Void);
+        var attributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
+        ConstructorDefinition = new MethodDefinition(".ctor", attributes, ModuleWeaver.TypeSystem.VoidReference);
         ConstructorDefinition.Body.Instructions.Append(
             Instruction.Create(OpCodes.Ldarg_0),
             Instruction.Create(OpCodes.Call, ModuleWeaver.ObjectConstructor),

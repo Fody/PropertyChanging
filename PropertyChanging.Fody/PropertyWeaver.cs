@@ -3,13 +3,14 @@ using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Collections.Generic;
+using TypeSystem = Fody.TypeSystem;
 
 public class PropertyWeaver
 {
     ModuleWeaver moduleWeaver;
     PropertyData propertyData;
     TypeNode typeNode;
-    readonly TypeSystem typeSystem;
+    TypeSystem typeSystem;
     MethodBody setMethodBody;
     Collection<Instruction> instructions;
 
@@ -169,7 +170,7 @@ public class PropertyWeaver
 
     int AddBeforeInvokerCall(int index, PropertyDefinition property)
     {
-        var beforeVariable = new VariableDefinition(typeSystem.Object);
+        var beforeVariable = new VariableDefinition(typeSystem.ObjectReference);
         setMethodBody.Variables.Add(beforeVariable);
         var getMethod = property.GetMethod.GetGeneric();
 

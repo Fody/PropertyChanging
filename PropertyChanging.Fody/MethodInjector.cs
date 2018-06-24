@@ -49,12 +49,12 @@ public partial class ModuleWeaver
 
     MethodDefinition InjectMethod(TypeDefinition targetType, string eventInvokerName, FieldReference propertyChangingField)
     {
-        var method = new MethodDefinition(eventInvokerName, GetMethodAttributes(targetType), ModuleDefinition.TypeSystem.Void);
-        method.Parameters.Add(new ParameterDefinition("propertyName", ParameterAttributes.None, ModuleDefinition.TypeSystem.String));
+        var method = new MethodDefinition(eventInvokerName, GetMethodAttributes(targetType), TypeSystem.VoidReference);
+        method.Parameters.Add(new ParameterDefinition("propertyName", ParameterAttributes.None, TypeSystem.StringReference));
 
         var handlerVariable = new VariableDefinition(PropChangingHandlerReference);
         method.Body.Variables.Add(handlerVariable);
-        var boolVariable = new VariableDefinition(ModuleDefinition.TypeSystem.Boolean);
+        var boolVariable = new VariableDefinition(TypeSystem.BooleanReference);
         method.Body.Variables.Add(boolVariable);
 
         var instructions = method.Body.Instructions;
@@ -106,13 +106,13 @@ public partial class ModuleWeaver
             ModuleWeaver = this
         };
         delegateHolderInjector.InjectDelegateHolder();
-        var method = new MethodDefinition(EventInvokerNames.First(), GetMethodAttributes(targetType), ModuleDefinition.TypeSystem.Void);
+        var method = new MethodDefinition(EventInvokerNames.First(), GetMethodAttributes(targetType), TypeSystem.VoidReference);
 
-        var propertyName = new ParameterDefinition("propertyName", ParameterAttributes.None, ModuleDefinition.TypeSystem.String);
+        var propertyName = new ParameterDefinition("propertyName", ParameterAttributes.None, TypeSystem.StringReference);
         method.Parameters.Add(propertyName);
         if (InterceptorType == InvokerTypes.Before)
         {
-            var before = new ParameterDefinition("before", ParameterAttributes.None, ModuleDefinition.TypeSystem.Object);
+            var before = new ParameterDefinition("before", ParameterAttributes.None, TypeSystem.ObjectReference);
             method.Parameters.Add(before);
         }
 

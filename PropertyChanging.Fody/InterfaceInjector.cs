@@ -37,7 +37,7 @@ public partial class ModuleWeaver
             MethodAttributes.NewSlot |
             MethodAttributes.Virtual;
 
-        var method = new MethodDefinition(methodName, Attributes, ModuleDefinition.TypeSystem.Void);
+        var method = new MethodDefinition(methodName, Attributes, TypeSystem.VoidReference);
 
         method.Parameters.Add(new ParameterDefinition("value", ParameterAttributes.None, PropChangingHandlerReference));
         var handlerVariable0 = new VariableDefinition(PropChangingHandlerReference);

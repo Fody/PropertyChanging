@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using Fody;
-using Mono.Cecil;
 using Xunit;
 #pragma warning disable 618
 
