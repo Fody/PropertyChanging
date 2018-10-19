@@ -11,85 +11,93 @@ Injects [INotifyPropertyChanging](http://msdn.microsoft.com/en-us/library/system
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
 
-## The nuget package
+## NuGet installation
 
-https://nuget.org/packages/PropertyChanging.Fody/
+Install the [PropertyChanging.Fody NuGet package](https://nuget.org/packages/PropertyChanging.Fody/) and update the [Fody NuGet package](https://nuget.org/packages/Fody/):
 
-    PM> Install-Package PropertyChanging.Fody
+```powershell
+PM> Install-Package Fody
+PM> Install-Package PropertyChanging.Fody
+```
+
+The `Install-Package Fody` is required since NuGet always defaults to the oldest, and most buggy, version of any dependency.
 
 
 ### Your Code
 
-    [ImplementPropertyChanging]
-    public class Person
+```csharp
+[ImplementPropertyChanging]
+public class Person
+{
+    public string GivenNames { get; set; }
+    public string FamilyName { get; set; }
+
+    public string FullName
     {
-        public string GivenNames { get; set; }
-        public string FamilyName { get; set; }
-
-        public string FullName
+        get
         {
-            get
-            {
-                return string.Format("{0} {1}", GivenNames, FamilyName);
-            }
+            return string.Format("{0} {1}", GivenNames, FamilyName);
         }
-
     }
+}
+```
 
 
 ### What gets compiled
 
-    public class Person : INotifyPropertyChanging
+```csharp
+public class Person : INotifyPropertyChanging
+{
+    public event PropertyChangingEventHandler PropertyChanging;
+
+    string givenNames;
+    public string GivenNames
     {
-        public event PropertyChangingEventHandler PropertyChanging;
-
-        string givenNames;
-        public string GivenNames
+        get { return givenNames; }
+        set
         {
-            get { return givenNames; }
-            set
+            if (value != givenNames)
             {
-                if (value != givenNames)
-                {
-                    OnPropertyChanging("GivenNames");
-                    OnPropertyChanging("FullName");
-                    givenNames = value;
-                }
-            }
-        }
-
-        string familyName;
-        public string FamilyName
-        {
-            get { return familyName; }
-            set 
-            {
-                if (value != familyName)
-                {
-                    OnPropertyChanging("FamilyName");
-                    OnPropertyChanging("FullName");
-                    familyName = value;
-                }
-            }
-        }
-
-        public string FullName
-        {
-            get
-            {
-                return string.Format("{0} {1}", GivenNames, FamilyName);
-            }
-        }
-
-        public virtual void OnPropertyChanging(string propertyName)
-        {
-            var propertyChanging = PropertyChanging;
-            if (propertyChanging != null)
-            {
-                propertyChanging(this, new PropertyChangingEventArgs(propertyName));
+                OnPropertyChanging("GivenNames");
+                OnPropertyChanging("FullName");
+                givenNames = value;
             }
         }
     }
+
+    string familyName;
+    public string FamilyName
+    {
+        get { return familyName; }
+        set 
+        {
+            if (value != familyName)
+            {
+                OnPropertyChanging("FamilyName");
+                OnPropertyChanging("FullName");
+                familyName = value;
+            }
+        }
+    }
+
+    public string FullName
+    {
+        get
+        {
+            return string.Format("{0} {1}", GivenNames, FamilyName);
+        }
+    }
+
+    public virtual void OnPropertyChanging(string propertyName)
+    {
+        var propertyChanging = PropertyChanging;
+        if (propertyChanging != null)
+        {
+            propertyChanging(this, new PropertyChangingEventArgs(propertyName));
+        }
+    }
+}
+```
 
 
 ## Icon
