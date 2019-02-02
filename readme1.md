@@ -2,13 +2,11 @@
 [![NuGet Status](http://img.shields.io/nuget/v/PropertyChanging.Fody.svg?style=flat)](https://www.nuget.org/packages/PropertyChanging.Fody/)
 
 
-## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
+## This is an add-in for [Fody](https://github.com/Fody/Home/)
 
 ![Icon](https://raw.github.com/Fody/PropertyChanging/master/package_icon.png)
 
 Injects [INotifyPropertyChanging](http://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanging.aspx) code into properties at compile time.
-
-[Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
 
 ## NuGet installation
