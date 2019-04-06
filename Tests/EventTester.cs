@@ -10,30 +10,32 @@ public static class EventTester
     {
         var property1EventCalled = false;
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
-                                                                  {
-                                                                      if (args.PropertyName == "Property1")
-                                                                      {
-                                                                          property1EventCalled = true;
-                                                                      }
-                                                                  };
+        {
+            if (args.PropertyName == "Property1")
+            {
+                property1EventCalled = true;
+            }
+        };
         instance.Property1 = "a";
         Assert.False(property1EventCalled);
     }
+
     internal static void TestProperty(dynamic instance, bool checkProperty2)
     {
         var property1EventCalled = false;
         var property2EventCalled = false;
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
-                                                                  {
-                                                                      if (args.PropertyName == "Property1")
-                                                                      {
-                                                                          property1EventCalled = true;
-                                                                      }
-                                                                      if (args.PropertyName == "Property2")
-                                                                      {
-                                                                          property2EventCalled = true;
-                                                                      }
-                                                                  };
+        {
+            if (args.PropertyName == "Property1")
+            {
+                property1EventCalled = true;
+            }
+
+            if (args.PropertyName == "Property2")
+            {
+                property2EventCalled = true;
+            }
+        };
         instance.Property1 = "a";
 
         Assert.True(property1EventCalled);
@@ -41,6 +43,7 @@ public static class EventTester
         {
             Assert.True(property2EventCalled);
         }
+
         property1EventCalled = false;
         property2EventCalled = false;
         //Property has not changed on re-set so event not fired
@@ -51,16 +54,17 @@ public static class EventTester
             Assert.False(property2EventCalled);
         }
     }
+
     internal static void TestProperty<T>(dynamic instance, string propertyName, T propertyValue)
     {
         var eventCalled = false;
-        instance.PropertyChanging += new PropertyChangingEventHandler((sender, args) =>
-                                                                        {
-                                                                            if (args.PropertyName == propertyName)
-                                                                            {
-                                                                                eventCalled = true;
-                                                                            }
-                                                                        });
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
+        {
+            if (args.PropertyName == propertyName)
+            {
+                eventCalled = true;
+            }
+        };
 
         var type = (Type)instance.GetType();
         var propertyInfo = type.GetProperties().First(x => x.Name == propertyName);
