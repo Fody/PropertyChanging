@@ -323,13 +323,13 @@ public class WeavingTaskTests
         var instance = testResult.GetInstance("ClassNoBackingNoEqualityField");
 
         var eventCalled = false;
-        instance.PropertyChanging += new PropertyChangingEventHandler((sender, args) =>
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
         {
             if (args.PropertyName == "StringProperty")
             {
                 eventCalled = true;
             }
-        });
+        };
 
         instance.StringProperty = "aString";
         Assert.True(eventCalled);
@@ -341,13 +341,13 @@ public class WeavingTaskTests
         var instance = testResult.GetInstance("ClassNoBackingWithEqualityField");
 
         var eventCalled = false;
-        instance.PropertyChanging += new PropertyChangingEventHandler((sender, args) =>
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
         {
             if (args.PropertyName == "StringProperty")
             {
                 eventCalled = true;
             }
-        });
+        };
 
         instance.StringProperty = "aString";
         Assert.True(eventCalled);
@@ -359,13 +359,13 @@ public class WeavingTaskTests
         var instance = testResult.GetInstance("ClassWithFieldFromOtherClass");
 
         var eventCalled = false;
-        instance.PropertyChanging += new PropertyChangingEventHandler((sender, args) =>
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
         {
             if (args.PropertyName == "Property1")
             {
                 eventCalled = true;
             }
-        });
+        };
 
         instance.Property1 = "aString";
         Assert.True(eventCalled);
@@ -377,13 +377,13 @@ public class WeavingTaskTests
         var instance = testResult.GetInstance("ClassWithIndexer");
 
         var eventCalled = false;
-        instance.PropertyChanging += new PropertyChangingEventHandler((sender, args) =>
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
         {
             if (args.PropertyName == "Property1")
             {
                 eventCalled = true;
             }
-        });
+        };
 
         instance[4] = "aString";
         Assert.Equal("aString", instance[4]);
@@ -758,7 +758,7 @@ public class WeavingTaskTests
         var instance = testResult.GetInstance("ComplexHierarchy.ClassChild3");
         var property1EventCalled = false;
         var property2EventCalled = false;
-        instance.PropertyChanging += new PropertyChangingEventHandler((sender, args) =>
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
         {
             if (args.PropertyName == "Property1")
             {
@@ -769,7 +769,7 @@ public class WeavingTaskTests
             {
                 property2EventCalled = true;
             }
-        });
+        };
         instance.Property1 = "a";
         instance.Property2 = "a";
 
