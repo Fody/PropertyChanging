@@ -852,7 +852,7 @@ public class WeavingTaskTests
     {
         var propertyNames = new List<string>();
         var instance = testResult.GetInstance("TransitiveDependencies");
-        instance.PropertyChanging += new PropertyChangingEventHandler((sender, x) => propertyNames.Add(x.PropertyName));
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, x) => propertyNames.Add(x.PropertyName);
         instance.My = "s";
         Assert.Contains("My", propertyNames);
         Assert.Contains("MyA", propertyNames);
