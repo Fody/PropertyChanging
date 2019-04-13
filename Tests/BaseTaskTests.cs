@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Fody;
 using Xunit;
-#pragma warning disable 618
+using Xunit.Abstractions;
 
-public class WeavingTaskTests
+public class WeavingTaskTests :
+    XunitLoggingBase
 {
     static TestResult testResult;
 
@@ -939,5 +940,10 @@ public class WeavingTaskTests
         //Property has not changed on re-set so event not fired
         instance.Property1 = property1;
         Assert.False(property1EventCalled);
+    }
+
+    public WeavingTaskTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 }

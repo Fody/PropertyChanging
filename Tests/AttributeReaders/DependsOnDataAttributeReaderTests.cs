@@ -1,7 +1,9 @@
 ﻿using PropertyChanging;
 using Xunit;
+using Xunit.Abstractions;
 
-public class DependsOnDataAttributeReaderTests
+public class DependsOnDataAttributeReaderTests :
+    XunitLoggingBase
 {
     [Fact]
     public void Integration()
@@ -46,5 +48,10 @@ public class DependsOnDataAttributeReaderTests
 
         [DependsOn("NotAProperty1", "NotAProperty2")]
         public string FullName => $"{GivenNames} {FamilyName}";
+    }
+
+    public DependsOnDataAttributeReaderTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 }

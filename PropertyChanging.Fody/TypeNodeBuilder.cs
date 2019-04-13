@@ -2,7 +2,6 @@
 using System.Linq;
 using Mono.Cecil;
 
-
 public partial class ModuleWeaver
 {
     List<TypeDefinition> allClasses;

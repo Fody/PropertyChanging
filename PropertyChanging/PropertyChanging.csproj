@@ -9,9 +9,11 @@
     <Description>Add property notification to all classes that implement INotifyPropertyChanging.</Description>
     <PackageTags>Xaml, MVVM, INotifyPropertyChanging, DataBinding, ILWeaving, Cecil</PackageTags>
     <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
+    <PackageIconUrl>https://raw.githubusercontent.com/Fody/PropertyChanging/master/package_icon.png</PackageIconUrl>
+    <PackageProjectUrl>http://github.com/Fody/PropertyChanging</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Fody" Version="5.0.0-beta.7" PrivateAssets="None" />
-    <PackageReference Include="FodyPackaging" Version="5.0.0-beta.7" PrivateAssets="All" />
+    <PackageReference Include="Fody" Version="5.0.0-beta.11" PrivateAssets="None" />
+    <PackageReference Include="FodyPackaging" Version="5.0.0-beta.11" PrivateAssets="All" />
   </ItemGroup>
 </Project>

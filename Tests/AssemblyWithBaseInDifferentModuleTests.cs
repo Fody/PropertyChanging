@@ -1,12 +1,14 @@
 ﻿using Fody;
 using Xunit;
-#pragma warning disable 618
+using Xunit.Abstractions;
 
-public class AssemblyWithBaseInDifferentModuleTests
+public class AssemblyWithBaseInDifferentModuleTests :
+    XunitLoggingBase
 {
     TestResult testResult;
 
-    public AssemblyWithBaseInDifferentModuleTests()
+    public AssemblyWithBaseInDifferentModuleTests(ITestOutputHelper output) :
+        base(output)
     {
         var weavingTask = new ModuleWeaver();
         testResult = weavingTask.ExecuteTestRun("AssemblyWithBaseInDifferentModule.dll", ignoreCodes: new[] { "0x80131869" });

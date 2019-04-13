@@ -1,7 +1,9 @@
 ﻿using Fody;
 using Xunit;
+using Xunit.Abstractions;
 
-public class AssemblyUsingAttributeWrongTests
+public class AssemblyUsingAttributeWrongTests :
+    XunitLoggingBase
 {
     //TODO
     //[Fact]
@@ -12,5 +14,10 @@ public class AssemblyUsingAttributeWrongTests
         {
             weavingTask.ExecuteTestRun("AssemblyUsingAttributeWrong.dll");
         });
+    }
+
+    public AssemblyUsingAttributeWrongTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 }
