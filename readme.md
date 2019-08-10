@@ -98,17 +98,6 @@ public class Person : INotifyPropertyChanging
 ```
 
 
-## Icon
-
-Icon courtesy of [The Noun Project](http://thenounproject.com)
-
-
-## Contributors
-
- * [Cameron MacFarland](https://github.com/distantcam)
- * [Simon Cropp](https://github.com/simoncropp)
-
-
 ## More Info
 
 * [AccessBeforeValue](https://github.com/Fody/PropertyChanging/wiki/AccessBeforeValue)
@@ -121,3 +110,8 @@ Icon courtesy of [The Noun Project](http://thenounproject.com)
 * [PropertyDependencies](https://github.com/Fody/PropertyChanging/wiki/PropertyDependencies)
 * [Options](https://github.com/Fody/PropertyChanging/wiki/Options)
 * [WeavingWithoutAddingAReference](https://github.com/Fody/PropertyChanging/wiki/WeavingWithoutAddingAReference)
+
+
+## Icon
+
+Icon courtesy of [The Noun Project](https://thenounproject.com)
