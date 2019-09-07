@@ -3,7 +3,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class OnPropertyNameChangingConfigTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     [Fact]
     public void False()

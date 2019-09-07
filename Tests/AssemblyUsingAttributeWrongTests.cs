@@ -3,7 +3,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class AssemblyUsingAttributeWrongTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     //TODO
     //[Fact]

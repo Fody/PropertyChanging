@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 // ReSharper disable ConvertToAutoPropertyWhenPossible
 
 public class HasEqualityCheckerTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     Mono.Collections.Generic.Collection<PropertyDefinition> properties;
     Mono.Collections.Generic.Collection<FieldDefinition> fields;

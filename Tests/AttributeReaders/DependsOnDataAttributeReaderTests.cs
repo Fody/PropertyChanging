@@ -3,7 +3,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class DependsOnDataAttributeReaderTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     [Fact]
     public void Integration()

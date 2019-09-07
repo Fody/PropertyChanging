@@ -3,7 +3,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class AssemblyWithBaseInDifferentModuleTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     TestResult testResult;
 
