@@ -1,9 +1,10 @@
 ﻿using PropertyChanging;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class DependsOnDataAttributeReaderTests :
-    XunitApprovalBase
+    VerifyBase
 {
     [Fact]
     public void Integration()

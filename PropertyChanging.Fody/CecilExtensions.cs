@@ -17,8 +17,8 @@ public static class CecilExtensions
         {
             return false;
         }
-        var methodReference = instruction.Operand as MethodReference;
-        if (methodReference == null)
+
+        if (!(instruction.Operand is MethodReference methodReference))
         {
             return false;
         }

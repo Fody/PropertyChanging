@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Fody;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class WeavingTaskTests :
-    XunitApprovalBase
+    VerifyBase
 {
     static TestResult testResult;
 
