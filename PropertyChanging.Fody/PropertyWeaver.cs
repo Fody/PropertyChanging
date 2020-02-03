@@ -24,7 +24,7 @@ public class PropertyWeaver
 
     public void Execute()
     {
-        moduleWeaver.LogInfo("\t\t" + propertyData.PropertyDefinition.Name);
+        moduleWeaver.WriteInfo("\t\t" + propertyData.PropertyDefinition.Name);
         var property = propertyData.PropertyDefinition;
         setMethodBody = property.SetMethod.Body;
         instructions = property.SetMethod.Body.Instructions;
@@ -108,10 +108,10 @@ public class PropertyWeaver
         index = AddOnChangingMethodCall(index, property);
         if (propertyData.AlreadyNotifies.Contains(property.Name))
         {
-            moduleWeaver.LogInfo($"\t\t\t{property.Name} skipped since call already exists");
+            moduleWeaver.WriteInfo($"\t\t\t{property.Name} skipped since call already exists");
             return index;
         }
-        moduleWeaver.LogInfo($"\t\t\t{property.Name}");
+        moduleWeaver.WriteInfo($"\t\t\t{property.Name}");
         if (typeNode.EventInvoker.InvokerType == InvokerTypes.Before)
         {
             return AddBeforeInvokerCall(index, property);

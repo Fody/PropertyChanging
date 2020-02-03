@@ -31,22 +31,22 @@ public partial class ModuleWeaver
 
     public void FindCoreReferences()
     {
-        var objectDefinition = FindType("System.Object");
+        var objectDefinition = FindTypeDefinition("System.Object");
         var constructorDefinition = objectDefinition.Methods.First(x => x.IsConstructor);
         ObjectConstructor = ModuleDefinition.ImportReference(constructorDefinition);
 
-        var nullableDefinition = FindType("System.Nullable");
+        var nullableDefinition = FindTypeDefinition("System.Nullable");
         NullableEqualsMethod = ModuleDefinition.ImportReference(nullableDefinition).Resolve().Methods.First(x => x.Name == "Equals");
 
-        var actionDefinition = FindType("System.Action");
+        var actionDefinition = FindTypeDefinition("System.Action");
         ActionTypeReference = ModuleDefinition.ImportReference(actionDefinition);
 
         var actionConstructor = actionDefinition.Methods.First(x => x.IsConstructor);
         ActionConstructorReference = ModuleDefinition.ImportReference(actionConstructor);
 
-        var propChangingInterfaceDefinition = FindType("System.ComponentModel.INotifyPropertyChanging");
-        var propChangingHandlerDefinition = FindType("System.ComponentModel.PropertyChangingEventHandler");
-        var propChangingArgsDefinition = FindType("System.ComponentModel.PropertyChangingEventArgs");
+        var propChangingInterfaceDefinition = FindTypeDefinition("System.ComponentModel.INotifyPropertyChanging");
+        var propChangingHandlerDefinition = FindTypeDefinition("System.ComponentModel.PropertyChangingEventHandler");
+        var propChangingArgsDefinition = FindTypeDefinition("System.ComponentModel.PropertyChangingEventArgs");
 
 
         PropChangingInterfaceReference = ModuleDefinition.ImportReference(propChangingInterfaceDefinition);
@@ -54,7 +54,7 @@ public partial class ModuleWeaver
         ComponentModelPropertyChangingEventHandlerInvokeReference = ModuleDefinition.ImportReference(propChangingHandlerDefinition.Methods.First(x => x.Name == "Invoke"));
         ComponentModelPropertyChangingEventConstructorReference = ModuleDefinition.ImportReference(propChangingArgsDefinition.Methods.First(x => x.IsConstructor));
 
-        var delegateDefinition = FindType("System.Delegate");
+        var delegateDefinition = FindTypeDefinition("System.Delegate");
         var combineMethodDefinition = delegateDefinition.Methods
             .Single(x =>
                 x.Name == "Combine" &&
@@ -64,7 +64,7 @@ public partial class ModuleWeaver
         var removeMethodDefinition = delegateDefinition.Methods.First(x => x.Name == "Remove");
         DelegateRemoveMethodRef = ModuleDefinition.ImportReference(removeMethodDefinition);
 
-        var interlockedDefinition = FindType("System.Threading.Interlocked");
+        var interlockedDefinition = FindTypeDefinition("System.Threading.Interlocked");
         var genericCompareExchangeMethodDefinition = interlockedDefinition
             .Methods.First(x =>
                 x.IsStatic &&

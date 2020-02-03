@@ -17,7 +17,7 @@ public partial class ModuleWeaver
                 continue;
             }
 
-            LogInfo("\t" + node.TypeDefinition.FullName);
+            WriteInfo("\t" + node.TypeDefinition.FullName);
 
             foreach (var propertyData in node.PropertyDatas)
             {
