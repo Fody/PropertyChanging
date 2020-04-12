@@ -943,6 +943,26 @@ public class WeavingTaskTests :
         Assert.False(property1EventCalled);
     }
 
+    [Fact]
+    public void ClassWithNullableBackingField()
+    {
+        var instance = testResult.GetInstance("ClassWithNullableBackingField");
+        var isFlagEventCalled = false;
+        ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
+        {
+            if (args.PropertyName == "IsFlag")
+            {
+                isFlagEventCalled = true;
+            }
+        };
+        instance.IsFlag = true;
+        Assert.True(isFlagEventCalled);
+
+        isFlagEventCalled = false;
+        instance.IsFlag = true;
+        Assert.False(isFlagEventCalled);
+    }
+
     public WeavingTaskTests(ITestOutputHelper output) :
         base(output)
     {
