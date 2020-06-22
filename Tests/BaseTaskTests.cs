@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Fody;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class WeavingTaskTests :
-    VerifyBase
+public class WeavingTaskTests
 {
     static TestResult testResult;
 
@@ -961,10 +958,5 @@ public class WeavingTaskTests :
         isFlagEventCalled = false;
         instance.IsFlag = true;
         Assert.False(isFlagEventCalled);
-    }
-
-    public WeavingTaskTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }

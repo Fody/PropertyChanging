@@ -1,10 +1,7 @@
 ﻿using PropertyChanging;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class DependsOnDataAttributeReaderTests :
-    VerifyBase
+public class DependsOnDataAttributeReaderTests
 {
     [Fact]
     public void Integration()
@@ -49,10 +46,5 @@ public class DependsOnDataAttributeReaderTests :
 
         [DependsOn("NotAProperty1", "NotAProperty2")]
         public string FullName => $"{GivenNames} {FamilyName}";
-    }
-
-    public DependsOnDataAttributeReaderTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }

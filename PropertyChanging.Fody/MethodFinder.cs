@@ -19,7 +19,7 @@ public partial class ModuleWeaver
                                    {
                                        InvokerType = eventInvoker.InvokerType,
                                        MethodReference = methodReference,
-                                       IsVisibleFromChildren = eventInvoker.IsVisibleFromChildren 
+                                       IsVisibleFromChildren = eventInvoker.IsVisibleFromChildren
                                    };
             }
         }
@@ -49,7 +49,7 @@ public partial class ModuleWeaver
         do
         {
             typeDefinitions.Push(currentTypeDefinition);
-         
+
             if (FindEventInvokerMethodDefinition(currentTypeDefinition, out methodDefinition))
             {
                 break;

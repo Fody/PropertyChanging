@@ -1,15 +1,11 @@
 ﻿using Fody;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class AssemblyWithBaseInDifferentModuleTests :
-    VerifyBase
+public class AssemblyWithBaseInDifferentModuleTests
 {
     TestResult testResult;
 
-    public AssemblyWithBaseInDifferentModuleTests(ITestOutputHelper output) :
-        base(output)
+    public AssemblyWithBaseInDifferentModuleTests()
     {
         var weavingTask = new ModuleWeaver();
         testResult = weavingTask.ExecuteTestRun("AssemblyWithBaseInDifferentModule.dll", ignoreCodes: new[] { "0x80131869" });

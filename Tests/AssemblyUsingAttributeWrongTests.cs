@@ -1,10 +1,7 @@
 ﻿using Fody;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class AssemblyUsingAttributeWrongTests :
-    VerifyBase
+public class AssemblyUsingAttributeWrongTests
 {
     //TODO
     //[Fact]
@@ -15,10 +12,5 @@ public class AssemblyUsingAttributeWrongTests :
         {
             weavingTask.ExecuteTestRun("AssemblyUsingAttributeWrong.dll");
         });
-    }
-
-    public AssemblyUsingAttributeWrongTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }
