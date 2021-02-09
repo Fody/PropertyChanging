@@ -11,7 +11,8 @@ public class WeavingTaskTests
     static WeavingTaskTests()
     {
         var weavingTask = new ModuleWeaver();
-        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll"
+        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+            ignoreCodes: new[] {"0x80131869"}
 #if NETCOREAPP2_0
             , runPeVerify: false
 #endif

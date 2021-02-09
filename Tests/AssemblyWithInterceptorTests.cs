@@ -8,7 +8,8 @@ public class AssemblyWithInterceptorTests
     public void Simple()
     {
         var weavingTask = new ModuleWeaver();
-        var testResult = weavingTask.ExecuteTestRun("AssemblyWithInterceptor.dll");
+        var testResult = weavingTask.ExecuteTestRun("AssemblyWithInterceptor.dll",
+            ignoreCodes: new[] {"0x80131869"});
 
         var assembly = testResult.Assembly;
         var instance = assembly.GetInstance("ClassToTest");
@@ -23,7 +24,8 @@ public class AssemblyWithInterceptorTests
     public void Before()
     {
         var weavingTask = new ModuleWeaver();
-        var testResult = weavingTask.ExecuteTestRun("AssemblyWithBeforeInterceptor.dll");
+        var testResult = weavingTask.ExecuteTestRun("AssemblyWithBeforeInterceptor.dll",
+            ignoreCodes: new[] {"0x80131869"});
         var assembly = testResult.Assembly;
         var instance = assembly.GetInstance("ClassToTest");
         EventTester.TestProperty(instance, false);
