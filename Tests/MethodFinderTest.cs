@@ -9,8 +9,7 @@ public class MethodFinderTest
 
     public MethodFinderTest()
     {
-
-        var codeBase = typeof(MethodFinderTest).Assembly.CodeBase.Replace("file:///", string.Empty);
+        var codeBase = typeof(MethodFinderTest).Assembly.Location;
         var module = ModuleDefinition.ReadModule(codeBase);
         methodFinder = new ModuleWeaver
         {
