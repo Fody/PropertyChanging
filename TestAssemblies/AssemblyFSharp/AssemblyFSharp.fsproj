@@ -6,11 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ClassWithProperties.fs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\PropertyChanging\PropertyChanging.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Update="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 </Project>
