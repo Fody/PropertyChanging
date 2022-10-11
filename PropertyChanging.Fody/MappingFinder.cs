@@ -31,7 +31,7 @@ public partial class ModuleWeaver
     static FieldDefinition TryGetField(TypeDefinition typeDefinition, PropertyDefinition property)
     {
         var propertyName = property.Name;
-        var fieldsWithSameType = typeDefinition.Fields.Where(x => x.DeclaringType == typeDefinition && x.FieldType == property.PropertyType).ToList();
+        var fieldsWithSameType = typeDefinition.Fields.Where(x => x.DeclaringType == typeDefinition && x.FieldType.Resolve() == property.PropertyType.Resolve()).ToList();
         foreach (var field in fieldsWithSameType)
         {
             //AutoProp
@@ -86,18 +86,25 @@ public partial class ModuleWeaver
                     return null;
                 }
 
-                if (instruction.Operand is FieldReference field)
+                if (!(instruction.Operand is FieldReference field))
                 {
-                    if (field.DeclaringType != property.DeclaringType)
-                    {
-                        continue;
-                    }
-                    if (field.FieldType != property.PropertyType)
-                    {
-                        continue;
-                    }
-                    fieldReference = field;
+                    continue;
                 }
+                if (field.DeclaringType != property.DeclaringType)
+                {
+                    continue;
+                }
+                if (field.FieldType != property.PropertyType)
+                {
+                    continue;
+                }
+                var fieldDef = instruction.Operand as FieldDefinition;
+                var fieldAttributes = fieldDef?.Attributes & FieldAttributes.InitOnly;
+                if (fieldAttributes == FieldAttributes.InitOnly)
+                {
+                    continue;
+                }
+                fieldReference = field;
             }
         }
         return fieldReference?.Resolve();
