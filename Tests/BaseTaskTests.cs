@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Fody;
+using VerifyXunit;
 using Xunit;
 
+[UsesVerify]
 public class WeavingTaskTests
 {
     static TestResult testResult;
@@ -960,4 +963,22 @@ public class WeavingTaskTests
         instance.IsFlag = true;
         Assert.False(isFlagEventCalled);
     }
+
+#if NETFRAMEWORK
+    [Fact]
+    public async Task ClassWithNullableBackingFieldIl()
+    {
+        var il = Ildasm.Decompile(testResult.AssemblyPath, "ClassWithNullableBackingField::set_IsFlag");
+
+        await Verifier.Verify(il).UniqueForAssemblyConfiguration();
+    }
+
+    [Fact]
+    public async Task ClassWithNullableAutoPropertyIl()
+    {
+        var il = Ildasm.Decompile(testResult.AssemblyPath, "ClassWithNullableAutoProperty::set_IsFlag");
+
+        await Verifier.Verify(il).UniqueForAssemblyConfiguration();
+    }
+#endif // NETFRAMEWORK
 }
