@@ -4,7 +4,6 @@ using PropertyChanging;
 
 public class ClassWithBeforeImplementation : INotifyPropertyChanging
 {
-
     public string Property1 { get; set; }
     [DependsOn("Property1")]
     public string Property2 { get; set; }
@@ -18,7 +17,7 @@ public class ClassWithBeforeImplementation : INotifyPropertyChanging
         PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
     }
 
-    void ValidateIsString(object value)
+    static void ValidateIsString(object value)
     {
         if (value != null)
         {

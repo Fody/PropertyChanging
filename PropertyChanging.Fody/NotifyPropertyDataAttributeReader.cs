@@ -5,8 +5,7 @@ using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
-
-    public NotifyPropertyData ReadAlsoNotifyForData(PropertyDefinition property, List<PropertyDefinition> allProperties)
+    public static NotifyPropertyData ReadAlsoNotifyForData(PropertyDefinition property, List<PropertyDefinition> allProperties)
     {
         var notifyAttribute = property.CustomAttributes.GetAttribute("PropertyChanging.AlsoNotifyForAttribute");
         if (notifyAttribute == null)
@@ -21,7 +20,7 @@ public partial class ModuleWeaver
                    };
     }
 
-    IEnumerable<PropertyDefinition> GetPropertyNamesToNotify(CustomAttribute notifyAttribute, PropertyDefinition property, List<PropertyDefinition> allProperties)
+    static IEnumerable<PropertyDefinition> GetPropertyNamesToNotify(CustomAttribute notifyAttribute, PropertyDefinition property, List<PropertyDefinition> allProperties)
     {
         var customAttributeArguments = notifyAttribute.ConstructorArguments.ToList();
         var value = (string)customAttributeArguments[0].Value;

@@ -4,7 +4,6 @@ public class ClassEqualityWithStructOverload : INotifyPropertyChanging
 {
     public SimpleStruct Property1 { get; set; }
 
-    
 #pragma warning disable 660,661
     public struct SimpleStruct
 #pragma warning restore 660,661

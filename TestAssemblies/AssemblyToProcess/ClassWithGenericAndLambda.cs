@@ -16,5 +16,4 @@ public class ClassWithGenericAndLambda<T> : INotifyPropertyChanging
 }
 public class ClassWithGenericAndLambdaImp : ClassWithGenericAndLambda<object>
 {
-    
 }

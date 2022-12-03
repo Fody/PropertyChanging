@@ -86,7 +86,7 @@ public partial class ModuleWeaver
 
     }
 
-    TypeNode FindClassNode(TypeDefinition type, IEnumerable<TypeNode> typeNode)
+    static TypeNode FindClassNode(TypeDefinition type, IEnumerable<TypeNode> typeNode)
     {
         foreach (var node in typeNode)
         {

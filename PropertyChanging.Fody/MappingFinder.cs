@@ -5,7 +5,7 @@ using Mono.Cecil.Cil;
 
 public partial class ModuleWeaver
 {
-    void FindMappings(List<TypeNode> notifyNodes)
+    static void FindMappings(List<TypeNode> notifyNodes)
     {
         foreach (var node in notifyNodes)
         {

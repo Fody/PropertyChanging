@@ -2,7 +2,7 @@
 
 namespace AssemblyWithBase.MultiTypes
 {
-    public class BaseClass1<T,Z> : INotifyPropertyChanging
+    public class BaseClass1<T, Z> : INotifyPropertyChanging
     {
         public event PropertyChangingEventHandler PropertyChanging;
         public virtual void OnPropertyChanging(string propertyName)

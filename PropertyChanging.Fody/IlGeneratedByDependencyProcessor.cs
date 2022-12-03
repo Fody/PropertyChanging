@@ -7,13 +7,12 @@ public partial class ModuleWeaver
         DetectIlGeneratedByDependency(NotifyNodes);
     }
 
-
-    void DetectIlGeneratedByDependency(List<TypeNode> notifyNodes)
+    static void DetectIlGeneratedByDependency(List<TypeNode> notifyNodes)
     {
         foreach (var node in notifyNodes)
         {
             var ilGeneratedByDependencyReader = new IlGeneratedByDependencyReader(node);
-            ilGeneratedByDependencyReader.Process(); 
+            ilGeneratedByDependencyReader.Process();
             DetectIlGeneratedByDependency(node.Nodes);
         }
     }

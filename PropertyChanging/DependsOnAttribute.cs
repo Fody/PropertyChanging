@@ -9,7 +9,6 @@ namespace PropertyChanging
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class DependsOnAttribute : Attribute
     {
-        
         ///<summary>
         /// Initializes a new instance of <see cref="DependsOnAttribute"/>.
         ///</summary>

@@ -26,7 +26,7 @@ public partial class ModuleWeaver
                 {
                     continue;
                 }
-                
+
                 GetPropertyData(property, node);
             }
             WalkPropertyData(node.Nodes);
@@ -79,7 +79,7 @@ The most likely cause is that you have implemented a custom event accessor for t
                                    });
     }
 
-    List<PropertyDefinition> GetFullDependencies(PropertyDefinition propertyDefinition, IEnumerable<PropertyDefinition> dependenciesForProperty, TypeNode node)
+    static List<PropertyDefinition> GetFullDependencies(PropertyDefinition propertyDefinition, IEnumerable<PropertyDefinition> dependenciesForProperty, TypeNode node)
     {
         // Create an HashSet to contain all dependent properties (direct or transitive)
         // Add the initial Property to stop the recursion if this property is a dependency of another property
@@ -103,7 +103,7 @@ The most likely cause is that you have implemented a custom event accessor for t
     /// <summary>
     /// Computes dependencies recursively
     /// </summary>
-    void ComputeDependenciesRec(PropertyDefinition propertyDefinition, HashSet<PropertyDefinition> fullDependencies, TypeNode node)
+    static void ComputeDependenciesRec(PropertyDefinition propertyDefinition, HashSet<PropertyDefinition> fullDependencies, TypeNode node)
     {
         // TODO: An optimization could be done to avoid the multiple computation of one property for each property of the type
         // By keeping the in memory the full dependencies of each property of the type

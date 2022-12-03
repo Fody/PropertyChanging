@@ -9,20 +9,17 @@ public class ClassWithAlreadyNotifies : INotifyPropertyChanging
         set
         {
             OnPropertyChanging("Property1");
-			OnPropertyChanging("Property2");
+            OnPropertyChanging("Property2");
             property1 = value;
         }
     }
 
     public string Property2 { get { return Property1; } }
-	public event PropertyChangingEventHandler PropertyChanging;
+    public event PropertyChangingEventHandler PropertyChanging;
 
-	void OnPropertyChanging(string propertyName)
+    void OnPropertyChanging(string propertyName)
     {
         var handler = PropertyChanging;
-        if (handler != null)
-        {
-            handler(this, new PropertyChangingEventArgs(propertyName));
-        }
+        handler?.Invoke(this, new PropertyChangingEventArgs(propertyName));
     }
 }

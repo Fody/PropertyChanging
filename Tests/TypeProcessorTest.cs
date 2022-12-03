@@ -65,7 +65,6 @@ public class AlreadyNotifyFinderTest
         void OnPropertyChanging(string property)
         {
         }
-
     }
 
     public class Multiple

@@ -4,7 +4,7 @@ using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
-    void FindAllProperties(List<TypeNode> notifyNodes, List<PropertyDefinition> list)
+    static void FindAllProperties(List<TypeNode> notifyNodes, List<PropertyDefinition> list)
     {
         foreach (var node in notifyNodes)
         {
