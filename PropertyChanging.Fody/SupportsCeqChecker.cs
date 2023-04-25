@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Mono.Cecil;
 
@@ -8,21 +9,21 @@ public static class SupportsCeqChecker
 
     static SupportsCeqChecker()
     {
-        ceqStructNames = new List<string>
-                             {
-                                 typeof (int).Name,
-                                 typeof (uint).Name,
-                                 typeof (long).Name,
-                                 typeof (ulong).Name,
-                                 typeof (float).Name,
-                                 typeof (double).Name,
-                                 typeof (bool).Name,
-                                 typeof (short).Name,
-                                 typeof (ushort).Name,
-                                 typeof (byte).Name,
-                                 typeof (sbyte).Name,
-                                 typeof (char).Name,
-                             };
+        ceqStructNames = new()
+        {
+            nameof(Int32),
+            nameof(UInt32),
+            nameof(Int64),
+            nameof(UInt64),
+            nameof(Single),
+            nameof(Double),
+            nameof(Boolean),
+            nameof(Int16),
+            nameof(UInt16),
+            nameof(Byte),
+            nameof(SByte),
+            nameof(Char),
+        };
     }
 
     public static bool SupportsCeq(this TypeReference typeReference)
@@ -31,11 +32,13 @@ public static class SupportsCeqChecker
         {
             return true;
         }
+
         var typeDefinition = typeReference.Resolve();
         if (typeDefinition.IsEnum)
         {
             return true;
         }
+
         return !typeDefinition.IsValueType;
     }
 }

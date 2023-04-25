@@ -10,8 +10,7 @@ public partial class ModuleWeaver
 
     public void FindComparisonMethods()
     {
-        methodCache = new Dictionary<string, MethodReference>();
-
+        methodCache = new();
 
         var stringEquals = TypeSystem
             .StringDefinition

@@ -51,7 +51,7 @@ public static class HasEqualityChecker
 
         if (instruction.Operand is MemberReference memberReference)
         {
-            return memberReference.Name == "Equals" || memberReference.Name == "op_Inequality" || memberReference.Name == "op_Equality";
+            return memberReference.Name is "Equals" or "op_Inequality" or "op_Equality";
         }
 
         return false;

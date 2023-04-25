@@ -57,6 +57,7 @@ public static class DefinitionFinder
             {
                 return type;
             }
+
             foreach (var nestedType in type.NestedTypes)
             {
                 if (nestedType.Name == typeToFind.Name && nestedType.DeclaringType.Name == typeToFind.DeclaringType.Name)
@@ -65,6 +66,7 @@ public static class DefinitionFinder
                 }
             }
         }
-        throw new Exception();
+
+        throw new();
     }
 }

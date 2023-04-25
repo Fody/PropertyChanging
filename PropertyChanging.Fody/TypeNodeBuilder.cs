@@ -14,10 +14,9 @@ public partial class ModuleWeaver
             .GetTypes()
             .Where(x => x.IsClass && x.BaseType != null)
             .ToList();
-        Nodes = new List<TypeNode>();
-        NotifyNodes = new List<TypeNode>();
-        TypeDefinition typeDefinition;
-        while ((typeDefinition = allClasses.FirstOrDefault()) != null)
+        Nodes = new();
+        NotifyNodes = new();
+        while (allClasses.FirstOrDefault() is { } typeDefinition)
         {
             AddClass(typeDefinition);
         }

@@ -24,6 +24,6 @@ public class ClassWithOnChangedAndOnPropertyChanging : INotifyPropertyChanging
     public event PropertyChangingEventHandler PropertyChanging;
     public virtual void OnPropertyChanging(string propertyName)
     {
-        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        PropertyChanging?.Invoke(this, new(propertyName));
     }
 }

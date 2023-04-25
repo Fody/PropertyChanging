@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel;
 using PropertyChanging;
 
-namespace ReactiveUI
+namespace ReactiveUI;
+
+public abstract class ReactiveObject : INotifyPropertyChanging
 {
-    public abstract class ReactiveObject : INotifyPropertyChanging
+    [DoNotNotify]
+    public bool BaseNotifyCalled { get; set; }
+    public event PropertyChangingEventHandler PropertyChanging;
+    public virtual void raisePropertyChanging(string propertyName)
     {
-        [DoNotNotify]
-        public bool BaseNotifyCalled { get; set; }
-        public event PropertyChangingEventHandler PropertyChanging;
-        public virtual void raisePropertyChanging(string propertyName)
-        {
-            BaseNotifyCalled = true;
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
-        }
+        BaseNotifyCalled = true;
+        PropertyChanging?.Invoke(this, new(propertyName));
     }
 }

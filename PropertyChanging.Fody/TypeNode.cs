@@ -5,10 +5,10 @@ public class TypeNode
 {
     public TypeNode()
     {
-        Nodes = new List<TypeNode>();
-        PropertyDependencies = new List<PropertyDependency>();
-        Mappings = new List<MemberMapping>();
-        PropertyDatas = new List<PropertyData>();
+        Nodes = new();
+        PropertyDependencies = new();
+        Mappings = new();
+        PropertyDatas = new();
     }
 
     public TypeDefinition TypeDefinition;

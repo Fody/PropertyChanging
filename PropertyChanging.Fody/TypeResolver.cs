@@ -4,7 +4,7 @@ using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
-    Dictionary<string, TypeDefinition> definitions = new Dictionary<string, TypeDefinition>();
+    Dictionary<string, TypeDefinition> definitions = new();
 
     public TypeDefinition Resolve(TypeReference reference)
     {
@@ -23,7 +23,7 @@ public partial class ModuleWeaver
         }
         catch (Exception exception)
         {
-            throw new Exception($"Could not resolve '{reference.FullName}'.", exception);
+            throw new($"Could not resolve '{reference.FullName}'.", exception);
         }
     }
 }

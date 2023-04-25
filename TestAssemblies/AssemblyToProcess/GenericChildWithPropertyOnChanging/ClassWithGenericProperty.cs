@@ -1,9 +1,8 @@
 using System.ComponentModel;
 
-namespace GenericChildWithPropertyOnChanging
+namespace GenericChildWithPropertyOnChanging;
+
+public class ClassWithGenericPropertyParent<T> : INotifyPropertyChanging
 {
-    public class ClassWithGenericPropertyParent<T> : INotifyPropertyChanging
-    {
-        public event PropertyChangingEventHandler PropertyChanging;
-    }
+    public event PropertyChangingEventHandler PropertyChanging;
 }

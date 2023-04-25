@@ -12,12 +12,13 @@ public partial class ModuleWeaver
         {
             return null;
         }
+
         var propertyNamesToNotify = GetPropertyNamesToNotify(notifyAttribute, property, allProperties);
 
-        return new NotifyPropertyData
-                   {
-                       AlsoNotifyFor = propertyNamesToNotify.ToList(),
-                   };
+        return new()
+        {
+            AlsoNotifyFor = propertyNamesToNotify.ToList(),
+        };
     }
 
     static IEnumerable<PropertyDefinition> GetPropertyNamesToNotify(CustomAttribute notifyAttribute, PropertyDefinition property, List<PropertyDefinition> allProperties)
@@ -27,8 +28,8 @@ public partial class ModuleWeaver
         yield return GetPropertyDefinition(property, allProperties, value);
         if (customAttributeArguments.Count > 1)
         {
-            var paramsArguments = (CustomAttributeArgument[]) customAttributeArguments[1].Value;
-            foreach (string argument in paramsArguments.Select(x=>x.Value))
+            var paramsArguments = (CustomAttributeArgument[])customAttributeArguments[1].Value;
+            foreach (string argument in paramsArguments.Select(x => x.Value))
             {
                 yield return GetPropertyDefinition(property, allProperties, argument);
             }
@@ -42,6 +43,7 @@ public partial class ModuleWeaver
         {
             throw new WeavingException($"Could not find property '{argument}' for AlsoNotifyFor attribute assigned to '{property.Name}'.");
         }
+
         return propertyDefinition;
     }
 }

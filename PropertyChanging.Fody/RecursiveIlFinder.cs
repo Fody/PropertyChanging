@@ -11,8 +11,8 @@ public class RecursiveIlFinder
     public RecursiveIlFinder(TypeDefinition typeDefinition)
     {
         this.typeDefinition = typeDefinition;
-        Instructions = new List<Instruction>();
-        processedMethods = new List<MethodDefinition>();
+        Instructions = new();
+        processedMethods = new();
     }
 
     public void Execute(MethodDefinition getMethod)
@@ -30,7 +30,7 @@ public class RecursiveIlFinder
                 continue;
             }
 
-            if (!(instruction.Operand is MethodDefinition methodDefinition))
+            if (instruction.Operand is not MethodDefinition methodDefinition)
             {
                 continue;
             }

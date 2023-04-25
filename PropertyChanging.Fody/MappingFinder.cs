@@ -20,11 +20,11 @@ public partial class ModuleWeaver
         foreach (var property in typeDefinition.Properties)
         {
             var fieldDefinition = TryGetField(typeDefinition, property);
-            yield return new MemberMapping
-                             {
-                                 PropertyDefinition = property,
-                                 FieldDefinition = fieldDefinition
-                             };
+            yield return new()
+            {
+                PropertyDefinition = property,
+                FieldDefinition = fieldDefinition
+            };
         }
     }
 
@@ -50,12 +50,14 @@ public partial class ModuleWeaver
             {
                 return field;
             }
+
             //underScore
             if (fieldUpper == "_" + upperPropertyName)
             {
                 return field;
             }
         }
+
         return GetSingleField(property);
     }
 
@@ -66,6 +68,7 @@ public partial class ModuleWeaver
         {
             return fieldDefinition;
         }
+
         return GetSingleField(property, Code.Ldfld, property.GetMethod);
     }
 
@@ -75,6 +78,7 @@ public partial class ModuleWeaver
         {
             return null;
         }
+
         FieldReference fieldReference = null;
         foreach (var instruction in methodDefinition.Body.Instructions)
         {
@@ -86,27 +90,32 @@ public partial class ModuleWeaver
                     return null;
                 }
 
-                if (!(instruction.Operand is FieldReference field))
+                if (instruction.Operand is not FieldReference field)
                 {
                     continue;
                 }
+
                 if (field.DeclaringType != property.DeclaringType)
                 {
                     continue;
                 }
+
                 if (field.FieldType != property.PropertyType)
                 {
                     continue;
                 }
+
                 var fieldDef = instruction.Operand as FieldDefinition;
                 var fieldAttributes = fieldDef?.Attributes & FieldAttributes.InitOnly;
                 if (fieldAttributes == FieldAttributes.InitOnly)
                 {
                     continue;
                 }
+
                 fieldReference = field;
             }
         }
+
         return fieldReference?.Resolve();
     }
 

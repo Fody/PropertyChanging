@@ -18,18 +18,20 @@ public static class CecilExtensions
             return false;
         }
 
-        if (!(instruction.Operand is MethodReference methodReference))
+        if (instruction.Operand is not MethodReference methodReference)
         {
             return false;
         }
+
         if (methodReference.Name != methodName)
         {
             return false;
         }
+
         var parameterDefinition = methodReference.Parameters.FirstOrDefault(x => x.Name == "propertyName");
         if (parameterDefinition != null)
         {
-            propertyNameIndex = methodReference.Parameters.Count- parameterDefinition.Index;
+            propertyNameIndex = methodReference.Parameters.Count - parameterDefinition.Index;
         }
 
         return true;
@@ -37,7 +39,7 @@ public static class CecilExtensions
 
     public static bool IsCall(this OpCode opCode)
     {
-        return opCode.Code == Code.Call || opCode.Code == Code.Callvirt;
+        return opCode.Code is Code.Call or Code.Callvirt;
     }
 
     public static FieldReference GetGeneric(this FieldDefinition definition)
@@ -49,7 +51,8 @@ public static class CecilExtensions
             {
                 declaringType.GenericArguments.Add(parameter);
             }
-            return new FieldReference(definition.Name, definition.FieldType, declaringType);
+
+            return new(definition.Name, definition.FieldType, declaringType);
         }
 
         return definition;
@@ -64,18 +67,19 @@ public static class CecilExtensions
             {
                 declaringType.GenericArguments.Add(parameter);
             }
+
             var methodReference = new MethodReference(reference.Name, reference.MethodReturnType.ReturnType, declaringType);
             foreach (var parameterDefinition in reference.Parameters)
             {
                 methodReference.Parameters.Add(parameterDefinition);
             }
+
             methodReference.HasThis = reference.HasThis;
             return methodReference;
         }
 
         return reference;
     }
-
 
     public static CustomAttribute GetAttribute(this IEnumerable<CustomAttribute> attributes, string attributeName)
     {
@@ -86,6 +90,4 @@ public static class CecilExtensions
     {
         return attributes.Any(attribute => attribute.Constructor.DeclaringType.FullName == attributeName);
     }
-
-
 }

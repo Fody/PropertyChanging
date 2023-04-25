@@ -1,16 +1,15 @@
-﻿namespace AssemblyWithBase.Simple
+﻿namespace AssemblyWithBase.Simple;
+
+using System.ComponentModel;
+
+public class BaseClassWithVirtualProperty : INotifyPropertyChanging
 {
-    using System.ComponentModel;
+    public event PropertyChangingEventHandler PropertyChanging;
 
-    public class BaseClassWithVirtualProperty : INotifyPropertyChanging
+    public virtual string Property1 { get; set; }
+
+    public virtual void OnPropertyChanging(string text1)
     {
-        public event PropertyChangingEventHandler PropertyChanging;
-
-        public virtual string Property1 { get; set; }
-
-        public virtual void OnPropertyChanging(string text1)
-        {
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(text1));
-        }
+        PropertyChanging?.Invoke(this, new(text1));
     }
 }

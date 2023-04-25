@@ -10,7 +10,7 @@ public class DelegateHolderInjector
     public void InjectDelegateHolder()
     {
         var attributes = TypeAttributes.AutoClass | TypeAttributes.AnsiClass | TypeAttributes.Sealed | TypeAttributes.NestedPrivate | TypeAttributes.BeforeFieldInit;
-        TypeDefinition = new TypeDefinition(null, "<>PropertyNotificationDelegateHolder", attributes, ModuleWeaver.TypeSystem.ObjectReference);
+        TypeDefinition = new(null, "<>PropertyNotificationDelegateHolder", attributes, ModuleWeaver.TypeSystem.ObjectReference);
         CreateFields(TargetTypeDefinition);
         CreateOnPropChanging(OnPropertyChangingMethodReference);
         CreateConstructor();
@@ -19,16 +19,16 @@ public class DelegateHolderInjector
 
     void CreateFields(TypeDefinition targetTypeDefinition)
     {
-        Target = new FieldDefinition("target", FieldAttributes.Public, targetTypeDefinition);
+        Target = new("target", FieldAttributes.Public, targetTypeDefinition);
         TypeDefinition.Fields.Add(Target);
-        PropertyName = new FieldDefinition("propertyName", FieldAttributes.Public, ModuleWeaver.TypeSystem.StringReference);
+        PropertyName = new("propertyName", FieldAttributes.Public, ModuleWeaver.TypeSystem.StringReference);
         TypeDefinition.Fields.Add(PropertyName);
     }
 
     void CreateOnPropChanging(MethodReference onPropertyChangingMethodReference)
     {
         var attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
-        MethodDefinition = new MethodDefinition("OnPropertyChanging", attributes, ModuleWeaver.TypeSystem.VoidReference);
+        MethodDefinition = new("OnPropertyChanging", attributes, ModuleWeaver.TypeSystem.VoidReference);
         MethodDefinition.Body.Instructions.Append(
             Instruction.Create(OpCodes.Ldarg_0),
             Instruction.Create(OpCodes.Ldfld, Target),
@@ -43,7 +43,7 @@ public class DelegateHolderInjector
     void CreateConstructor()
     {
         var attributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
-        ConstructorDefinition = new MethodDefinition(".ctor", attributes, ModuleWeaver.TypeSystem.VoidReference);
+        ConstructorDefinition = new(".ctor", attributes, ModuleWeaver.TypeSystem.VoidReference);
         ConstructorDefinition.Body.Instructions.Append(
             Instruction.Create(OpCodes.Ldarg_0),
             Instruction.Create(OpCodes.Call, ModuleWeaver.ObjectConstructor),

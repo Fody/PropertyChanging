@@ -18,7 +18,7 @@ public class ClassAlreadyHasSingleNotification : INotifyPropertyChanging
 
     public virtual void OnPropertyChanging(string propertyName)
     {
-        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        PropertyChanging?.Invoke(this, new(propertyName));
     }
 
     public event PropertyChangingEventHandler PropertyChanging;

@@ -29,16 +29,17 @@ public partial class ModuleWeaver
 
                 GetPropertyData(property, node);
             }
+
             WalkPropertyData(node.Nodes);
         }
     }
 
-      //if (AlreadyContainsNotification(propertyData.PropertyDefinition, node.EventInvoker.MethodReference.Name))
-      //          {
-      //              moduleWeaver.LogInfo(string.Format("\t{0} Already has notification functionality. Property will be ignored.", propertyData.PropertyDefinition.GetName()));
-      //              continue;
-      //          }
-    void GetPropertyData(PropertyDefinition propertyDefinition, TypeNode node)
+    //if (AlreadyContainsNotification(propertyData.PropertyDefinition, node.EventInvoker.MethodReference.Name))
+    //          {
+    //              moduleWeaver.LogInfo(string.Format("\t{0} Already has notification functionality. Property will be ignored.", propertyData.PropertyDefinition.GetName()));
+    //              continue;
+    //          }
+    static void GetPropertyData(PropertyDefinition propertyDefinition, TypeNode node)
     {
         var notifyPropertyData = ReadAlsoNotifyForData(propertyDefinition, node.AllProperties);
         var dependenciesForProperty = node.PropertyDependencies
@@ -52,14 +53,15 @@ public partial class ModuleWeaver
             {
                 return;
             }
-            node.PropertyDatas.Add(new PropertyData
-                                       {
-                                           BackingFieldReference = backingFieldReference,
-                                           PropertyDefinition = propertyDefinition,
-                                           // Compute full dependencies for the current property
-                                           AlsoNotifyFor = GetFullDependencies(propertyDefinition, dependenciesForProperty, node),
-                                           AlreadyNotifies = propertyDefinition.GetAlreadyNotifies(node.EventInvoker.MethodReference.Name).ToList()
-                                       });
+
+            node.PropertyDatas.Add(new()
+            {
+                BackingFieldReference = backingFieldReference,
+                PropertyDefinition = propertyDefinition,
+                // Compute full dependencies for the current property
+                AlsoNotifyFor = GetFullDependencies(propertyDefinition, dependenciesForProperty, node),
+                AlreadyNotifies = propertyDefinition.GetAlreadyNotifies(node.EventInvoker.MethodReference.Name).ToList()
+            });
             return;
         }
 
@@ -69,14 +71,15 @@ public partial class ModuleWeaver
 Looked for 'PropertyChanging', 'propertyChanging', '_PropertyChanging' and '_propertyChanging'.
 The most likely cause is that you have implemented a custom event accessor for the PropertyChanging event and have called the PropertyChangingEventHandler something stupid.");
         }
-        node.PropertyDatas.Add(new PropertyData
-                                   {
-                                       BackingFieldReference = backingFieldReference,
-                                       PropertyDefinition = propertyDefinition,
-                                       // Compute full dependencies for the current property
-                                       AlsoNotifyFor = GetFullDependencies(propertyDefinition, notifyPropertyData.AlsoNotifyFor.Union(dependenciesForProperty), node),
-                                       AlreadyNotifies = propertyDefinition.GetAlreadyNotifies(node.EventInvoker.MethodReference.Name).ToList()
-                                   });
+
+        node.PropertyDatas.Add(new()
+        {
+            BackingFieldReference = backingFieldReference,
+            PropertyDefinition = propertyDefinition,
+            // Compute full dependencies for the current property
+            AlsoNotifyFor = GetFullDependencies(propertyDefinition, notifyPropertyData.AlsoNotifyFor.Union(dependenciesForProperty), node),
+            AlreadyNotifies = propertyDefinition.GetAlreadyNotifies(node.EventInvoker.MethodReference.Name).ToList()
+        });
     }
 
     static List<PropertyDefinition> GetFullDependencies(PropertyDefinition propertyDefinition, IEnumerable<PropertyDefinition> dependenciesForProperty, TypeNode node)
@@ -114,12 +117,12 @@ The most likely cause is that you have implemented a custom event accessor for t
             {
                 continue;
             }
+
             fullDependencies.Add(dependentProperty);
 
             ComputeDependenciesRec(dependentProperty, fullDependencies, node);
         }
     }
-
 
     public void WalkPropertyData()
     {

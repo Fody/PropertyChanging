@@ -4,7 +4,7 @@ using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
-    Dictionary<string, bool> typeReferencesImplementingINotify = new Dictionary<string, bool>();
+    Dictionary<string, bool> typeReferencesImplementingINotify = new();
 
     public bool HierarchyImplementsINotify(TypeReference typeReference)
     {
@@ -58,16 +58,18 @@ public partial class ModuleWeaver
 
     static bool IsNamedPropertyChanging(EventDefinition eventDefinition)
     {
-        return eventDefinition.Name == "PropertyChanging" ||
-               eventDefinition.Name == "System.ComponentModel.INotifyPropertyChanging.PropertyChanging" ||
-               eventDefinition.Name == "Windows.UI.Xaml.Data.PropertyChanging";
+        return eventDefinition.Name is
+            "PropertyChanging" or
+            "System.ComponentModel.INotifyPropertyChanging.PropertyChanging" or
+            "Windows.UI.Xaml.Data.PropertyChanging";
     }
 
     public static bool IsPropertyChangingEventHandler(TypeReference typeReference)
     {
-        return typeReference.FullName == "System.ComponentModel.PropertyChangingEventHandler" ||
-               typeReference.FullName == "Windows.UI.Xaml.Data.PropertyChangingEventHandler" ||
-               typeReference.FullName == "System.Runtime.InteropServices.WindowsRuntime.EventRegistrationTokenTable`1<Windows.UI.Xaml.Data.PropertyChangingEventHandler>";
+        return typeReference.FullName is
+            "System.ComponentModel.PropertyChangingEventHandler" or
+            "Windows.UI.Xaml.Data.PropertyChangingEventHandler" or
+            "System.Runtime.InteropServices.WindowsRuntime.EventRegistrationTokenTable`1<Windows.UI.Xaml.Data.PropertyChangingEventHandler>";
     }
 
     static bool HasPropertyChangingField(TypeDefinition typeDefinition)

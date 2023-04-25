@@ -73,7 +73,7 @@ public partial class ModuleWeaver
                 x.Parameters.Count == 3);
         var genericCompareExchangeMethod = ModuleDefinition.ImportReference(genericCompareExchangeMethodDefinition);
 
-        InterlockedCompareExchangeForPropChangingHandler = new GenericInstanceMethod(genericCompareExchangeMethod);
+        InterlockedCompareExchangeForPropChangingHandler = new(genericCompareExchangeMethod);
         InterlockedCompareExchangeForPropChangingHandler.GenericArguments.Add(PropChangingHandlerReference);
     }
 }

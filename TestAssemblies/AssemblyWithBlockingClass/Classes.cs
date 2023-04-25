@@ -12,6 +12,6 @@ public class B : INotifyPropertyChanging
 
     public void OnPropertyChanging(string propertyName)
     {
-        PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+        PropertyChanging(this, new(propertyName));
     }
 }

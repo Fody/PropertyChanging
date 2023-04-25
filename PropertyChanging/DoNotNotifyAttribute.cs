@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace PropertyChanging
+namespace PropertyChanging;
+
+/// <summary>
+/// Exclude a <see cref="Type"/> or property from notification.
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Field, Inherited = false)]
+public class DoNotNotifyAttribute : Attribute
 {
-    /// <summary>
-    /// Exclude a <see cref="Type"/> or property from notification.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Field, Inherited = false)]
-    public class DoNotNotifyAttribute : Attribute
-    {
-    }
 }

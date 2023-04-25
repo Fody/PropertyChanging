@@ -20,6 +20,6 @@ public class ClassWithAlreadyNotifies : INotifyPropertyChanging
     void OnPropertyChanging(string propertyName)
     {
         var handler = PropertyChanging;
-        handler?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        handler?.Invoke(this, new(propertyName));
     }
 }

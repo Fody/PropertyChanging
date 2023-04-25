@@ -10,10 +10,12 @@ public class IndexerCheckerTest
         var checker = new ModuleWeaver();
         var propertyDefinition = DefinitionFinder.FindType<IndexerClass>().Properties.First();
 
-        var message = checker.CheckForWarning(new PropertyData
-        {
-            PropertyDefinition = propertyDefinition,
-        }, InvokerTypes.String);
+        var message = checker.CheckForWarning(
+            new()
+            {
+                PropertyDefinition = propertyDefinition,
+            },
+            InvokerTypes.String);
         Assert.NotNull(message);
     }
 
@@ -22,9 +24,7 @@ public class IndexerCheckerTest
         public string this[string i]
         {
             get => null;
-            set
-            {
-            }
+            set { }
         }
     }
 }

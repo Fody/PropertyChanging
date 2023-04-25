@@ -16,7 +16,7 @@ public class ClassAlreadyHasSingleNotificationDiffSignature : INotifyPropertyCha
 
     public virtual void OnPropertyChanging(string propertyName,int fake)
     {
-        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        PropertyChanging?.Invoke(this, new(propertyName));
     }
 
     public event PropertyChangingEventHandler PropertyChanging;

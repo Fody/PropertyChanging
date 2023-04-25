@@ -17,6 +17,6 @@ public partial class ModuleWeaver
 
     public void FindAllProperties()
     {
-        FindAllProperties(NotifyNodes, new List<PropertyDefinition>());
+        FindAllProperties(NotifyNodes, new());
     }
 }

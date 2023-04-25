@@ -29,12 +29,13 @@ public partial class ModuleWeaver
         {
             return;
         }
+
         var customAttributeArguments = dependsOnAttribute.ConstructorArguments.ToList();
-        var value = (string) customAttributeArguments[0].Value;
+        var value = (string)customAttributeArguments[0].Value;
         AddIfPropertyExists(property, value, node);
         if (customAttributeArguments.Count > 1)
         {
-            var otherValue = (CustomAttributeArgument[]) customAttributeArguments[1].Value;
+            var otherValue = (CustomAttributeArgument[])customAttributeArguments[1].Value;
             foreach (string other in otherValue.Select(x => x.Value))
             {
                 AddIfPropertyExists(property, other, node);
@@ -51,11 +52,12 @@ public partial class ModuleWeaver
             WriteInfo($"Could not find property '{isGeneratedUsingPropertyName}' for DependsOnAttribute assigned to '{targetProperty.Name}'.");
             return;
         }
-        node.PropertyDependencies.Add(new PropertyDependency
-                                          {
-                                              WhenPropertyIsSet = propertyDefinition,
-                                              ShouldAlsoNotifyFor = targetProperty
-                                          });
+
+        node.PropertyDependencies.Add(new()
+        {
+            WhenPropertyIsSet = propertyDefinition,
+            ShouldAlsoNotifyFor = targetProperty
+        });
     }
 
 

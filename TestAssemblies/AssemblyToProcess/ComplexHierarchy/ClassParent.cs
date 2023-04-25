@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace ComplexHierarchy
+namespace ComplexHierarchy;
+
+public class ClassParent: INotifyPropertyChanging
 {
-    public class ClassParent: INotifyPropertyChanging
-    {
-        public event PropertyChangingEventHandler PropertyChanging;
-    }
+    public event PropertyChangingEventHandler PropertyChanging;
 }

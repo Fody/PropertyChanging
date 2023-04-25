@@ -1,10 +1,10 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using PropertyChanging;
 
 public class ClassWithBeforeImplementation : INotifyPropertyChanging
 {
     public string Property1 { get; set; }
+
     [DependsOn("Property1")]
     public string Property2 { get; set; }
 
@@ -14,18 +14,20 @@ public class ClassWithBeforeImplementation : INotifyPropertyChanging
     {
         ValidateIsString(before);
 
-        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        PropertyChanging?.Invoke(this, new(propertyName));
     }
 
     static void ValidateIsString(object value)
     {
-        if (value != null)
+        if (value == null)
         {
-            var name = value.GetType().Name;
-            if (name != "String")
-            {
-                throw new Exception($"Value should be string but is '{name}'.");
-            }
+            return;
+        }
+
+        var name = value.GetType().Name;
+        if (name != "String")
+        {
+            throw new($"Value should be string but is '{name}'.");
         }
     }
 }

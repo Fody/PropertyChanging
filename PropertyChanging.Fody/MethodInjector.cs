@@ -21,14 +21,14 @@ public partial class ModuleWeaver
             }
             var methodDefinition = GetMethodDefinition(targetType, propertyChangingField);
 
-            return new EventInvokerMethod
+            return new()
             {
                 MethodReference = InjectInterceptedMethod(targetType, methodDefinition).GetGeneric(),
                 IsVisibleFromChildren = true,
                 InvokerType = InterceptorType,
             };
         }
-        return new EventInvokerMethod
+        return new()
         {
             MethodReference = InjectMethod(targetType, EventInvokerNames.First(), propertyChangingField).GetGeneric(),
             IsVisibleFromChildren = true,
@@ -50,7 +50,7 @@ public partial class ModuleWeaver
     MethodDefinition InjectMethod(TypeDefinition targetType, string eventInvokerName, FieldReference propertyChangingField)
     {
         var method = new MethodDefinition(eventInvokerName, GetMethodAttributes(targetType), TypeSystem.VoidReference);
-        method.Parameters.Add(new ParameterDefinition("propertyName", ParameterAttributes.None, TypeSystem.StringReference));
+        method.Parameters.Add(new("propertyName", ParameterAttributes.None, TypeSystem.StringReference));
 
         var handlerVariable = new VariableDefinition(PropChangingHandlerReference);
         method.Body.Variables.Add(handlerVariable);

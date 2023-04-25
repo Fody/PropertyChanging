@@ -4,15 +4,18 @@ using System.Linq;
 
 public partial class ModuleWeaver
 {
-    public List<string> EventInvokerNames = new List<string> { "OnPropertyChanging", "raisePropertyChanging" };
-
+    public List<string> EventInvokerNames = new()
+    {
+        "OnPropertyChanging",
+        "raisePropertyChanging"
+    };
 
     public void ResolveEventInvokerName()
     {
         var eventInvokerAttribute = Config?.Attributes("EventInvokerNames").FirstOrDefault();
         if (eventInvokerAttribute != null)
         {
-            EventInvokerNames.InsertRange(0,eventInvokerAttribute.Value.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).Where(x=>x.Length > 0).ToList());
+            EventInvokerNames.InsertRange(0, eventInvokerAttribute.Value.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).Where(x => x.Length > 0).ToList());
         }
     }
 }

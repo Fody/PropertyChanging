@@ -10,11 +10,13 @@ public class CheckForEqualityWithNoBackingFieldSetInfoCheckerTest
 
         var propertyDefinition = DefinitionFinder.FindProperty(() => WithBackingFieldProperty);
 
-        var warning = checker.CheckForWarning(new PropertyData
-        {
-            PropertyDefinition = propertyDefinition,
-            BackingFieldReference = propertyDefinition.DeclaringType.Fields[0]
-        }, InvokerTypes.String);
+        var warning = checker.CheckForWarning(
+            new()
+            {
+                PropertyDefinition = propertyDefinition,
+                BackingFieldReference = propertyDefinition.DeclaringType.Fields[0]
+            },
+            InvokerTypes.String);
         Assert.Null(warning);
     }
 
@@ -25,11 +27,13 @@ public class CheckForEqualityWithNoBackingFieldSetInfoCheckerTest
 
         var propertyDefinition = DefinitionFinder.FindProperty<CheckForEqualityWithNoBackingFieldSetInfoCheckerTest>("WithoutBackingFieldProperty");
 
-        var warning = checker.CheckForWarning(new PropertyData
-        {
-            PropertyDefinition = propertyDefinition,
-            BackingFieldReference = null,
-        }, InvokerTypes.String);
+        var warning = checker.CheckForWarning(
+            new()
+            {
+                PropertyDefinition = propertyDefinition,
+                BackingFieldReference = null,
+            },
+            InvokerTypes.String);
         Assert.NotNull(warning);
     }
 
@@ -37,8 +41,6 @@ public class CheckForEqualityWithNoBackingFieldSetInfoCheckerTest
 
     public int WithoutBackingFieldProperty
     {
-        set
-        {
-        }
+        set { }
     }
 }

@@ -11,7 +11,7 @@ public class ClassWithOwnImplementation : INotifyPropertyChanging
     public virtual void OnPropertyChanging(string propertyName)
     {
         baseNotifyCalled = true;
-        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        PropertyChanging?.Invoke(this, new(propertyName));
     }
 
 }

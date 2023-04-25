@@ -1,16 +1,13 @@
 ﻿using System.ComponentModel;
 
-namespace HierarchyBeforeAndSimple
+namespace HierarchyBeforeAndSimple;
+
+public class ClassBase : INotifyPropertyChanging
 {
-    public class ClassBase : INotifyPropertyChanging
-	{
+    public event PropertyChangingEventHandler PropertyChanging;
 
-		public event PropertyChangingEventHandler PropertyChanging;
-
-		public void OnPropertyChanging(string propertyName)
-		{
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
-		}
-
-	}
+    public void OnPropertyChanging(string propertyName)
+    {
+        PropertyChanging?.Invoke(this, new(propertyName));
+    }
 }

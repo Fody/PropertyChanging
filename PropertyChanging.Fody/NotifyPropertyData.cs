@@ -5,7 +5,7 @@ public class NotifyPropertyData
 {
     public NotifyPropertyData()
     {
-        AlsoNotifyFor = new List<PropertyDefinition>();
+        AlsoNotifyFor = new();
     }
 
     public List<PropertyDefinition> AlsoNotifyFor;

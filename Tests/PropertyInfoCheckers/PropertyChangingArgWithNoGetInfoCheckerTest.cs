@@ -3,46 +3,50 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable ConvertToAutoPropertyWhenPossible
 
-public class PropertyChangingArgWithNoGetInfoCheckerTest
-{
-    [Fact]
-    public void WithGet()
-    {
-        var checker = new ModuleWeaver();
+ public class PropertyChangingArgWithNoGetInfoCheckerTest
+ {
+     [Fact]
+     public void WithGet()
+     {
+         var checker = new ModuleWeaver();
 
-        var propertyDefinition = DefinitionFinder.FindProperty<PropertyChangingArgWithNoGetInfoCheckerTest>("PropertyWithGet");
+         var propertyDefinition = DefinitionFinder.FindProperty<PropertyChangingArgWithNoGetInfoCheckerTest>("PropertyWithGet");
 
-        var message = checker.CheckForWarning(new PropertyData
-                                                {
-                                                    PropertyDefinition = propertyDefinition,
-                                                }, InvokerTypes.PropertyChangingArg);
-        Assert.Null(message);
-    }
+         var message = checker.CheckForWarning(
+             new()
+             {
+                 PropertyDefinition = propertyDefinition,
+             },
+             InvokerTypes.PropertyChangingArg);
+         Assert.Null(message);
+     }
 
-    [Fact]
-    public void NoGet()
-    {
-        var checker = new ModuleWeaver();
+     [Fact]
+     public void NoGet()
+     {
+         var checker = new ModuleWeaver();
 
-        var propertyDefinition = DefinitionFinder.FindProperty<PropertyChangingArgWithNoGetInfoCheckerTest>("PropertyNoGet");
+         var propertyDefinition = DefinitionFinder.FindProperty<PropertyChangingArgWithNoGetInfoCheckerTest>("PropertyNoGet");
 
-        var message = checker.CheckForWarning(new PropertyData
-                                                {
-                                                    PropertyDefinition = propertyDefinition,
-                                                }, InvokerTypes.PropertyChangingArg);
-        Assert.NotNull(message);
-    }
+         var message = checker.CheckForWarning(
+             new()
+             {
+                 PropertyDefinition = propertyDefinition,
+             },
+             InvokerTypes.PropertyChangingArg);
+         Assert.NotNull(message);
+     }
 
-    string property;
+     string property;
 
-    public string PropertyNoGet
-    {
-        set => property = value;
-    }
-    public string PropertyWithGet
-    {
-        set => property = value;
-        get => property;
-    }
+     public string PropertyNoGet
+     {
+         set => property = value;
+     }
 
-}
+     public string PropertyWithGet
+     {
+         set => property = value;
+         get => property;
+     }
+ }

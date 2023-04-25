@@ -5,10 +5,9 @@ public partial class ModuleWeaver
 {
     public void InjectINotifyPropertyChangingInterface(TypeDefinition targetType)
     {
-        targetType.Interfaces.Add(new InterfaceImplementation(PropChangingInterfaceReference));
+        targetType.Interfaces.Add(new(PropChangingInterfaceReference));
         WeaveEvent(targetType);
     }
-
 
     // Thank you to Romain Verdier
     // largely copied from http://codingly.com/2008/11/10/introduction-a-monocecil-implementer-inotifypropertychanging/
@@ -39,7 +38,7 @@ public partial class ModuleWeaver
 
         var method = new MethodDefinition(methodName, Attributes, TypeSystem.VoidReference);
 
-        method.Parameters.Add(new ParameterDefinition("value", ParameterAttributes.None, PropChangingHandlerReference));
+        method.Parameters.Add(new("value", ParameterAttributes.None, PropChangingHandlerReference));
         var handlerVariable0 = new VariableDefinition(PropChangingHandlerReference);
         method.Body.Variables.Add(handlerVariable0);
         var handlerVariable1 = new VariableDefinition(PropChangingHandlerReference);

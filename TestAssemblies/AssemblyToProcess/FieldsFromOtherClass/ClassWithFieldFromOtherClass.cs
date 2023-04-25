@@ -6,7 +6,7 @@ public class ClassWithFieldFromOtherClass : INotifyPropertyChanging
 
     public ClassWithFieldFromOtherClass()
     {
-        otherClass = new OtherClass();
+        otherClass = new();
     }
 
     public string Property1

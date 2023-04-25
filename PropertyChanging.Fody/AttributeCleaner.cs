@@ -5,7 +5,7 @@ using Mono.Collections.Generic;
 
 public partial class ModuleWeaver
 {
-    List<string> propertyAttributeNames = new List<string>
+    List<string> propertyAttributeNames = new()
     {
         "PropertyChanging.DoNotNotifyAttribute",
         "PropertyChanging.AlsoNotifyForAttribute",

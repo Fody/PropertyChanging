@@ -12,25 +12,25 @@ public partial class ModuleWeaver
             var definition = typeDefinitions.Pop();
             methodReference = MakeGeneric(definition.BaseType, methodReference);
         }
+
         return methodReference;
     }
 
     public static MethodReference MakeGeneric(TypeReference declaringType, MethodReference self)
     {
         var reference = new MethodReference(self.Name, self.ReturnType)
-                            {
-                                DeclaringType = declaringType,
-                                HasThis = self.HasThis,
-                                ExplicitThis = self.ExplicitThis,
-                                CallingConvention = self.CallingConvention,
-                            };
+        {
+            DeclaringType = declaringType,
+            HasThis = self.HasThis,
+            ExplicitThis = self.ExplicitThis,
+            CallingConvention = self.CallingConvention,
+        };
 
         foreach (var parameter in self.Parameters)
         {
-            reference.Parameters.Add(new ParameterDefinition(parameter.ParameterType));
+            reference.Parameters.Add(new(parameter.ParameterType));
         }
 
         return reference;
     }
-
 }

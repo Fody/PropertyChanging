@@ -15,12 +15,12 @@ public partial class ModuleWeaver
             if (node.TypeDefinition.BaseType.IsGenericInstance)
             {
                 var methodReference = MakeGeneric(node.TypeDefinition.BaseType, eventInvoker.MethodReference);
-                eventInvoker = new EventInvokerMethod
-                                   {
-                                       InvokerType = eventInvoker.InvokerType,
-                                       MethodReference = methodReference,
-                                       IsVisibleFromChildren = eventInvoker.IsVisibleFromChildren
-                                   };
+                eventInvoker = new()
+                {
+                    InvokerType = eventInvoker.InvokerType,
+                    MethodReference = methodReference,
+                    IsVisibleFromChildren = eventInvoker.IsVisibleFromChildren
+                };
             }
         }
         else
@@ -33,6 +33,7 @@ public partial class ModuleWeaver
             var error = $"Cannot use '{eventInvoker.MethodReference.FullName}' in '{node.TypeDefinition.FullName}' since that method is not visible from the child class.";
             throw new WeavingException(error);
         }
+
         node.EventInvoker = eventInvoker;
 
         foreach (var childNode in node.Nodes)
@@ -54,21 +55,23 @@ public partial class ModuleWeaver
             {
                 break;
             }
+
             var baseType = currentTypeDefinition.BaseType;
 
             if (baseType == null || baseType.FullName == "System.Object")
             {
                 return null;
             }
+
             currentTypeDefinition = Resolve(baseType);
         } while (true);
 
-        return new EventInvokerMethod
-                   {
-                       MethodReference = GetMethodReference(typeDefinitions, methodDefinition),
-                       IsVisibleFromChildren = IsVisibleFromChildren(methodDefinition),
-                       InvokerType = ClassifyInvokerMethod(methodDefinition),
-                   };
+        return new()
+        {
+            MethodReference = GetMethodReference(typeDefinitions, methodDefinition),
+            IsVisibleFromChildren = IsVisibleFromChildren(methodDefinition),
+            InvokerType = ClassifyInvokerMethod(methodDefinition),
+        };
     }
 
 
@@ -76,18 +79,20 @@ public partial class ModuleWeaver
     {
         return methodDefinition.IsFamilyOrAssembly || methodDefinition.IsFamily || methodDefinition.IsFamilyAndAssembly || methodDefinition.IsPublic;
     }
+
     EventInvokerMethod FindEventInvokerMethod(TypeDefinition type)
     {
         if (FindEventInvokerMethodDefinition(type, out var methodDefinition))
         {
             var methodReference = ModuleDefinition.ImportReference(methodDefinition);
-            return new EventInvokerMethod
-                       {
-                           MethodReference = methodReference.GetGeneric(),
-                           IsVisibleFromChildren = IsVisibleFromChildren(methodDefinition),
-                           InvokerType = ClassifyInvokerMethod(methodDefinition),
-                       };
+            return new()
+            {
+                MethodReference = methodReference.GetGeneric(),
+                IsVisibleFromChildren = IsVisibleFromChildren(methodDefinition),
+                InvokerType = ClassifyInvokerMethod(methodDefinition),
+            };
         }
+
         return null;
     }
 
@@ -104,6 +109,7 @@ public partial class ModuleWeaver
                 .OrderByDescending(definition => definition.Parameters.Count)
                 .FirstOrDefault(x => IsBeforeMethod(x) || IsSingleStringMethod(x) || IsPropertyChangingArgMethod(x));
         }
+
         return methodDefinition != null;
     }
 
@@ -113,6 +119,7 @@ public partial class ModuleWeaver
         {
             return InvokerTypes.PropertyChangingArg;
         }
+
         if (IsBeforeMethod(method))
         {
             return InvokerTypes.Before;
@@ -168,5 +175,4 @@ public partial class ModuleWeaver
             }
         }
     }
-
 }

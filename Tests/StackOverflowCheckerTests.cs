@@ -8,7 +8,7 @@ public class StackOverflowCheckerTests
 
     public StackOverflowCheckerTests()
     {
-        stackOverflowChecker = new ModuleWeaver();
+        stackOverflowChecker = new();
     }
 
     [Fact]

@@ -11,7 +11,7 @@ public class ClassWithOnChangingBefore : INotifyPropertyChanging
     }
     public void OnPropertyChanging(string propertyName, object before)
     {
-        PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+        PropertyChanging(this, new(propertyName));
     }
 
     public event PropertyChangingEventHandler PropertyChanging;

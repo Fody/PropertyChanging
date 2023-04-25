@@ -11,7 +11,7 @@ public class MethodFinderTest
     {
         var codeBase = typeof(MethodFinderTest).Assembly.Location;
         var module = ModuleDefinition.ReadModule(codeBase);
-        methodFinder = new ModuleWeaver
+        methodFinder = new()
         {
             ModuleDefinition = module
         };

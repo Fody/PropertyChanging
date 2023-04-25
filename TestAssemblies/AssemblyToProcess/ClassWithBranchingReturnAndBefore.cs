@@ -25,6 +25,6 @@ public class ClassWithBranchingReturnAndBefore : INotifyPropertyChanging
 
     public void OnPropertyChanging(string propertyName, object before)
     {
-        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        PropertyChanging?.Invoke(this, new(propertyName));
     }
 }

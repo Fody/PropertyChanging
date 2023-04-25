@@ -1,6 +1,5 @@
-﻿namespace AssemblyWithBase.GenericFromAbove
+﻿namespace AssemblyWithBase.GenericFromAbove;
+
+public class BaseClass1<T>
 {
-    public class BaseClass1<T>
-    {
-    }
 }
