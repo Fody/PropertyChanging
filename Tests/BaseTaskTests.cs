@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Fody;
 using VerifyXunit;
 using Xunit;
+#pragma warning disable CS0618
 
 [UsesVerify]
 public class WeavingTaskTests
