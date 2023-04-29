@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Fody;
+using ICSharpCode.Decompiler.Metadata;
+using VerifyTests;
 using VerifyXunit;
 using Xunit;
 #pragma warning disable CS0618
@@ -14,9 +16,11 @@ public class WeavingTaskTests
 
     static WeavingTaskTests()
     {
+        VerifyICSharpCodeDecompiler.Initialize();
+
         var weavingTask = new ModuleWeaver();
         testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
-            ignoreCodes: new[] {"0x80131869"}
+            ignoreCodes: new[] { "0x80131869" }
 #if NETCOREAPP2_0
             , runPeVerify: false
 #endif
@@ -299,7 +303,7 @@ public class WeavingTaskTests
         EventTester.TestProperty(instance, "BoolProperty", true);
         EventTester.TestProperty(instance, "NullableBoolProperty", true);
         EventTester.TestProperty(instance, "ObjectProperty", "foo");
-        EventTester.TestProperty(instance, "ArrayProperty", new[] {"foo"});
+        EventTester.TestProperty(instance, "ArrayProperty", new[] { "foo" });
         EventTester.TestProperty(instance, "ShortProperty", (short)1);
         EventTester.TestProperty(instance, "UShortProperty", (ushort)1);
         EventTester.TestProperty(instance, "ByteProperty", (byte)1);
@@ -969,17 +973,19 @@ public class WeavingTaskTests
     [Fact]
     public async Task ClassWithNullableBackingFieldIl()
     {
-        var il = Ildasm.Decompile(testResult.AssemblyPath, "ClassWithNullableBackingField::set_IsFlag");
+        using var file = new PEFile(testResult.AssemblyPath);
+        var property = new PropertyToDisassemble(file, "ClassWithNullableBackingField", "IsFlag", PropertyParts.Setter);
 
-        await Verifier.Verify(il).UniqueForAssemblyConfiguration();
+        await Verifier.Verify(property).UniqueForAssemblyConfiguration();
     }
 
     [Fact]
     public async Task ClassWithNullableAutoPropertyIl()
     {
-        var il = Ildasm.Decompile(testResult.AssemblyPath, "ClassWithNullableAutoProperty::set_IsFlag");
+        using var file = new PEFile(testResult.AssemblyPath);
+        var property = new PropertyToDisassemble(file, "ClassWithNullableAutoProperty", "IsFlag", PropertyParts.Setter);
 
-        await Verifier.Verify(il).UniqueForAssemblyConfiguration();
+        await Verifier.Verify(property).UniqueForAssemblyConfiguration();
     }
 #endif // NETFRAMEWORK
 }
