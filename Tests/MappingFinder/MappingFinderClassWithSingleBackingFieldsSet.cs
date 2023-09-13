@@ -7,8 +7,8 @@ public class MappingFinderClassWithSingleBackingFieldsSet
     public void Run()
     {
         var memberMappings = ModuleWeaver.GetMappings(DefinitionFinder.FindType<ClassWithSingleBackingFieldsSet>()).ToList();
-        Assert.Equal("propertyA", memberMappings.First(x => x.PropertyDefinition.Name == "Property1").FieldDefinition.Name);
-        Assert.Equal("propertyB", memberMappings.First(x => x.PropertyDefinition.Name == "Property2").FieldDefinition.Name);
+        Assert.Equal("propertyA", memberMappings.First(_ => _.PropertyDefinition.Name == "Property1").FieldDefinition.Name);
+        Assert.Equal("propertyB", memberMappings.First(_ => _.PropertyDefinition.Name == "Property2").FieldDefinition.Name);
     }
 
     public class ClassWithSingleBackingFieldsSet

@@ -74,7 +74,7 @@ public partial class ModuleWeaver
 
     static bool HasPropertyChangingField(TypeDefinition typeDefinition)
     {
-        foreach (var fieldType in typeDefinition.Fields.Select(x => x.FieldType))
+        foreach (var fieldType in typeDefinition.Fields.Select(_ => _.FieldType))
         {
             if (fieldType.FullName == "Microsoft.FSharp.Control.FSharpEvent`2<System.ComponentModel.PropertyChangingEventHandler,System.ComponentModel.PropertyChangingEventArgs>")
             {

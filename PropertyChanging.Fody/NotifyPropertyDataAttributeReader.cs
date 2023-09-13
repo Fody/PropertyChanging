@@ -29,7 +29,7 @@ public partial class ModuleWeaver
         if (customAttributeArguments.Count > 1)
         {
             var paramsArguments = (CustomAttributeArgument[])customAttributeArguments[1].Value;
-            foreach (string argument in paramsArguments.Select(x => x.Value))
+            foreach (string argument in paramsArguments.Select(_ => _.Value))
             {
                 yield return GetPropertyDefinition(property, allProperties, argument);
             }
@@ -38,7 +38,7 @@ public partial class ModuleWeaver
 
     static PropertyDefinition GetPropertyDefinition(PropertyDefinition property, List<PropertyDefinition> allProperties, string argument)
     {
-        var propertyDefinition = allProperties.FirstOrDefault(x => x.Name == argument);
+        var propertyDefinition = allProperties.FirstOrDefault(_ => _.Name == argument);
         if (propertyDefinition == null)
         {
             throw new WeavingException($"Could not find property '{argument}' for AlsoNotifyFor attribute assigned to '{property.Name}'.");

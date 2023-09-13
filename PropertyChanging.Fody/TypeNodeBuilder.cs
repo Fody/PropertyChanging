@@ -12,7 +12,7 @@ public partial class ModuleWeaver
     {
         allClasses= ModuleDefinition
             .GetTypes()
-            .Where(x => x.IsClass && x.BaseType != null)
+            .Where(_ => _.IsClass && x.BaseType != null)
             .ToList();
         Nodes = new();
         NotifyNodes = new();

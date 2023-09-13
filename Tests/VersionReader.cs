@@ -22,7 +22,7 @@ public class VersionReader
     void GetFrameworkVersion(XDocument xDocument)
     {
         FrameworkVersionAsString = xDocument.Descendants("TargetFrameworkVersion")
-            .Select(c => c.Value)
+            .Select(_ => _.Value)
             .First();
         FrameworkVersionAsNumber = Version.Parse(FrameworkVersionAsString.Remove(0, 1));
     }
@@ -31,14 +31,14 @@ public class VersionReader
     void GetTargetFrameworkProfile(XDocument xDocument)
     {
         TargetFrameworkProfile = xDocument.Descendants("TargetFrameworkProfile")
-            .Select(c => c.Value)
+            .Select(_ => _.Value)
             .FirstOrDefault();
     }
 
     void GetTargetFSharpCoreVersion(XDocument xDocument)
     {
         TargetFSharpCoreVersion = xDocument.Descendants("TargetFSharpCoreVersion")
-            .Select(c => c.Value)
+            .Select(_ => _.Value)
             .FirstOrDefault();
         if (TargetFSharpCoreVersion != null)
         {

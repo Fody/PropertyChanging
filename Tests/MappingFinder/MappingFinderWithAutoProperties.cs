@@ -7,8 +7,8 @@ public class MappingFinderWithAutoProperties
     public void Run()
     {
         var memberMappings = ModuleWeaver.GetMappings(DefinitionFinder.FindType<ClassWithAutoProperties>()).ToList();
-        Assert.Equal("<Property1>k__BackingField", memberMappings.First(x => x.PropertyDefinition.Name == "Property1").FieldDefinition.Name);
-        Assert.Equal("<Property2>k__BackingField", memberMappings.First(x => x.PropertyDefinition.Name == "Property2").FieldDefinition.Name);
+        Assert.Equal("<Property1>k__BackingField", memberMappings.First(_ => _.PropertyDefinition.Name == "Property1").FieldDefinition.Name);
+        Assert.Equal("<Property2>k__BackingField", memberMappings.First(_ => _.PropertyDefinition.Name == "Property2").FieldDefinition.Name);
     }
 
     public class ClassWithAutoProperties

@@ -15,7 +15,7 @@ public partial class ModuleWeaver
         var stringEquals = TypeSystem
             .StringDefinition
             .Methods
-            .First(x => x.IsStatic &&
+            .First(_ => _.IsStatic &&
                 x.Name == "Equals" &&
                 x.Parameters.Count == 3 &&
                 x.Parameters[0].ParameterType.Name == "String" &&
@@ -27,7 +27,7 @@ public partial class ModuleWeaver
                                             .ParameterType
                                             .Resolve()
                                             .Fields
-                                            .First(x => x.Name == "Ordinal")
+                                            .First(_ => _.Name == "Ordinal")
                                             .Constant;
     }
 
@@ -104,7 +104,7 @@ public partial class ModuleWeaver
 
     static MethodReference FindNamedMethod(TypeDefinition typeDefinition, string methodName)
     {
-        return typeDefinition.Methods.FirstOrDefault(x => x.Name == methodName &&
+        return typeDefinition.Methods.FirstOrDefault(_ => _.Name == methodName &&
                                                           x.IsStatic &&
                                                           x.ReturnType.Name == "Boolean" &&
                                                           x.HasParameters &&

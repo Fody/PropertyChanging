@@ -142,7 +142,7 @@ public class PropertyWeaver
         }
         var onChangingMethod = typeNode
             .OnChangingMethods
-            .FirstOrDefault(x => x.Name == onChangingMethodName);
+            .FirstOrDefault(_ => _.Name == onChangingMethodName);
         if (onChangingMethod == null)
         {
             return index;
@@ -152,9 +152,9 @@ public class PropertyWeaver
 
     bool ContainsCallToMethod(string onChangingMethodName)
     {
-        return instructions.Select(x => x.Operand)
+        return instructions.Select(_ => _.Operand)
             .OfType<MethodReference>()
-            .Any(x => x.Name == onChangingMethodName);
+            .Any(_ => _.Name == onChangingMethodName);
     }
 
     int AddSimpleInvokerCall(int index, PropertyDefinition property)

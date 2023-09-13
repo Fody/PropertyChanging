@@ -7,8 +7,8 @@ public class MappingFinderClassWithUnderScoreBackingFields
     public void WithLowerUnderScoreBackingFields()
     {
         var memberMappings = ModuleWeaver.GetMappings(DefinitionFinder.FindType<ClassWithUnderScoreBackingFields>()).ToList();
-        Assert.Equal("_property1", memberMappings.First(x => x.PropertyDefinition.Name == "Property1").FieldDefinition.Name);
-        Assert.Equal("_property2", memberMappings.First(x => x.PropertyDefinition.Name == "Property2").FieldDefinition.Name);
+        Assert.Equal("_property1", memberMappings.First(_ => _.PropertyDefinition.Name == "Property1").FieldDefinition.Name);
+        Assert.Equal("_property2", memberMappings.First(_ => _.PropertyDefinition.Name == "Property2").FieldDefinition.Name);
     }
 
     public class ClassWithUnderScoreBackingFields
