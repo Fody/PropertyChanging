@@ -16,11 +16,11 @@ public partial class ModuleWeaver
             .StringDefinition
             .Methods
             .First(_ => _.IsStatic &&
-                x.Name == "Equals" &&
-                x.Parameters.Count == 3 &&
-                x.Parameters[0].ParameterType.Name == "String" &&
-                x.Parameters[1].ParameterType.Name == "String" &&
-                x.Parameters[2].ParameterType.Name == "StringComparison");
+                _.Name == "Equals" &&
+                _.Parameters.Count == 3 &&
+                _.Parameters[0].ParameterType.Name == "String" &&
+                _.Parameters[1].ParameterType.Name == "String" &&
+                _.Parameters[2].ParameterType.Name == "StringComparison");
         StringEquals = ModuleDefinition.ImportReference(stringEquals);
         OrdinalStringComparison = (int) StringEquals
                                             .Parameters[2]
@@ -104,12 +104,13 @@ public partial class ModuleWeaver
 
     static MethodReference FindNamedMethod(TypeDefinition typeDefinition, string methodName)
     {
-        return typeDefinition.Methods.FirstOrDefault(_ => _.Name == methodName &&
-                                                          x.IsStatic &&
-                                                          x.ReturnType.Name == "Boolean" &&
-                                                          x.HasParameters &&
-                                                          x.Parameters.Count == 2 &&
-                                                          x.Parameters[0].ParameterType == typeDefinition &&
-                                                          x.Parameters[1].ParameterType == typeDefinition);
+        return typeDefinition.Methods
+            .FirstOrDefault(_ => _.Name == methodName &&
+                                 _.IsStatic &&
+                                 _.ReturnType.Name == "Boolean" &&
+                                 _.HasParameters &&
+                                 _.Parameters.Count == 2 &&
+                                 _.Parameters[0].ParameterType == typeDefinition &&
+                                 _.Parameters[1].ParameterType == typeDefinition);
     }
 }
