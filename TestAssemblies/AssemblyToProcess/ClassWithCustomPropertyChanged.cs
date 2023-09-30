@@ -19,5 +19,4 @@ public class ClassWithCustomPropertyChanging : INotifyPropertyChanging
     }
 
     public string Property1 { get; set; }
-
 }

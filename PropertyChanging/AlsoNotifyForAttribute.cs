@@ -25,6 +25,5 @@ public class AlsoNotifyForAttribute : Attribute
     public AlsoNotifyForAttribute(string property, params string[] otherProperties)
     {
     }
-
 }
 // ReSharper restore UnusedParameter.Local

@@ -103,5 +103,4 @@ public class EqualityCheckWeaver
                 Instruction.Create(OpCodes.Ret));
         }
     }
-
 }
