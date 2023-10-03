@@ -60,9 +60,8 @@ public class MethodFinderTest
         Assert.Null(methodFinder.RecursiveFindEventInvoker(definitionToProcess));
     }
 
-    public class NoMethod
-    {
-    }
+    public class NoMethod;
+
     [Fact]
     public void NoParamsTest()
     {

@@ -62,6 +62,7 @@ public class AlreadyNotifyFinderTest
             set => OnPropertyChanging("WithNotificationProperty");
         }
 
+        // ReSharper disable once MemberCanBeMadeStatic.Local
         void OnPropertyChanging(string property)
         {
         }
@@ -79,6 +80,7 @@ public class AlreadyNotifyFinderTest
             }
         }
 
+        // ReSharper disable once MemberCanBeMadeStatic.Local
         void OnPropertyChanging(string property)
         {
         }

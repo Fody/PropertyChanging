@@ -7,6 +7,4 @@ namespace PropertyChanging;
 /// The INotifyPropertyChanging interface is added to the type.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public class ImplementPropertyChangingAttribute : Attribute
-{
-}
+public class ImplementPropertyChangingAttribute : Attribute;

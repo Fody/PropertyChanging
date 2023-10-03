@@ -1,6 +1,4 @@
 ﻿namespace AssemblyWithBase.BaseWithGenericParent;
 
-public class BaseClass2 : BaseClass1<object>
-{
-
-}
+public class BaseClass2 :
+    BaseClass1<object>;

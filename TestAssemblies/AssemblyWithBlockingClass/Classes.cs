@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-public class A : ObservableCollection<string>
-{
-}
-public class B : INotifyPropertyChanging
+public class A :
+    ObservableCollection<string>;
+
+public class B :
+    INotifyPropertyChanging
 {
     public string Property1 { get; set; }
 

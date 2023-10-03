@@ -38,10 +38,12 @@ public partial class ModuleWeaver
             InterceptorType = InvokerTypes.Before;
             return;
         }
-        var message = $@"Found '{typeDefinition.FullName}.Intercept' But the signature is not correct. It needs to be either.
-Intercept(object target, Action firePropertyChanging, string propertyName)
-or
-Intercept(object target, Action firePropertyChanging, string propertyName, object before)";
+        var message = $"""
+                       Found '{typeDefinition.FullName}.Intercept' But the signature is not correct. It needs to be either.
+                       Intercept(object target, Action firePropertyChanging, string propertyName)
+                       or
+                       Intercept(object target, Action firePropertyChanging, string propertyName, object before)
+                       """;
         throw new WeavingException(message);
     }
 

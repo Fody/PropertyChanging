@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-public class ClassWithGenericAndLambda<T> : INotifyPropertyChanging
+public class ClassWithGenericAndLambda<T> :
+    INotifyPropertyChanging
 {
     public event PropertyChangingEventHandler PropertyChanging;
 
@@ -14,6 +15,5 @@ public class ClassWithGenericAndLambda<T> : INotifyPropertyChanging
         list.First(container => container == data);
     }
 }
-public class ClassWithGenericAndLambdaImp : ClassWithGenericAndLambda<object>
-{
-}
+public class ClassWithGenericAndLambdaImp :
+    ClassWithGenericAndLambda<object>;

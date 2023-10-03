@@ -1,3 +1,2 @@
-﻿public class ClassWithGenericChild : ClassWithGenericParent<string>
-{
-}
+﻿public class ClassWithGenericChild :
+    ClassWithGenericParent<string>;

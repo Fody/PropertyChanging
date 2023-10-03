@@ -1,5 +1,4 @@
 ﻿namespace GenericBaseWithPropertyBefore;
 
-public class ClassWithGenericPropertyChild : ClassWithGenericPropertyParent<string>
-{
-}
+public class ClassWithGenericPropertyChild :
+    ClassWithGenericPropertyParent<string>;

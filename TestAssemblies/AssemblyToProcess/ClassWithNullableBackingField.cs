@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 
-public class ClassWithNullableBackingField : INotifyPropertyChanging
+public class ClassWithNullableBackingField :
+    INotifyPropertyChanging
 {
     // Issue 156
 
@@ -12,6 +13,7 @@ public class ClassWithNullableBackingField : INotifyPropertyChanging
         set => _isFlag = value;
     }
 
+    // ReSharper disable once MemberCanBeMadeStatic.Local
     bool GetFlag() => false;
 
     public event PropertyChangingEventHandler PropertyChanging;
