@@ -56,21 +56,21 @@ public partial class ModuleWeaver
 
         var delegateDefinition = FindTypeDefinition("System.Delegate");
         var combineMethodDefinition = delegateDefinition.Methods
-            .Single(x =>
-                x.Name == "Combine" &&
-                x.Parameters.Count == 2 &&
-                x.Parameters.All(_ => _.ParameterType == delegateDefinition));
+            .Single(_ =>
+                _.Name == "Combine" &&
+                _.Parameters.Count == 2 &&
+                _.Parameters.All(_ => _.ParameterType == delegateDefinition));
         DelegateCombineMethodRef = ModuleDefinition.ImportReference(combineMethodDefinition);
         var removeMethodDefinition = delegateDefinition.Methods.First(_ => _.Name == "Remove");
         DelegateRemoveMethodRef = ModuleDefinition.ImportReference(removeMethodDefinition);
 
         var interlockedDefinition = FindTypeDefinition("System.Threading.Interlocked");
         var genericCompareExchangeMethodDefinition = interlockedDefinition
-            .Methods.First(x =>
-                x.IsStatic &&
-                x.Name == "CompareExchange" &&
-                x.GenericParameters.Count == 1 &&
-                x.Parameters.Count == 3);
+            .Methods.First(_ =>
+                _.IsStatic &&
+                _.Name == "CompareExchange" &&
+                _.GenericParameters.Count == 1 &&
+                _.Parameters.Count == 3);
         var genericCompareExchangeMethod = ModuleDefinition.ImportReference(genericCompareExchangeMethodDefinition);
 
         InterlockedCompareExchangeForPropChangingHandler = new(genericCompareExchangeMethod);

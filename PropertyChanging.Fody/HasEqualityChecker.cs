@@ -21,7 +21,7 @@ public static class HasEqualityChecker
         {
             return false;
         }
-        if (firstFive.All(x => !x.IsEquality()))
+        if (firstFive.All(_ => !_.IsEquality()))
         {
             return false;
         }

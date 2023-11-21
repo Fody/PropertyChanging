@@ -120,7 +120,7 @@ public class IlGeneratedByDependencyReader
         {
             if (instruction.Operand is FieldReference fieldReference)
             {
-                var mapping = node.Mappings.FirstOrDefault(x => fieldComparer(fieldReference, x.FieldDefinition));
+                var mapping = node.Mappings.FirstOrDefault(_ => fieldComparer(fieldReference, _.FieldDefinition));
                 if (mapping != null)
                 {
                     propertyDefinition = mapping.PropertyDefinition;

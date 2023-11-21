@@ -99,15 +99,15 @@ public partial class ModuleWeaver
     bool FindEventInvokerMethodDefinition(TypeDefinition type, out MethodDefinition methodDefinition)
     {
         methodDefinition = type.Methods
-            .Where(x => (x.IsFamily || x.IsFamilyAndAssembly || x.IsPublic || x.IsFamilyOrAssembly) && EventInvokerNames.Contains(x.Name))
+            .Where(_ => (_.IsFamily || _.IsFamilyAndAssembly || _.IsPublic || _.IsFamilyOrAssembly) && EventInvokerNames.Contains(_.Name))
             .OrderByDescending(definition => definition.Parameters.Count)
-            .FirstOrDefault(x => IsBeforeMethod(x) || IsSingleStringMethod(x) || IsPropertyChangingArgMethod(x));
+            .FirstOrDefault(_ => IsBeforeMethod(_) || IsSingleStringMethod(_) || IsPropertyChangingArgMethod(_));
         if (methodDefinition == null)
         {
             methodDefinition = type.Methods
-                .Where(x => EventInvokerNames.Contains(x.Name))
+                .Where(_ => EventInvokerNames.Contains(_.Name))
                 .OrderByDescending(definition => definition.Parameters.Count)
-                .FirstOrDefault(x => IsBeforeMethod(x) || IsSingleStringMethod(x) || IsPropertyChangingArgMethod(x));
+                .FirstOrDefault(_ => IsBeforeMethod(_) || IsSingleStringMethod(_) || IsPropertyChangingArgMethod(_));
         }
 
         return methodDefinition != null;

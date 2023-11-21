@@ -22,11 +22,11 @@ public partial class ModuleWeaver
     {
         var methods = notifyNode.TypeDefinition.Methods;
 
-        return methods.Where(x => !x.IsStatic &&
-                                  !x.IsAbstract &&
-                                  x.Parameters.Count == 0 &&
-                                  x.Name.StartsWith("On") &&
-                                  x.Name.EndsWith("Changing"))
+        return methods.Where(_ => !_.IsStatic &&
+                                  !_.IsAbstract &&
+                                  _.Parameters.Count == 0 &&
+                                  _.Name.StartsWith("On") &&
+                                  _.Name.EndsWith("Changing"))
             .Select(methodDefinition =>
             {
                 var typeDefinitions = new Stack<TypeDefinition>();
