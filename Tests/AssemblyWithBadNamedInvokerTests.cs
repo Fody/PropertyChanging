@@ -1,7 +1,4 @@
-﻿using Fody;
-using Xunit;
-
-public class AssemblyWithBadNamedInvokerTests
+﻿public class AssemblyWithBadNamedInvokerTests
 {
     //TODO
    // [Fact]

@@ -1,5 +1,4 @@
 ﻿using PropertyChanging;
-using Xunit;
 
 public class DependsOnDataAttributeReaderTests
 {

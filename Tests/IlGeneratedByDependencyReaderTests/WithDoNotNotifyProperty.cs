@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using PropertyChanging;
-using Xunit;
 
 public class WithDoNotNotifyProperty
 {

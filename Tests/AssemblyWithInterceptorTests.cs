@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using Fody;
-using Xunit;
 
 public class AssemblyWithInterceptorTests
 {

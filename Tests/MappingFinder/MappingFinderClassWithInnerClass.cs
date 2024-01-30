@@ -1,5 +1,5 @@
 using System.Linq;
-using Xunit;
+
 #pragma warning disable 649
 
 public class MappingFinderClassWithInnerClass

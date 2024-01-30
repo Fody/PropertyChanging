@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using Fody;
-using ICSharpCode.Decompiler.Metadata;
-using VerifyTests;
-using VerifyXunit;
-using Xunit;
-#pragma warning disable CS0618
+﻿#pragma warning disable CS0618
 
-[UsesVerify]
 public class WeavingTaskTests
 {
     static TestResult testResult;

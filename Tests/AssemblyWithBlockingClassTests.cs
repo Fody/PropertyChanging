@@ -1,7 +1,4 @@
-﻿using Fody;
-using Xunit;
-
-public class AssemblyWithBlockingClassTests
+﻿public class AssemblyWithBlockingClassTests
 {
     [Fact]
     public void TestClassIsNotBlocked()

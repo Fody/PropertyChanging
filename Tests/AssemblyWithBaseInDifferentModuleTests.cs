@@ -1,7 +1,4 @@
-﻿using Fody;
-using Xunit;
-
-public class AssemblyWithBaseInDifferentModuleTests
+﻿public class AssemblyWithBaseInDifferentModuleTests
 {
     TestResult testResult;
 

@@ -1,7 +1,4 @@
-﻿using Fody;
-using Xunit;
-
-public class AssemblyUsingAttributeWrongTests
+﻿public class AssemblyUsingAttributeWrongTests
 {
     //TODO
     //[Fact]
