@@ -4,8 +4,8 @@
 
     public AssemblyWithBaseInDifferentModuleTests()
     {
-        var weavingTask = new ModuleWeaver();
-        testResult = weavingTask.ExecuteTestRun("AssemblyWithBaseInDifferentModule.dll", ignoreCodes: new[] { "0x80131869" });
+        var weaver = new ModuleWeaver();
+        testResult = weaver.ExecuteTestRun("AssemblyWithBaseInDifferentModule.dll", ignoreCodes: new[] { "0x80131869" });
     }
 
     [Fact]

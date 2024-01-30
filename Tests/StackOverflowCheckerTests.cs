@@ -12,8 +12,8 @@ public class StackOverflowCheckerTests
     [Fact]
     public void CanDetectStackOverflow()
     {
-        var weavingTask = new ModuleWeaver();
-        Assert.Throws<WeavingException>(() => { weavingTask.ExecuteTestRun("AssemblyWithStackOverflow.dll"); });
+        var weaver = new ModuleWeaver();
+        Assert.Throws<WeavingException>(() => { weaver.ExecuteTestRun("AssemblyWithStackOverflow.dll"); });
     }
 
     [Theory]

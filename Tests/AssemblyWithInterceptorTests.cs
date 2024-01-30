@@ -5,8 +5,8 @@ public class AssemblyWithInterceptorTests
     [Fact]
     public void Simple()
     {
-        var weavingTask = new ModuleWeaver();
-        var testResult = weavingTask.ExecuteTestRun("AssemblyWithInterceptor.dll",
+        var weaver = new ModuleWeaver();
+        var testResult = weaver.ExecuteTestRun("AssemblyWithInterceptor.dll",
             ignoreCodes: new[] {"0x80131869"});
 
         var assembly = testResult.Assembly;
@@ -21,8 +21,8 @@ public class AssemblyWithInterceptorTests
     [Fact]
     public void Before()
     {
-        var weavingTask = new ModuleWeaver();
-        var testResult = weavingTask.ExecuteTestRun("AssemblyWithBeforeInterceptor.dll",
+        var weaver = new ModuleWeaver();
+        var testResult = weaver.ExecuteTestRun("AssemblyWithBeforeInterceptor.dll",
             ignoreCodes: new[] {"0x80131869"});
         var assembly = testResult.Assembly;
         var instance = assembly.GetInstance("ClassToTest");

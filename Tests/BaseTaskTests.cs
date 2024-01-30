@@ -8,8 +8,9 @@ public class WeavingTaskTests
     {
         VerifyICSharpCodeDecompiler.Initialize();
 
-        var weavingTask = new ModuleWeaver();
-        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+        var weaver = new ModuleWeaver();
+        testResult = weaver.ExecuteTestRun(
+            "AssemblyToProcess.dll",
             ignoreCodes: new[] { "0x80131869" }
 #if NETCOREAPP2_0
             , runPeVerify: false

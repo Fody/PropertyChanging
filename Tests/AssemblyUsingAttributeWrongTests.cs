@@ -4,10 +4,10 @@
     //[Fact]
     public void Foo()
     {
-        var weavingTask = new ModuleWeaver();
+        var weaver = new ModuleWeaver();
         Assert.Throws<WeavingException>(() =>
         {
-            weavingTask.ExecuteTestRun("AssemblyUsingAttributeWrong.dll");
+            weaver.ExecuteTestRun("AssemblyUsingAttributeWrong.dll");
         });
     }
 }
