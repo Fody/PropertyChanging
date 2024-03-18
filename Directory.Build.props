@@ -5,5 +5,7 @@
     <Version>1.30.3</Version>
     <LangVersion>preview</LangVersion>
     <ResolveAssemblyReferencesSilent>true</ResolveAssemblyReferencesSilent>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
   </PropertyGroup>
 </Project>
