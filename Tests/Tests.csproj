@@ -25,5 +25,6 @@
     <ProjectReference Include="..\TestAssemblies\AssemblyWithBlockingClass\AssemblyWithBlockingClass.csproj" />
     <ProjectReference Include="..\TestAssemblies\AssemblyWithInterceptor\AssemblyWithInterceptor.csproj" />
     <ProjectReference Include="..\TestAssemblies\AssemblyWithStackOverflow\AssemblyWithStackOverflow.csproj" />
+    <ProjectReference Include="..\TestAssemblies\AssemblyWithSetterSideEffects\AssemblyWithSetterSideEffects.csproj" />
   </ItemGroup>
 </Project>
