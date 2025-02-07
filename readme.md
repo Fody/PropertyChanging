@@ -123,3 +123,14 @@ public class Person : INotifyPropertyChanging
 ## Icon
 
 Icon courtesy of [The Noun Project](https://thenounproject.com)
+
+
+## Notes
+
+If using .NET Framework & VB.NET, you will most likely need to insert the following into your .vbproj file:
+
+```xml
+<Reference Include="mscorlib" />
+<Reference Include="System" />
+<Reference Include="Microsoft.VisualBasic" />
+```
