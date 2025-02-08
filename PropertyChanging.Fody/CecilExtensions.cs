@@ -90,4 +90,22 @@ public static class CecilExtensions
     {
         return attributes.Any(attribute => attribute.Constructor.DeclaringType.FullName == attributeName);
     }
+
+    public static IEnumerable<CustomAttribute> GetAllCustomAttributes(this TypeDefinition typeDefinition)
+    {
+        foreach (var attribute in typeDefinition.CustomAttributes)
+        {
+            yield return attribute;
+        }
+
+        if (typeDefinition.BaseType is not TypeDefinition baseDefinition)
+        {
+            yield break;
+        }
+
+        foreach (var attribute in baseDefinition.GetAllCustomAttributes())
+        {
+            yield return attribute;
+        }
+    }
 }

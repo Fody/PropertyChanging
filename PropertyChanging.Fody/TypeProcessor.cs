@@ -34,7 +34,7 @@ public partial class ModuleWeaver
 
                 if (!alreadyHasEquality)
                 {
-                    var equalityCheckWeaver = new EqualityCheckWeaver(propertyData, this);
+                    var equalityCheckWeaver = new EqualityCheckWeaver(propertyData, node.TypeDefinition, this);
                     equalityCheckWeaver.Execute();
                 }
 

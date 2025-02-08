@@ -6,12 +6,14 @@ using Mono.Collections.Generic;
 public class EqualityCheckWeaver
 {
     PropertyData propertyData;
+    TypeDefinition typeDefinition;
     ModuleWeaver typeEqualityFinder;
     Collection<Instruction> instructions;
 
-    public EqualityCheckWeaver(PropertyData propertyData, ModuleWeaver typeEqualityFinder)
+    public EqualityCheckWeaver(PropertyData propertyData, TypeDefinition typeDefinition, ModuleWeaver typeEqualityFinder)
     {
         this.propertyData = propertyData;
+        this.typeDefinition = typeDefinition;
         this.typeEqualityFinder = typeEqualityFinder;
     }
 
@@ -47,6 +49,11 @@ public class EqualityCheckWeaver
 
     void InjectEqualityCheck(Instruction targetInstruction, TypeReference targetType)
     {
+        if (ShouldSkipEqualityCheck())
+        {
+            typeEqualityFinder.WriteDebug($"\t\t\tEquality Check Skipped for {targetType.Name}");
+            return;
+        }
 
         var nopInstruction = instructions.First();
         if (nopInstruction.OpCode != OpCodes.Nop)
@@ -102,5 +109,18 @@ public class EqualityCheckWeaver
                 Instruction.Create(OpCodes.Brfalse_S, nopInstruction),
                 Instruction.Create(OpCodes.Ret));
         }
+    }
+
+    bool ShouldSkipEqualityCheck()
+    {
+        if (!typeEqualityFinder.CheckForEquality)
+        {
+            return true;
+        }
+
+        var attribute = "PropertyChanging.DoNotCheckEqualityAttribute";
+        
+        return typeDefinition.GetAllCustomAttributes().ContainsAttribute(attribute)
+               || propertyData.PropertyDefinition.CustomAttributes.ContainsAttribute(attribute);
     }
 }

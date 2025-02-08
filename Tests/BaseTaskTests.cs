@@ -960,6 +960,23 @@ public class WeavingTaskTests
         Assert.False(isFlagEventCalled);
     }
 
+    [Theory]
+    [InlineData([nameof(ClassDoNotCheckEquality), 1, 2])]
+    [InlineData([nameof(ClassDoNotCheckEqualityWholeClass), 2, 2])]
+    [InlineData([nameof(ClassDoNotCheckEqualityWholeClassInherited), 2, 2])]
+    public void ClassDoNotCheckEquality(string className, int expectedCountProperty1, int expectedCountProperty2)
+    {
+        var instance = testResult.GetInstance(className);
+
+        instance.Property1 = "sameValue";
+        instance.Property1 = "sameValue";
+        instance.Property2 = "sameValue";
+        instance.Property2 = "sameValue";
+
+        Assert.Equal(expectedCountProperty1, instance.TimesProperty1Changing);
+        Assert.Equal(expectedCountProperty2, instance.TimesProperty2Changing);
+    }
+
 #if NETFRAMEWORK
     [Fact]
     public async Task ClassWithNullableBackingFieldIl()
@@ -978,5 +995,6 @@ public class WeavingTaskTests
 
         await Verifier.Verify(property).UniqueForAssemblyConfiguration();
     }
+
 #endif // NETFRAMEWORK
 }
