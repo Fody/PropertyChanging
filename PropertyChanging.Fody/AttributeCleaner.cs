@@ -7,6 +7,7 @@ public partial class ModuleWeaver
 {
     List<string> propertyAttributeNames = new()
     {
+        "PropertyChanging.DoNotCheckEqualityAttribute",
         "PropertyChanging.DoNotNotifyAttribute",
         "PropertyChanging.AlsoNotifyForAttribute",
         "PropertyChanging.DependsOnAttribute",
