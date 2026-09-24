@@ -1,12 +1,12 @@
-﻿public class AssemblyWithBlockingClassTests
+public class AssemblyWithBlockingClassTests
 {
-    [Fact]
-    public void TestClassIsNotBlocked()
+    [Test]
+    public async Task TestClassIsNotBlocked()
     {
         var weaver = new ModuleWeaver();
         var testResult = weaver.ExecuteTestRun("AssemblyWithBlockingClass.dll",
             ignoreCodes: new[] {"0x80131869"});
         var instance = testResult.GetInstance("B");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 }

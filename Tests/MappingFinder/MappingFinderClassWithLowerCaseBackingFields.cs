@@ -2,12 +2,12 @@ using System.Linq;
 
 public class MappingFinderClassWithLowerCaseBackingFields
 {
-    [Fact]
-    public void Run()
+    [Test]
+    public async Task Run()
     {
         var memberMappings = ModuleWeaver.GetMappings(DefinitionFinder.FindType<ClassWithLowerCaseBackingFields>()).ToList();
-        Assert.Equal("property1", memberMappings.First(_ => _.PropertyDefinition.Name == "Property1").FieldDefinition.Name);
-        Assert.Equal("property2", memberMappings.First(_ => _.PropertyDefinition.Name == "Property2").FieldDefinition.Name);
+        await Assert.That(memberMappings.First(_ => _.PropertyDefinition.Name == "Property1").FieldDefinition.Name).IsEqualTo("property1");
+        await Assert.That(memberMappings.First(_ => _.PropertyDefinition.Name == "Property2").FieldDefinition.Name).IsEqualTo("property2");
     }
 
     public class ClassWithLowerCaseBackingFields

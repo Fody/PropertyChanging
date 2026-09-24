@@ -1,9 +1,9 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 
 public static class EventTester
 {
-    internal static void TestPropertyNotCalled(dynamic instance)
+    internal static async Task TestPropertyNotCalled(dynamic instance)
     {
         var property1EventCalled = false;
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
@@ -14,10 +14,10 @@ public static class EventTester
             }
         };
         instance.Property1 = "a";
-        Assert.False(property1EventCalled);
+        await Assert.That(property1EventCalled).IsFalse();
     }
 
-    internal static void TestProperty(dynamic instance, bool checkProperty2)
+    internal static async Task TestProperty(dynamic instance, bool checkProperty2)
     {
         var property1EventCalled = false;
         var property2EventCalled = false;
@@ -35,24 +35,24 @@ public static class EventTester
         };
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
         if (checkProperty2)
         {
-            Assert.True(property2EventCalled);
+            await Assert.That(property2EventCalled).IsTrue();
         }
 
         property1EventCalled = false;
         property2EventCalled = false;
         //Property has not changed on re-set so event not fired
         instance.Property1 = "a";
-        Assert.False(property1EventCalled);
+        await Assert.That(property1EventCalled).IsFalse();
         if (checkProperty2)
         {
-            Assert.False(property2EventCalled);
+            await Assert.That(property2EventCalled).IsFalse();
         }
     }
 
-    internal static void TestProperty<T>(dynamic instance, string propertyName, T propertyValue)
+    internal static async Task TestProperty<T>(dynamic instance, string propertyName, T propertyValue)
     {
         var eventCalled = false;
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
@@ -67,10 +67,10 @@ public static class EventTester
         var propertyInfo = type.GetProperties().First(_ => _.Name == propertyName);
         propertyInfo.SetValue(instance, propertyValue, null);
 
-        Assert.True(eventCalled);
+        await Assert.That(eventCalled).IsTrue();
         eventCalled = false;
         propertyInfo.SetValue(instance, propertyValue, null);
-        Assert.False(eventCalled);
+        await Assert.That(eventCalled).IsFalse();
     }
 
     public static dynamic GetInstance(this Assembly assembly, string className)

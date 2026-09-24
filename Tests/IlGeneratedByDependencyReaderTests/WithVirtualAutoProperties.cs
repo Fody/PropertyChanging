@@ -4,8 +4,8 @@ public class WithVirtualAutoProperties
 {
     //TODO: add test for abstract
 
-    [Fact]
-    public void Run()
+    [Test]
+    public async Task Run()
     {
         var typeDefinition = DefinitionFinder.FindType<Person>();
         var node = new TypeNode
@@ -15,8 +15,8 @@ public class WithVirtualAutoProperties
                        };
         new IlGeneratedByDependencyReader(node).Process();
         var first = node.PropertyDependencies[0];
-        Assert.Equal("FullName", first.ShouldAlsoNotifyFor.Name);
-        Assert.Equal("GivenNames", first.WhenPropertyIsSet.Name);
+        await Assert.That(first.ShouldAlsoNotifyFor.Name).IsEqualTo("FullName");
+        await Assert.That(first.WhenPropertyIsSet.Name).IsEqualTo("GivenNames");
     }
 
     public class Person

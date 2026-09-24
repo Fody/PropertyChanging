@@ -1,13 +1,13 @@
-﻿public class AssemblyUsingAttributeWrongTests
+public class AssemblyUsingAttributeWrongTests
 {
     //TODO
-    //[Fact]
-    public void Foo()
+    //[Test]
+    public async Task Foo()
     {
         var weaver = new ModuleWeaver();
-        Assert.Throws<WeavingException>(() =>
+        await Assert.That(() =>
         {
             weaver.ExecuteTestRun("AssemblyUsingAttributeWrong.dll");
-        });
+        }).Throws<WeavingException>();
     }
 }

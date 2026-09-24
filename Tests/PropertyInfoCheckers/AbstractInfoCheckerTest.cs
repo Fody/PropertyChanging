@@ -1,9 +1,9 @@
-﻿using System.Linq;
+using System.Linq;
 
 public class AbstractInfoCheckerTest
 {
-    [Fact]
-    public void IsAbstract()
+    [Test]
+    public async Task IsAbstract()
     {
         var checker = new ModuleWeaver();
         var propertyDefinition = DefinitionFinder.FindType<BaseClass>().Properties.First(_ => _.Name == "AbstractProperty");
@@ -14,11 +14,11 @@ public class AbstractInfoCheckerTest
                 PropertyDefinition = propertyDefinition,
             },
             InvokerTypes.String);
-        Assert.NotNull(message);
+        await Assert.That(message).IsNotNull();
     }
 
-    [Fact]
-    public void NonAbstract()
+    [Test]
+    public async Task NonAbstract()
     {
         var checker = new ModuleWeaver();
         var propertyDefinition = DefinitionFinder.FindType<BaseClass>().Properties.First(_ => _.Name == "NonAbstractProperty");
@@ -29,7 +29,7 @@ public class AbstractInfoCheckerTest
                 PropertyDefinition = propertyDefinition,
             },
             InvokerTypes.String);
-        Assert.Null(message);
+        await Assert.That(message).IsNull();
     }
 
     public abstract class BaseClass

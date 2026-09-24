@@ -1,4 +1,4 @@
-﻿// ReSharper disable UnusedParameter.Local
+// ReSharper disable UnusedParameter.Local
 
 using System.Linq;
 
@@ -6,50 +6,50 @@ using System.Linq;
 
 public class AlreadyNotifyFinderTest
 {
-    [Fact]
-    public void ContainsNotification()
+    [Test]
+    public async Task ContainsNotification()
     {
         var propertyDefinition = DefinitionFinder.FindProperty(() => new NonVirtual().WithNotificationProperty);
 
         var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging");
-        Assert.Single(propertyNames);
+        await Assert.That(propertyNames).HasSingleItem();
     }
 
-    [Fact]
-    public void MultipleNotifications()
+    [Test]
+    public async Task MultipleNotifications()
     {
         var propertyDefinition = DefinitionFinder.FindProperty(() => new Multiple().Property);
 
         var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging").ToList();
-        Assert.Contains("Property1", propertyNames);
-        Assert.Contains("Property2", propertyNames);
+        await Assert.That(propertyNames).Contains("Property1");
+        await Assert.That(propertyNames).Contains("Property2");
     }
 
-    [Fact]
-    public void WithoutNotification()
+    [Test]
+    public async Task WithoutNotification()
     {
         var propertyDefinition = DefinitionFinder.FindProperty(() => new NonVirtual().WithoutNotificationProperty);
 
         var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging");
-        Assert.Empty(propertyNames);
+        await Assert.That(propertyNames).IsEmpty();
     }
 
-    [Fact]
-    public void AlreadyContainsNotificationVirtual()
+    [Test]
+    public async Task AlreadyContainsNotificationVirtual()
     {
         var propertyDefinition = DefinitionFinder.FindProperty(() => new Virtual().WithNotificationProperty);
 
         var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging");
-        Assert.NotEmpty(propertyNames);
+        await Assert.That(propertyNames).IsNotEmpty();
     }
 
-    [Fact]
-    public void AlreadyContainsNotificationNonVirtual()
+    [Test]
+    public async Task AlreadyContainsNotificationNonVirtual()
     {
         var propertyDefinition = DefinitionFinder.FindProperty(() => new NonVirtual().WithNotificationProperty);
 
         var propertyNames = propertyDefinition.GetAlreadyNotifies("OnPropertyChanging");
-        Assert.NotEmpty(propertyNames);
+        await Assert.That(propertyNames).IsNotEmpty();
     }
 
     public class NonVirtual

@@ -1,11 +1,11 @@
-﻿using System.Linq;
+using System.Linq;
 
 // ReSharper disable ValueParameterNotUsed
 
 public class IndexerCheckerTest
 {
-    [Fact]
-    public void IsIndexer()
+    [Test]
+    public async Task IsIndexer()
     {
         var checker = new ModuleWeaver();
         var propertyDefinition = DefinitionFinder.FindType<IndexerClass>().Properties.First();
@@ -16,7 +16,7 @@ public class IndexerCheckerTest
                 PropertyDefinition = propertyDefinition,
             },
             InvokerTypes.String);
-        Assert.NotNull(message);
+        await Assert.That(message).IsNotNull();
     }
 
     public abstract class IndexerClass

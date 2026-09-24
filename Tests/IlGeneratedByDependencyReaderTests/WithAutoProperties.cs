@@ -1,11 +1,11 @@
-﻿using System.Linq;
+using System.Linq;
 
 public class WithAutoProperties
 {
     //TODO: add test for abstract
 
-    [Fact]
-    public void Run()
+    [Test]
+    public async Task Run()
     {
         var typeDefinition = DefinitionFinder.FindType<Person>();
         var node = new TypeNode
@@ -15,11 +15,11 @@ public class WithAutoProperties
                        };
         new IlGeneratedByDependencyReader(node).Process();
         var first = node.PropertyDependencies[0];
-        Assert.Equal("FullName", first.ShouldAlsoNotifyFor.Name);
-        Assert.Equal("GivenNames", first.WhenPropertyIsSet.Name);
+        await Assert.That(first.ShouldAlsoNotifyFor.Name).IsEqualTo("FullName");
+        await Assert.That(first.WhenPropertyIsSet.Name).IsEqualTo("GivenNames");
         var second = node.PropertyDependencies[1];
-        Assert.Equal("FullName", second.ShouldAlsoNotifyFor.Name);
-        Assert.Equal("FamilyName", second.WhenPropertyIsSet.Name);
+        await Assert.That(second.ShouldAlsoNotifyFor.Name).IsEqualTo("FullName");
+        await Assert.That(second.WhenPropertyIsSet.Name).IsEqualTo("FamilyName");
     }
 
     public class Person

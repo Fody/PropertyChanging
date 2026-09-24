@@ -8,10 +8,10 @@ public class FSharpTest
         testResult = weaver.ExecuteTestRun("AssemblyFSharp.dll", runPeVerify: false);
     }
 
-    [Fact]
-    public void SimpleClass()
+    [Test]
+    public async Task SimpleClass()
     {
         var instance = testResult.GetInstance("Namespace.ClassWithProperties");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 }

@@ -1,12 +1,12 @@
-﻿ 
+ 
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable ConvertToAutoPropertyWhenPossible
 
  public class PropertyChangingArgWithNoGetInfoCheckerTest
  {
-     [Fact]
-     public void WithGet()
+     [Test]
+     public async Task WithGet()
      {
          var checker = new ModuleWeaver();
 
@@ -18,11 +18,11 @@
                  PropertyDefinition = propertyDefinition,
              },
              InvokerTypes.PropertyChangingArg);
-         Assert.Null(message);
+         await Assert.That(message).IsNull();
      }
 
-     [Fact]
-     public void NoGet()
+     [Test]
+     public async Task NoGet()
      {
          var checker = new ModuleWeaver();
 
@@ -34,12 +34,12 @@
                  PropertyDefinition = propertyDefinition,
              },
              InvokerTypes.PropertyChangingArg);
-         Assert.NotNull(message);
+         await Assert.That(message).IsNotNull();
      }
 
      string property;
 
-     public string PropertyNoGet
+     internal string PropertyNoGet
      {
          set => property = value;
      }

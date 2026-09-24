@@ -1,30 +1,30 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 
 public class OnPropertyNameChangingConfigTests
 {
-    [Fact]
-    public void False()
+    [Test]
+    public async Task False()
     {
         var xElement = XElement.Parse("<PropertyChanged InjectOnPropertyNameChanging='false'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ResolveOnPropertyNameChangingConfig();
-        Assert.False(moduleWeaver.InjectOnPropertyNameChanging);
+        await Assert.That(moduleWeaver.InjectOnPropertyNameChanging).IsFalse();
     }
 
-    [Fact]
-    public void True()
+    [Test]
+    public async Task True()
     {
         var xElement = XElement.Parse("<PropertyChanged InjectOnPropertyNameChanging='true'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ResolveOnPropertyNameChangingConfig();
-        Assert.True(moduleWeaver.InjectOnPropertyNameChanging);
+        await Assert.That(moduleWeaver.InjectOnPropertyNameChanging).IsTrue();
     }
 
-    [Fact]
-    public void Default()
+    [Test]
+    public async Task Default()
     {
         var moduleWeaver = new ModuleWeaver();
         moduleWeaver.ResolveOnPropertyNameChangingConfig();
-        Assert.True(moduleWeaver.InjectOnPropertyNameChanging);
+        await Assert.That(moduleWeaver.InjectOnPropertyNameChanging).IsTrue();
     }
 }

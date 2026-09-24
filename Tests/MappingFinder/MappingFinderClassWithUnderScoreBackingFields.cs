@@ -1,13 +1,13 @@
-﻿using System.Linq;
+using System.Linq;
 
 public class MappingFinderClassWithUnderScoreBackingFields
 {
-    [Fact]
-    public void WithLowerUnderScoreBackingFields()
+    [Test]
+    public async Task WithLowerUnderScoreBackingFields()
     {
         var memberMappings = ModuleWeaver.GetMappings(DefinitionFinder.FindType<ClassWithUnderScoreBackingFields>()).ToList();
-        Assert.Equal("_property1", memberMappings.First(_ => _.PropertyDefinition.Name == "Property1").FieldDefinition.Name);
-        Assert.Equal("_property2", memberMappings.First(_ => _.PropertyDefinition.Name == "Property2").FieldDefinition.Name);
+        await Assert.That(memberMappings.First(_ => _.PropertyDefinition.Name == "Property1").FieldDefinition.Name).IsEqualTo("_property1");
+        await Assert.That(memberMappings.First(_ => _.PropertyDefinition.Name == "Property2").FieldDefinition.Name).IsEqualTo("_property2");
     }
 
     public class ClassWithUnderScoreBackingFields

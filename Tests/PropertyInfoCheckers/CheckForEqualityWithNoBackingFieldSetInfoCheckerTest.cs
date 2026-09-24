@@ -1,10 +1,10 @@
-﻿
+
 // ReSharper disable ValueParameterNotUsed
 
 public class CheckForEqualityWithNoBackingFieldSetInfoCheckerTest
 {
-    [Fact]
-    public void WithBackingField()
+    [Test]
+    public async Task WithBackingField()
     {
         var checker = new ModuleWeaver();
 
@@ -17,11 +17,11 @@ public class CheckForEqualityWithNoBackingFieldSetInfoCheckerTest
                 BackingFieldReference = propertyDefinition.DeclaringType.Fields[0]
             },
             InvokerTypes.String);
-        Assert.Null(warning);
+        await Assert.That(warning).IsNull();
     }
 
-    [Fact]
-    public void WithoutBackingField()
+    [Test]
+    public async Task WithoutBackingField()
     {
         var checker = new ModuleWeaver();
 
@@ -34,12 +34,12 @@ public class CheckForEqualityWithNoBackingFieldSetInfoCheckerTest
                 BackingFieldReference = null,
             },
             InvokerTypes.String);
-        Assert.NotNull(warning);
+        await Assert.That(warning).IsNotNull();
     }
 
     public int WithBackingFieldProperty { get; set; }
 
-    public int WithoutBackingFieldProperty
+    internal int WithoutBackingFieldProperty
     {
         set { }
     }

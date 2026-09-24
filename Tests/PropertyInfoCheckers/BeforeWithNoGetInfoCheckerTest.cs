@@ -1,11 +1,11 @@
-﻿
+
 
 // ReSharper disable ConvertToAutoPropertyWhenPossible
 
 public class BeforeAfterWithNoGetInfoCheckerTest
 {
-    [Fact]
-    public void WithGet()
+    [Test]
+    public async Task WithGet()
     {
         var checker = new ModuleWeaver();
 
@@ -17,11 +17,11 @@ public class BeforeAfterWithNoGetInfoCheckerTest
                 PropertyDefinition = propertyDefinition,
             },
             InvokerTypes.Before);
-        Assert.Null(message);
+        await Assert.That(message).IsNull();
     }
 
-    [Fact]
-    public void NoGet()
+    [Test]
+    public async Task NoGet()
     {
         var checker = new ModuleWeaver();
 
@@ -33,12 +33,12 @@ public class BeforeAfterWithNoGetInfoCheckerTest
                 PropertyDefinition = propertyDefinition,
             },
             InvokerTypes.Before);
-        Assert.NotNull(message);
+        await Assert.That(message).IsNotNull();
     }
 
     string property;
 
-    public string PropertyNoGet
+    internal string PropertyNoGet
     {
         set => property = value;
     }

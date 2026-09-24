@@ -1,4 +1,4 @@
-﻿#pragma warning disable CS0618
+#pragma warning disable CS0618
 
 public class WeavingTaskTests
 {
@@ -18,45 +18,45 @@ public class WeavingTaskTests
         );
     }
 
-    [Fact]
-    public virtual void AlsoNotifyFor()
+    [Test]
+    public virtual async Task AlsoNotifyFor()
     {
         var instance = testResult.GetInstance("ClassAlsoNotifyFor");
-        EventTester.TestProperty(instance, true);
+        await EventTester.TestProperty(instance, true);
     }
 
-    [Fact]
-    public void WithNotifyInChildByInterface()
+    [Test]
+    public async Task WithNotifyInChildByInterface()
     {
         var instance = testResult.GetInstance("ClassWithNotifyInChildByInterface");
         var propertyEventCount = 0;
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) => { propertyEventCount++; };
         instance.Property = "a";
 
-        Assert.Equal(1, propertyEventCount);
+        await Assert.That(propertyEventCount).IsEqualTo(1);
         propertyEventCount = 0;
         //Property has not changed on re-set so event not fired
         instance.Property = "a";
-        Assert.Equal(0, propertyEventCount);
+        await Assert.That(propertyEventCount).IsEqualTo(0);
     }
 
-    [Fact]
-    public void WithNotifyInChildByAttribute()
+    [Test]
+    public async Task WithNotifyInChildByAttribute()
     {
         var instance = testResult.GetInstance("ClassWithNotifyInChildByAttribute");
         var propertyEventCount = 0;
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) => { propertyEventCount++; };
         instance.Property = "a";
 
-        Assert.Equal(1, propertyEventCount);
+        await Assert.That(propertyEventCount).IsEqualTo(1);
         propertyEventCount = 0;
         //Property has not changed on re-set so event not fired
         instance.Property = "a";
-        Assert.Equal(0, propertyEventCount);
+        await Assert.That(propertyEventCount).IsEqualTo(0);
     }
 
-    [Fact]
-    public void AlsoNotifyForMultiple()
+    [Test]
+    public async Task AlsoNotifyForMultiple()
     {
         var instance = testResult.GetInstance("ClassAlsoNotifyForMultiple");
 
@@ -82,42 +82,42 @@ public class WeavingTaskTests
         };
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
-        Assert.True(property2EventCalled);
-        Assert.True(property3EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
+        await Assert.That(property2EventCalled).IsTrue();
+        await Assert.That(property3EventCalled).IsTrue();
         property1EventCalled = false;
         property2EventCalled = false;
         property3EventCalled = false;
         //Property has not changed on re-set so event not fired
         instance.Property1 = "a";
-        Assert.False(property1EventCalled);
-        Assert.False(property2EventCalled);
-        Assert.False(property3EventCalled);
+        await Assert.That(property1EventCalled).IsFalse();
+        await Assert.That(property2EventCalled).IsFalse();
+        await Assert.That(property3EventCalled).IsFalse();
     }
 
-    [Fact]
-    public virtual void WithFieldGetButNoFieldSet()
+    [Test]
+    public virtual async Task WithFieldGetButNoFieldSet()
     {
         var instance = testResult.GetInstance("ClassWithFieldGetButNoFieldSet");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public void WithDoNotNotify()
+    [Test]
+    public async Task WithDoNotNotify()
     {
         var type = testResult.Assembly.GetType("ClassWithDoNotNotify", true);
-        Assert.Empty(type.GetCustomAttributes(false));
+        await Assert.That(type.GetCustomAttributes(false)).IsEmpty();
     }
 
-    [Fact]
-    public void WithNotifyPropertyChangingAttribute_MustCleanAttribute()
+    [Test]
+    public async Task WithNotifyPropertyChangingAttribute_MustCleanAttribute()
     {
         var type = testResult.Assembly.GetType("ClassWithNotifyPropertyChangingAttribute", true);
-        Assert.Empty(type.GetCustomAttributes(false));
+        await Assert.That(type.GetCustomAttributes(false)).IsEmpty();
     }
 
-    [Fact]
-    public void WithNotifyPropertyChangingAttribute_MustWeaveNotification()
+    [Test]
+    public async Task WithNotifyPropertyChangingAttribute_MustWeaveNotification()
     {
         var instance = testResult.GetInstance("ClassWithNotifyPropertyChangingAttribute");
 
@@ -131,11 +131,11 @@ public class WeavingTaskTests
         };
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
     }
 
-    [Fact]
-    public void WithNotifyPropertyChangingAttributeGeneric_MustWeaveNotification()
+    [Test]
+    public async Task WithNotifyPropertyChangingAttributeGeneric_MustWeaveNotification()
     {
         var type = testResult.Assembly.GetType("ClassWithNotifyPropertyChangingAttributeGeneric`1", true);
         var makeGenericType = type.MakeGenericType(typeof(string));
@@ -151,16 +151,17 @@ public class WeavingTaskTests
         };
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
     }
 
-    [Fact]
-    public void WithNotifyPropertyChangingAttributeOnParentAndChild()
+    [Test]
+    public async Task WithNotifyPropertyChangingAttributeOnParentAndChild()
     {
         var instance = testResult.GetInstance("ClassWithNotifyPropertyChangingAttributeChild");
 
         var property1EventCalled = false;
         var property2EventCalled = false;
+        string property2ValueWhenChanging = null;
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
         {
             if (args.PropertyName == "Property1")
@@ -171,18 +172,19 @@ public class WeavingTaskTests
             if (args.PropertyName == "Property2")
             {
                 property2EventCalled = true;
-                Assert.NotEqual("a", instance.Property2);
+                property2ValueWhenChanging = instance.Property2;
             }
         };
         instance.Property1 = "a";
         instance.Property2 = "a";
 
-        Assert.True(property1EventCalled);
-        Assert.True(property2EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
+        await Assert.That(property2EventCalled).IsTrue();
+        await Assert.That(property2ValueWhenChanging).IsNotEqualTo("a");
     }
 
-    [Fact]
-    public void WithTernary()
+    [Test]
+    public async Task WithTernary()
     {
         var instance = testResult.GetInstance("ClassWithTernary");
 
@@ -196,16 +198,17 @@ public class WeavingTaskTests
         };
         instance.Property1 = 1;
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithDependencyAfterSet()
+    [Test]
+    public virtual async Task WithDependencyAfterSet()
     {
         var instance = testResult.GetInstance("ClassWithDependencyAfterSet");
 
         var property1EventCalled = false;
         var property2EventCalled = false;
+        string property2ValueWhenChanging = "notSet";
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, args) =>
         {
             if (args.PropertyName == "Property1")
@@ -216,108 +219,109 @@ public class WeavingTaskTests
             if (args.PropertyName == "Property2")
             {
                 property2EventCalled = true;
-                Assert.Null(instance.Property2);
+                property2ValueWhenChanging = instance.Property2;
             }
         };
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
-        Assert.True(property2EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
+        await Assert.That(property2EventCalled).IsTrue();
+        await Assert.That(property2ValueWhenChanging).IsNull();
     }
 
-    [Fact]
-    public virtual void VirtualForNonSealed()
+    [Test]
+    public virtual async Task VirtualForNonSealed()
     {
         var type = testResult.Assembly.GetType("ClassThatIsNotSealed", true);
         var methodInfo = type.GetMethod("OnPropertyChanging");
-        Assert.True(methodInfo.IsVirtual);
+        await Assert.That(methodInfo.IsVirtual).IsTrue();
     }
 
-    [Fact]
-    public virtual void SealedForSealed()
+    [Test]
+    public virtual async Task SealedForSealed()
     {
         var type = testResult.Assembly.GetType("ClassThatIsSealed", true);
         var methodInfo = type.GetMethod("OnPropertyChanging");
-        Assert.False(methodInfo.IsVirtual);
+        await Assert.That(methodInfo.IsVirtual).IsFalse();
     }
 
-    [Fact]
-    public virtual void WithTryCatchInSet()
+    [Test]
+    public virtual async Task WithTryCatchInSet()
     {
         var instance = testResult.GetInstance("ClassWithTryCatchInSet");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void WithPropertySetInCatch()
+    [Test]
+    public virtual async Task WithPropertySetInCatch()
     {
         var instance = testResult.GetInstance("ClassWithPropertySetInCatch");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public void GenericChildWithPropertyOnChanging()
+    [Test]
+    public async Task GenericChildWithPropertyOnChanging()
     {
         var instance = testResult.GetInstance("GenericChildWithPropertyOnChanging.ClassWithGenericPropertyChild");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public void GenericBaseWithPropertyOnChanging()
+    [Test]
+    public async Task GenericBaseWithPropertyOnChanging()
     {
         var instance = testResult.GetInstance("GenericBaseWithPropertyOnChanging.ClassWithGenericPropertyChild");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void WithDependsOnAndDoNotNotify()
+    [Test]
+    public virtual async Task WithDependsOnAndDoNotNotify()
     {
         var instance = testResult.GetInstance("ClassWithDependsOnAndDoNotNotify");
-        EventTester.TestProperty(instance, true);
+        await EventTester.TestProperty(instance, true);
     }
 
-    [Fact]
-    public virtual void UsingPublicFieldThroughParameter()
+    [Test]
+    public virtual async Task UsingPublicFieldThroughParameter()
     {
         var classWithPublicField = testResult.GetInstance("ClassWithPublicField");
         var classUsingPublicFieldThroughParameter = testResult.GetInstance("ClassUsingPublicFieldThroughParameter");
         classUsingPublicFieldThroughParameter.Write(classWithPublicField);
     }
 
-    [Fact]
-    public virtual void Equality()
+    [Test]
+    public virtual async Task Equality()
     {
         var instance = testResult.GetInstance("ClassEquality");
-        EventTester.TestProperty(instance, "StringProperty", "foo");
-        EventTester.TestProperty(instance, "IntProperty", 2);
-        EventTester.TestProperty(instance, "NullableIntProperty", 2);
-        EventTester.TestProperty(instance, "BoolProperty", true);
-        EventTester.TestProperty(instance, "NullableBoolProperty", true);
-        EventTester.TestProperty(instance, "ObjectProperty", "foo");
-        EventTester.TestProperty(instance, "ArrayProperty", new[] { "foo" });
-        EventTester.TestProperty(instance, "ShortProperty", (short)1);
-        EventTester.TestProperty(instance, "UShortProperty", (ushort)1);
-        EventTester.TestProperty(instance, "ByteProperty", (byte)1);
-        EventTester.TestProperty(instance, "SByteProperty", (sbyte)1);
-        EventTester.TestProperty(instance, "CharProperty", 'd');
+        await EventTester.TestProperty(instance, "StringProperty", "foo");
+        await EventTester.TestProperty(instance, "IntProperty", 2);
+        await EventTester.TestProperty(instance, "NullableIntProperty", 2);
+        await EventTester.TestProperty(instance, "BoolProperty", true);
+        await EventTester.TestProperty(instance, "NullableBoolProperty", true);
+        await EventTester.TestProperty(instance, "ObjectProperty", "foo");
+        await EventTester.TestProperty(instance, "ArrayProperty", new[] { "foo" });
+        await EventTester.TestProperty(instance, "ShortProperty", (short)1);
+        await EventTester.TestProperty(instance, "UShortProperty", (ushort)1);
+        await EventTester.TestProperty(instance, "ByteProperty", (byte)1);
+        await EventTester.TestProperty(instance, "SByteProperty", (sbyte)1);
+        await EventTester.TestProperty(instance, "CharProperty", 'd');
     }
 
-    [Fact]
-    public virtual void WithCompilerGeneratedAttribute()
+    [Test]
+    public virtual async Task WithCompilerGeneratedAttribute()
     {
         var instance = testResult.GetInstance("ClassWithCompilerGeneratedAttribute");
-        EventTester.TestPropertyNotCalled(instance);
+        await EventTester.TestPropertyNotCalled(instance);
     }
 
-    [Fact]
-    public virtual void WithGeneratedCodeAttribute()
+    [Test]
+    public virtual async Task WithGeneratedCodeAttribute()
     {
         var instance = testResult.GetInstance("ClassWithGeneratedCodeAttribute");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void NoBackingNoEqualityField()
+    [Test]
+    public virtual async Task NoBackingNoEqualityField()
     {
         var instance = testResult.GetInstance("ClassNoBackingNoEqualityField");
 
@@ -331,11 +335,11 @@ public class WeavingTaskTests
         };
 
         instance.StringProperty = "aString";
-        Assert.True(eventCalled);
+        await Assert.That(eventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void NoBackingEqualityField()
+    [Test]
+    public virtual async Task NoBackingEqualityField()
     {
         var instance = testResult.GetInstance("ClassNoBackingWithEqualityField");
 
@@ -349,11 +353,11 @@ public class WeavingTaskTests
         };
 
         instance.StringProperty = "aString";
-        Assert.True(eventCalled);
+        await Assert.That(eventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithFieldFromOtherClass()
+    [Test]
+    public virtual async Task WithFieldFromOtherClass()
     {
         var instance = testResult.GetInstance("ClassWithFieldFromOtherClass");
 
@@ -367,11 +371,11 @@ public class WeavingTaskTests
         };
 
         instance.Property1 = "aString";
-        Assert.True(eventCalled);
+        await Assert.That(eventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithIndexerClass()
+    [Test]
+    public virtual async Task WithIndexerClass()
     {
         var instance = testResult.GetInstance("ClassWithIndexer");
 
@@ -385,20 +389,20 @@ public class WeavingTaskTests
         };
 
         instance[4] = "aString";
-        Assert.Equal("aString", instance[4]);
+        await Assert.That((string)instance[4]).IsEqualTo("aString");
         instance.Property1 = "aString2";
-        Assert.True(eventCalled);
+        await Assert.That(eventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithOnceRemovedINotify()
+    [Test]
+    public virtual async Task WithOnceRemovedINotify()
     {
         var instance = testResult.GetInstance("ClassWithOnceRemovedINotify");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void WithBranchingReturn1()
+    [Test]
+    public virtual async Task WithBranchingReturn1()
     {
         var instance = testResult.GetInstance("ClassWithBranchingReturn1");
         var property1EventCalled = false;
@@ -411,11 +415,11 @@ public class WeavingTaskTests
         };
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithBranchingReturn2True()
+    [Test]
+    public virtual async Task WithBranchingReturn2True()
     {
         var instance = testResult.GetInstance("ClassWithBranchingReturn2");
         var property1EventCalled = false;
@@ -429,11 +433,11 @@ public class WeavingTaskTests
         instance.HasValue = true;
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithBranchingReturn2False()
+    [Test]
+    public virtual async Task WithBranchingReturn2False()
     {
         var instance = testResult.GetInstance("ClassWithBranchingReturn2");
         var property1EventCalled = false;
@@ -447,11 +451,11 @@ public class WeavingTaskTests
         instance.HasValue = false;
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void ClassWithBranchingReturnAndNoFieldTrue()
+    [Test]
+    public virtual async Task ClassWithBranchingReturnAndNoFieldTrue()
     {
         var instance = testResult.GetInstance("ClassWithBranchingReturnAndNoField");
         var property1EventCalled = false;
@@ -465,11 +469,11 @@ public class WeavingTaskTests
         instance.HasValue = true;
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void ClassWithBranchingReturnAndNoFieldFalse()
+    [Test]
+    public virtual async Task ClassWithBranchingReturnAndNoFieldFalse()
     {
         var instance = testResult.GetInstance("ClassWithBranchingReturnAndNoField");
         var property1EventCalled = false;
@@ -483,63 +487,63 @@ public class WeavingTaskTests
         instance.HasValue = false;
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithBranchingAndBeforeAfterReturn()
+    [Test]
+    public virtual async Task WithBranchingAndBeforeAfterReturn()
     {
         var instance = testResult.GetInstance("ClassWithBranchingReturnAndBefore");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void WithGeneric()
+    [Test]
+    public virtual async Task WithGeneric()
     {
         var instance = testResult.GetInstance("ClassWithGenericChild");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void GenericChildWithProperty()
+    [Test]
+    public virtual async Task GenericChildWithProperty()
     {
         var instance = testResult.GetInstance("GenericChildWithProperty.ClassWithGenericPropertyChild");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void GenericBaseWithProperty()
+    [Test]
+    public virtual async Task GenericBaseWithProperty()
     {
         var instance = testResult.GetInstance("GenericBaseWithProperty.ClassWithGenericPropertyChild");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void GenericChildWithPropertyBefore()
+    [Test]
+    public virtual async Task GenericChildWithPropertyBefore()
     {
         var instance = testResult.GetInstance("GenericChildWithPropertyBefore.ClassWithGenericPropertyChild");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void GenericBaseWithPropertyBefore()
+    [Test]
+    public virtual async Task GenericBaseWithPropertyBefore()
     {
         var instance = testResult.GetInstance("GenericBaseWithPropertyBefore.ClassWithGenericPropertyChild");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void Nested()
+    [Test]
+    public virtual async Task Nested()
     {
         var instance1 = testResult.GetInstance("ClassWithNested+ClassNested");
-        EventTester.TestProperty(instance1, false);
+        await EventTester.TestProperty(instance1, false);
         var instance2 = testResult.GetInstance("ClassWithNested+ClassNested+ClassNestedNested");
-        EventTester.TestProperty(instance2, false);
+        await EventTester.TestProperty(instance2, false);
     }
 
 
-    [Fact]
-    public virtual void AlreadyHasNotification()
+    [Test]
+    public virtual async Task AlreadyHasNotification()
     {
         var instance = testResult.GetInstance("ClassAlreadyHasNotification");
         var property1EventCalled = false;
@@ -558,18 +562,18 @@ public class WeavingTaskTests
         };
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
-        Assert.True(property2EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
+        await Assert.That(property2EventCalled).IsTrue();
         property1EventCalled = false;
         property2EventCalled = false;
         //Property has not changed on re-set so event not fired
         instance.Property1 = "a";
-        Assert.False(property1EventCalled);
-        Assert.False(property2EventCalled);
+        await Assert.That(property1EventCalled).IsFalse();
+        await Assert.That(property2EventCalled).IsFalse();
     }
 
-    [Fact]
-    public virtual void AlreadyHasSingleNotification()
+    [Test]
+    public virtual async Task AlreadyHasSingleNotification()
     {
         var instance = testResult.GetInstance("ClassAlreadyHasSingleNotification");
         var property1EventCalled = false;
@@ -588,18 +592,18 @@ public class WeavingTaskTests
         };
         instance.Property1 = "a";
 
-        Assert.True(property1EventCalled);
-        Assert.True(property2EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
+        await Assert.That(property2EventCalled).IsTrue();
         property1EventCalled = false;
         property2EventCalled = false;
         //Property has not changed on re-set so event not fired
         instance.Property1 = "a";
-        Assert.False(property1EventCalled);
-        Assert.False(property2EventCalled);
+        await Assert.That(property1EventCalled).IsFalse();
+        await Assert.That(property2EventCalled).IsFalse();
     }
 
-    [Fact]
-    public virtual void AlreadyHasSingleNotificationDiffParamLocation()
+    [Test]
+    public virtual async Task AlreadyHasSingleNotificationDiffParamLocation()
     {
         var instance = testResult.GetInstance("ClassAlreadyHasSingleNotificationDiffParamLocation");
         var callCount = 0;
@@ -612,15 +616,15 @@ public class WeavingTaskTests
         };
         instance.Property1 = "a";
 
-        Assert.Equal(1, callCount);
+        await Assert.That(callCount).IsEqualTo(1);
         callCount = 0;
         //Property has not changed on re-set so event not fired
         instance.Property1 = "a";
-        Assert.Equal(0, callCount);
+        await Assert.That(callCount).IsEqualTo(0);
     }
 
-    [Fact]
-    public virtual void AlreadyHasSingleNotificationDiffSignature()
+    [Test]
+    public virtual async Task AlreadyHasSingleNotificationDiffSignature()
     {
         var instance = testResult.GetInstance("ClassAlreadyHasSingleNotificationDiffSignature");
         var callCount = 0;
@@ -633,22 +637,22 @@ public class WeavingTaskTests
         };
         instance.Property1 = "a";
 
-        Assert.Equal(1, callCount);
+        await Assert.That(callCount).IsEqualTo(1);
         callCount = 0;
         //Property has not changed on re-set so event not fired
         instance.Property1 = "a";
-        Assert.Equal(0, callCount);
+        await Assert.That(callCount).IsEqualTo(0);
     }
 
-    [Fact]
-    public virtual void WithBeforeAfterImplementation()
+    [Test]
+    public virtual async Task WithBeforeAfterImplementation()
     {
         var instance = testResult.GetInstance("ClassWithBeforeImplementation");
-        EventTester.TestProperty(instance, true);
+        await EventTester.TestProperty(instance, true);
     }
 
-    [Fact]
-    public virtual void WithBoolPropUsingStringProp()
+    [Test]
+    public virtual async Task WithBoolPropUsingStringProp()
     {
         var instance = testResult.GetInstance("ClassWithBoolPropUsingStringProp");
         var boolPropertyCalled = false;
@@ -673,86 +677,86 @@ public class WeavingTaskTests
         };
         instance.StringProperty = "magicString";
 
-        Assert.True(boolPropertyCalled);
-        Assert.True(stringPropertyCalled);
-        Assert.True(stringComparePropertyCalled);
+        await Assert.That(boolPropertyCalled).IsTrue();
+        await Assert.That(stringPropertyCalled).IsTrue();
+        await Assert.That(stringComparePropertyCalled).IsTrue();
 
         boolPropertyCalled = false;
         stringPropertyCalled = false;
         stringComparePropertyCalled = false;
         instance.StringProperty = "notMagicString";
 
-        Assert.False(boolPropertyCalled);
-        Assert.True(stringPropertyCalled);
-        Assert.True(stringComparePropertyCalled);
+        await Assert.That(boolPropertyCalled).IsFalse();
+        await Assert.That(stringPropertyCalled).IsTrue();
+        await Assert.That(stringComparePropertyCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithBeforeAndSimpleImplementation()
+    [Test]
+    public virtual async Task WithBeforeAndSimpleImplementation()
     {
         var instance = testResult.GetInstance("ClassWithBeforeAndSimpleImplementation");
-        EventTester.TestProperty(instance, true);
+        await EventTester.TestProperty(instance, true);
     }
 
-    [Fact]
-    public virtual void HierarchyBeforeAndSimple()
+    [Test]
+    public virtual async Task HierarchyBeforeAndSimple()
     {
         var instance = testResult.GetInstance("HierarchyBeforeAndSimple.ClassChild");
-        EventTester.TestProperty(instance, false);
-        Assert.True(instance.BeforeCalled);
+        await EventTester.TestProperty(instance, false);
+        await Assert.That((bool)instance.BeforeCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithPropertyChangingArgImplementation()
+    [Test]
+    public virtual async Task WithPropertyChangingArgImplementation()
     {
         var instance = testResult.GetInstance("ClassWithPropertyChangingArgImplementation");
-        EventTester.TestProperty(instance, true);
+        await EventTester.TestProperty(instance, true);
     }
 
-    [Fact]
-    public virtual void WithCustomPropertyChanging()
+    [Test]
+    public virtual async Task WithCustomPropertyChanging()
     {
         var instance = testResult.GetInstance("ClassWithCustomPropertyChanging");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void WithExplicitPropertyChanging()
+    [Test]
+    public virtual async Task WithExplicitPropertyChanging()
     {
         var instance = testResult.GetInstance("ClassWithExplicitPropertyChanging");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void DependsOn()
+    [Test]
+    public virtual async Task DependsOn()
     {
         var instance = testResult.GetInstance("ClassDependsOn");
-        EventTester.TestProperty(instance, true);
+        await EventTester.TestProperty(instance, true);
     }
 
-    [Fact]
-    public virtual void WithNotifyInBase()
+    [Test]
+    public virtual async Task WithNotifyInBase()
     {
         var instance = testResult.GetInstance("ClassWithNotifyInBase");
-        EventTester.TestProperty(instance, true);
+        await EventTester.TestProperty(instance, true);
     }
 
-    [Fact]
-    public virtual void Child1()
+    [Test]
+    public virtual async Task Child1()
     {
         var instance = testResult.GetInstance("ComplexHierarchy.ClassChild1");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void Child2()
+    [Test]
+    public virtual async Task Child2()
     {
         var instance = testResult.GetInstance("ComplexHierarchy.ClassChild2");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void Child3()
+    [Test]
+    public virtual async Task Child3()
     {
         var instance = testResult.GetInstance("ComplexHierarchy.ClassChild3");
         var property1EventCalled = false;
@@ -772,96 +776,96 @@ public class WeavingTaskTests
         instance.Property1 = "a";
         instance.Property2 = "a";
 
-        Assert.True(property1EventCalled);
-        Assert.True(property2EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
+        await Assert.That(property2EventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithLogicInSet()
+    [Test]
+    public virtual async Task WithLogicInSet()
     {
         var instance = testResult.GetInstance("ClassWithLogicInSet");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void WithOwnImplementation()
+    [Test]
+    public virtual async Task WithOwnImplementation()
     {
         var instance = testResult.GetInstance("ClassWithOwnImplementation");
-        EventTester.TestProperty(instance, false);
-        Assert.True(instance.BaseNotifyCalled);
+        await EventTester.TestProperty(instance, false);
+        await Assert.That((bool)instance.BaseNotifyCalled).IsTrue();
     }
 
 
-    [Fact]
-    public virtual void WithOnChangedAndOnPropertyChanging()
+    [Test]
+    public virtual async Task WithOnChangedAndOnPropertyChanging()
     {
         var instance = testResult.GetInstance("ClassWithOnChangedAndOnPropertyChanging");
-        Assert.Equal(0, instance.OnProperty1ChangingCalled);
-        EventTester.TestProperty(instance, false);
-        Assert.Equal(1, instance.OnProperty1ChangingCalled);
+        await Assert.That((int)instance.OnProperty1ChangingCalled).IsEqualTo(0);
+        await EventTester.TestProperty(instance, false);
+        await Assert.That((int)instance.OnProperty1ChangingCalled).IsEqualTo(1);
     }
 
 
-    [Fact]
-    public virtual void WithOnChangedAndNoOnPropertyChanging()
+    [Test]
+    public virtual async Task WithOnChangedAndNoOnPropertyChanging()
     {
         var instance = testResult.GetInstance("ClassWithOnChangedAndNoOnPropertyChanging");
-        Assert.Equal(0, instance.OnProperty1ChangingCalled);
-        EventTester.TestProperty(instance, false);
-        Assert.Equal(1, instance.OnProperty1ChangingCalled);
+        await Assert.That((int)instance.OnProperty1ChangingCalled).IsEqualTo(0);
+        await EventTester.TestProperty(instance, false);
+        await Assert.That((int)instance.OnProperty1ChangingCalled).IsEqualTo(1);
     }
 
-    [Fact]
-    public void ReactiveUI()
+    [Test]
+    public async Task ReactiveUI()
     {
         var instance = testResult.GetInstance("ClassReactiveUI");
-        EventTester.TestProperty(instance, false);
-        Assert.True(instance.BaseNotifyCalled);
+        await EventTester.TestProperty(instance, false);
+        await Assert.That((bool)instance.BaseNotifyCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithOnChanging()
+    [Test]
+    public virtual async Task WithOnChanging()
     {
         var instance = testResult.GetInstance("ClassWithOnChanging");
-        Assert.False(instance.OnProperty1ChangingCalled);
-        EventTester.TestProperty(instance, false);
-        Assert.True(instance.OnProperty1ChangingCalled);
+        await Assert.That((bool)instance.OnProperty1ChangingCalled).IsFalse();
+        await EventTester.TestProperty(instance, false);
+        await Assert.That((bool)instance.OnProperty1ChangingCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void WithGenericAndLambda()
+    [Test]
+    public virtual async Task WithGenericAndLambda()
     {
         var instance = testResult.GetInstance("ClassWithGenericAndLambdaImp");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
 
-    [Fact]
-    public virtual void WithOnChangingBefore()
+    [Test]
+    public virtual async Task WithOnChangingBefore()
     {
         var instance = testResult.GetInstance("ClassWithOnChangingBefore");
-        Assert.False(instance.OnProperty1ChangingCalled);
-        EventTester.TestProperty(instance, false);
-        Assert.True(instance.OnProperty1ChangingCalled);
+        await Assert.That((bool)instance.OnProperty1ChangingCalled).IsFalse();
+        await EventTester.TestProperty(instance, false);
+        await Assert.That((bool)instance.OnProperty1ChangingCalled).IsTrue();
     }
 
 
-    [Fact]
-    public virtual void TransitiveDependencies()
+    [Test]
+    public virtual async Task TransitiveDependencies()
     {
         var propertyNames = new List<string>();
         var instance = testResult.GetInstance("TransitiveDependencies");
         ((INotifyPropertyChanging)instance).PropertyChanging += (sender, x) => propertyNames.Add(x.PropertyName);
         instance.My = "s";
-        Assert.Contains("My", propertyNames);
-        Assert.Contains("MyA", propertyNames);
-        Assert.Contains("MyAB", propertyNames);
-        Assert.Contains("MyABC", propertyNames);
+        await Assert.That(propertyNames).Contains("My");
+        await Assert.That(propertyNames).Contains("MyA");
+        await Assert.That(propertyNames).Contains("MyAB");
+        await Assert.That(propertyNames).Contains("MyABC");
 
     }
 
-    [Fact]
-    public virtual void CircularProperties()
+    [Test]
+    public virtual async Task CircularProperties()
     {
         var instance = testResult.GetInstance("ClassCircularProperties");
         instance.Self = "s";
@@ -872,15 +876,15 @@ public class WeavingTaskTests
 
     }
 
-    [Fact]
-    public virtual void WithPropertyImpOfAbstractProperty()
+    [Test]
+    public virtual async Task WithPropertyImpOfAbstractProperty()
     {
         var instance = testResult.GetInstance("ClassWithPropertyImp");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public virtual void EqualityWithDouble()
+    [Test]
+    public virtual async Task EqualityWithDouble()
     {
         var instance = testResult.GetInstance("ClassEqualityWithDouble");
         var property1EventCalled = false;
@@ -893,15 +897,15 @@ public class WeavingTaskTests
         };
         instance.Property1 = 2d;
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
         property1EventCalled = false;
         //Property has not changed on re-set so event not fired
         instance.Property1 = 2d;
-        Assert.False(property1EventCalled);
+        await Assert.That(property1EventCalled).IsFalse();
     }
 
-    [Fact]
-    public virtual void EqualityWithStruct()
+    [Test]
+    public virtual async Task EqualityWithStruct()
     {
         var instance = testResult.GetInstance("ClassEqualityWithStruct");
         var property1EventCalled = false;
@@ -914,11 +918,11 @@ public class WeavingTaskTests
         };
         var property1 = testResult.GetInstance("ClassEqualityWithStruct+SimpleStruct");
         instance.Property1 = property1;
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
     }
 
-    [Fact]
-    public virtual void EqualityWithStructOverload()
+    [Test]
+    public virtual async Task EqualityWithStructOverload()
     {
         var instance = testResult.GetInstance("ClassEqualityWithStructOverload");
         var property1EventCalled = false;
@@ -933,15 +937,15 @@ public class WeavingTaskTests
         property1.X = 5;
         instance.Property1 = property1;
 
-        Assert.True(property1EventCalled);
+        await Assert.That(property1EventCalled).IsTrue();
         property1EventCalled = false;
         //Property has not changed on re-set so event not fired
         instance.Property1 = property1;
-        Assert.False(property1EventCalled);
+        await Assert.That(property1EventCalled).IsFalse();
     }
 
-    [Fact]
-    public void ClassWithNullableBackingField()
+    [Test]
+    public async Task ClassWithNullableBackingField()
     {
         var instance = testResult.GetInstance("ClassWithNullableBackingField");
         var isFlagEventCalled = false;
@@ -953,18 +957,18 @@ public class WeavingTaskTests
             }
         };
         instance.IsFlag = true;
-        Assert.True(isFlagEventCalled);
+        await Assert.That(isFlagEventCalled).IsTrue();
 
         isFlagEventCalled = false;
         instance.IsFlag = true;
-        Assert.False(isFlagEventCalled);
+        await Assert.That(isFlagEventCalled).IsFalse();
     }
 
-    [Theory]
-    [InlineData([nameof(ClassDoNotCheckEquality), 1, 2])]
-    [InlineData([nameof(ClassDoNotCheckEqualityWholeClass), 2, 2])]
-    [InlineData([nameof(ClassDoNotCheckEqualityWholeClassInherited), 2, 2])]
-    public void ClassDoNotCheckEquality(string className, int expectedCountProperty1, int expectedCountProperty2)
+    [Test]
+    [Arguments(nameof(ClassDoNotCheckEquality), 1, 2)]
+    [Arguments(nameof(ClassDoNotCheckEqualityWholeClass), 2, 2)]
+    [Arguments(nameof(ClassDoNotCheckEqualityWholeClassInherited), 2, 2)]
+    public async Task ClassDoNotCheckEquality(string className, int expectedCountProperty1, int expectedCountProperty2)
     {
         var instance = testResult.GetInstance(className);
 
@@ -973,12 +977,12 @@ public class WeavingTaskTests
         instance.Property2 = "sameValue";
         instance.Property2 = "sameValue";
 
-        Assert.Equal(expectedCountProperty1, instance.TimesProperty1Changing);
-        Assert.Equal(expectedCountProperty2, instance.TimesProperty2Changing);
+        await Assert.That((int)instance.TimesProperty1Changing).IsEqualTo(expectedCountProperty1);
+        await Assert.That((int)instance.TimesProperty2Changing).IsEqualTo(expectedCountProperty2);
     }
 
 #if NETFRAMEWORK
-    [Fact]
+    [Test]
     public async Task ClassWithNullableBackingFieldIl()
     {
         using var file = new PEFile(testResult.AssemblyPath);
@@ -987,7 +991,7 @@ public class WeavingTaskTests
         await Verifier.Verify(property).UniqueForAssemblyConfiguration();
     }
 
-    [Fact]
+    [Test]
     public async Task ClassWithNullableAutoPropertyIl()
     {
         using var file = new PEFile(testResult.AssemblyPath);

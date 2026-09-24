@@ -1,9 +1,9 @@
-﻿using PropertyChanging;
+using PropertyChanging;
 
 public class DependsOnDataAttributeReaderTests
 {
-    [Fact]
-    public void Integration()
+    [Test]
+    public async Task Integration()
     {
         var reader = new ModuleWeaver();
         var node = new TypeNode
@@ -12,10 +12,10 @@ public class DependsOnDataAttributeReaderTests
         };
         reader.ProcessDependsOnAttributes(node);
 
-        Assert.Equal("FullName", node.PropertyDependencies[0].ShouldAlsoNotifyFor.Name);
-        Assert.Equal("GivenNames", node.PropertyDependencies[0].WhenPropertyIsSet.Name);
-        Assert.Equal("FullName", node.PropertyDependencies[1].ShouldAlsoNotifyFor.Name);
-        Assert.Equal("FamilyName", node.PropertyDependencies[1].WhenPropertyIsSet.Name);
+        await Assert.That(node.PropertyDependencies[0].ShouldAlsoNotifyFor.Name).IsEqualTo("FullName");
+        await Assert.That(node.PropertyDependencies[0].WhenPropertyIsSet.Name).IsEqualTo("GivenNames");
+        await Assert.That(node.PropertyDependencies[1].ShouldAlsoNotifyFor.Name).IsEqualTo("FullName");
+        await Assert.That(node.PropertyDependencies[1].WhenPropertyIsSet.Name).IsEqualTo("FamilyName");
     }
 
     public class Person
@@ -23,11 +23,11 @@ public class DependsOnDataAttributeReaderTests
         public string GivenNames { get; set; }
         public string FamilyName { get; set; }
 
-        [DependsOn("GivenNames", "FamilyName")]
+        [PropertyChanging.DependsOn("GivenNames", "FamilyName")]
         public string FullName => $"{GivenNames} {FamilyName}";
     }
 
-    [Fact]
+    [Test]
     public void PropertyThatDoesNotExist()
     {
         var reader = new ModuleWeaver();
@@ -43,7 +43,7 @@ public class DependsOnDataAttributeReaderTests
         public string GivenNames { get; set; }
         public string FamilyName { get; set; }
 
-        [DependsOn("NotAProperty1", "NotAProperty2")]
+        [PropertyChanging.DependsOn("NotAProperty1", "NotAProperty2")]
         public string FullName => $"{GivenNames} {FamilyName}";
     }
 }

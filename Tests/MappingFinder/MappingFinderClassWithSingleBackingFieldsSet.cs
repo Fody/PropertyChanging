@@ -2,12 +2,12 @@ using System.Linq;
 
 public class MappingFinderClassWithSingleBackingFieldsSet
 {
-    [Fact]
-    public void Run()
+    [Test]
+    public async Task Run()
     {
         var memberMappings = ModuleWeaver.GetMappings(DefinitionFinder.FindType<ClassWithSingleBackingFieldsSet>()).ToList();
-        Assert.Equal("propertyA", memberMappings.First(_ => _.PropertyDefinition.Name == "Property1").FieldDefinition.Name);
-        Assert.Equal("propertyB", memberMappings.First(_ => _.PropertyDefinition.Name == "Property2").FieldDefinition.Name);
+        await Assert.That(memberMappings.First(_ => _.PropertyDefinition.Name == "Property1").FieldDefinition.Name).IsEqualTo("propertyA");
+        await Assert.That(memberMappings.First(_ => _.PropertyDefinition.Name == "Property2").FieldDefinition.Name).IsEqualTo("propertyB");
     }
 
     public class ClassWithSingleBackingFieldsSet

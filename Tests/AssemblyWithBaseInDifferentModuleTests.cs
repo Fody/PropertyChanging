@@ -1,4 +1,4 @@
-﻿public class AssemblyWithBaseInDifferentModuleTests
+public class AssemblyWithBaseInDifferentModuleTests
 {
     TestResult testResult;
 
@@ -8,38 +8,38 @@
         testResult = weaver.ExecuteTestRun("AssemblyWithBaseInDifferentModule.dll", ignoreCodes: new[] { "0x80131869" });
     }
 
-    [Fact]
-    public void SimpleChildClass()
+    [Test]
+    public async Task SimpleChildClass()
     {
         var instance = testResult.GetInstance("AssemblyWithBaseInDifferentModule.Simple.ChildClass");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public void GenericChildClass()
+    [Test]
+    public async Task GenericChildClass()
     {
         var instance = testResult.GetInstance("AssemblyWithBaseInDifferentModule.BaseWithGenericParent.ChildClass");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public void GenericFromAbove()
+    [Test]
+    public async Task GenericFromAbove()
     {
         var instance = testResult.GetInstance("AssemblyWithBaseInDifferentModule.GenericFromAbove.ChildClass");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public void DirectChildClass()
+    [Test]
+    public async Task DirectChildClass()
     {
         var instance = testResult.GetInstance("AssemblyWithBaseInDifferentModule.DirectGeneric.ChildClass");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 
-    [Fact]
-    public void GenericChildClassFromMultiType()
+    [Test]
+    public async Task GenericChildClassFromMultiType()
     {
         var instance = testResult.GetInstance("AssemblyWithBaseInDifferentModule.MultiTypes.ChildClass");
-        EventTester.TestProperty(instance, false);
+        await EventTester.TestProperty(instance, false);
     }
 }
